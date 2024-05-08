@@ -1,41 +1,35 @@
 import React from 'react';
+import Logo from './logo';
 
-// Contact component
 const Contact = () => {
     return (
         <div>
-            <h3>Contact</h3>
-            {/* Add your contact information here */}
+            <h3>Contacto</h3>
+            <h5>Brandsen 805</h5>
+            <h5>Bahía Blanca, Buenos Aires, Argentina</h5>
+            <h5>Teléfono: +54 9 291 4123456</h5>
+
         </div>
     );
 };
 
-// Social Media component
 const SocialMedia = () => {
     return (
         <div>
-            <h3>Social Media</h3>
-            {/* Add your social media links here */}
+            <h3>Seguinos</h3>
+            {/* agregar links ficticios a redes sociales, 
+            puede ser a la pag principal de cada red social */}
         </div>
     );
 };
 
-// Logo component
-const Logo = () => {
-    return (
-        <div>
-            {/* Add your logo here */}
-        </div>
-    );
-};
 
-// Footer component
 const Footer = () => {
     return (
         <footer>
+            <Logo />
             <Contact />
             <SocialMedia />
-            <Logo />
         </footer>
     );
 };

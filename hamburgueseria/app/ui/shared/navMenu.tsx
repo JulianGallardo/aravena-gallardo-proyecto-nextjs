@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-
+import Link from 'next/link';
 
 const NavMenu: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -17,22 +17,34 @@ const NavMenu: React.FC = () => {
                 <nav>
                     <ul>
                         <li>
-                            <a href="/">Inicio</a>
+                            <Link href="/">
+                                Inicio
+                            </Link>
                         </li>
                         <li>
-                            <a href="/about">Perfil</a>
+                            <Link href="/perfil">
+                                Perfil
+                            </Link>
                         </li>
                         <li>
-                            <a href="/products">Burgers</a>
+                            <Link href="/burgers">
+                                Burgers
+                            </Link>
                         </li>
                         <li>
-                            <a href="/services">Promos</a>
+                            <Link href="/promociones">
+                                Promos
+                            </Link>
                         </li>
                         <li>
-                            <a href="/contact">Club</a>
+                            <Link href="/club">
+                                Club
+                            </Link>
                         </li>
                         <li>
-                            <a href="/contact">Encarga</a>
+                            <Link href="/pedido">
+                                Encarga
+                            </Link>
                         </li>
                     </ul>
                 </nav>
