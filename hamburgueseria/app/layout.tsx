@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { inter } from '@/app/ui/fonts';
 import '@/app/ui/global.css';
 
-const title = "Sin chucu";
+const title = "ByteBurgers";
 
 export const metadata: Metadata = {
-  title: `Hamburgueseria ${title}`,
-  description: `Hamburgueseria ${title} - Bahia Blanca`,
+  title: title,
+  description: `Hamburgueseria ${title} - Bahia Blanca`
 };
 
 export default function RootLayout({
