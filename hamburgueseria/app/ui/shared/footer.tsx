@@ -1,5 +1,4 @@
 import React from 'react';
-import Logo from './logo';
 import Image from 'next/image';
 
 const Contact = () => {
@@ -15,17 +14,6 @@ const Contact = () => {
         </div>
     );
 };
-
-const SocialMedia = () => {
-    return (
-        <div>
-            <h3>Seguinos</h3>
-            {/* agregar links ficticios a redes sociales, 
-            puede ser a la pag principal de cada red social */}
-        </div>
-    );
-};
-
 
 const Footer = () => {
     return (
