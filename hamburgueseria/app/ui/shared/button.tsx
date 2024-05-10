@@ -1,5 +1,6 @@
+'use client'; 
+
 import React from 'react';
-import Link from 'next/link';
 
 interface ButtonProps {
     link: string;
@@ -9,12 +10,14 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({ link, className, text }) => {
+    const handleClick = () => {
+        window.location.href = link;
+    };
+
     return (
-        <Link href={link}>
-            <button className={className}>
-                {text}
-            </button>
-        </Link>
+        <button className={className + "bg-brown btn-neutral btn-sm rounded-full p-2"} onClick={handleClick} style={{ minWidth: '100px', maxWidth: '150px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {text}
+        </button>
     );
 };
 

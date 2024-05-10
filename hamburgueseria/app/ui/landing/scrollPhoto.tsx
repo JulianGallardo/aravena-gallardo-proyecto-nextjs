@@ -7,10 +7,11 @@ export default function ScrollPhoto() {
     const photoSrc = "https://example.com/photo.jpg";
 
     return (
-        <div>
-            <h1>{photoTitle}</h1>
+        <div className="flex flex-col items-center">
             {/* <Image src={photoSrc} alt={photoTitle} width={10} height={10}/> */}
             {/* buscar como hacer el scroll, poner alguna flecha*/}
+            <br /><br />
+            <h1 className="text-center">{photoTitle}</h1>
         </div>
     );
 }
