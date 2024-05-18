@@ -4,7 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const NavMenu: React.FC = () => {
+interface NavMenuProps {
+    isTransparent: boolean;
+  }
+
+const NavMenu: React.FC<NavMenuProps> = ({isTransparent}) => {
     const [isTop, setIsTop] = useState(true);
 
     useEffect(() => {
@@ -21,9 +25,9 @@ const NavMenu: React.FC = () => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [isTransparent]);
 
-    const navbarClass = `navbar bg-darkblue fixed top-0 left-0 right-0 z-50 ${isTop ? 'bg-transparent' : ''}`;
+    const navbarClass = `navbar bg-darkblue ${isTransparent ? 'fixed top-0 left-0 right-0 z-50': ''} ${isTransparent && isTop ? 'bg-transparent' : ''}`;
 
     return (
         <>

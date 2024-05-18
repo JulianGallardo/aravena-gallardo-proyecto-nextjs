@@ -1,10 +1,14 @@
 import React from 'react';
 import NavMenu from './navMenu';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+    isTransparent: boolean;
+  }
+
+const Header: React.FC<HeaderProps> = ({ isTransparent }) => {
     return (
         <header>
-            <NavMenu />
+            <NavMenu isTransparent={isTransparent} />
         </header>
     );
 };

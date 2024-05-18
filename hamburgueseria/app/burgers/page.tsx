@@ -11,7 +11,7 @@ const Page: React.FC = () => {
 
     return (
         <div>
-            <Header />
+            <Header isTransparent = {false} />
             <h1>Burgers</h1>
             <ul>
                 {menu.map((burger, index) => (

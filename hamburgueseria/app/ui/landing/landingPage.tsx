@@ -7,7 +7,7 @@ import MainMenu from './mainMenu';
 const LandingPage: React.FC = () => {
     return (
         <div className='bg-lightgrey'>
-            <Header />
+            <Header isTransparent={true} />
             <ScrollPhoto />
             <MainMenu />
             <Footer />
