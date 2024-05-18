@@ -37,7 +37,7 @@ const NavMenu: React.FC = () => {
                             <li><Link href="/">Inicio</Link></li>
                             <li><Link href="/perfil">Perfil</Link></li>
                             <li><Link href="/burgers">Burgers</Link></li>
-                            <li><Link href="/promos">Promos</Link></li>
+                            <li><Link href="/promociones">Promos</Link></li>
                             <li><Link href="/club">Club Byte</Link></li>
                             <li><Link href="/pedido">Encarga tu Byte</Link></li>
 

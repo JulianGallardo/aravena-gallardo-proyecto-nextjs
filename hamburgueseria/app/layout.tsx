@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { inter } from '@/app/ui/fonts';
+import React from 'react';
 import '@/app/ui/global.css';
 
 const title = "ByteBurgers";
