@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = ({ link, className, text }) => {
     };
 
     return (
-        <button className={className + "bg-headerFooter btn-neutral btn-sm rounded-full p-2"} onClick={handleClick} style={{ minWidth: '100px', maxWidth: '150px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <button className={className + "bg-darkblue btn-neutral btn-sm rounded-full p-2"} onClick={handleClick} style={{ minWidth: '100px', maxWidth: '150px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {text}
         </button>
     );

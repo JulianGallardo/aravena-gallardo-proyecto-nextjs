@@ -8,10 +8,9 @@ const config: Config = {
   ],
   theme: {
     colors:{
-      mainBackground: '#ECF0F1', // light grey
-      headerFooter: '#2C3E50',  // dark blue
+      lightgrey: '#ECF0F1',
+      darkblue: '#2C3E50',
       white: '#FFFFFF',
-      text: '#FFFFFF',
     },
     extend: {
       
