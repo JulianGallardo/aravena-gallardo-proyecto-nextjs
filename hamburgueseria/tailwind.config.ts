@@ -8,12 +8,10 @@ const config: Config = {
   ],
   theme: {
     colors:{
-      pastel: '#FBF3EB',
-      brown: '#372A24',
-      yellow: '#FABC51',
-      lightbrown: '#BE7324',
-      lightyellow: '#FABC51',
-      mainBackground: '#F0F0F0'
+      mainBackground: '#ECF0F1', // light grey
+      headerFooter: '#2C3E50',  // dark blue
+      white: '#FFFFFF',
+      text: '#FFFFFF',
     },
     extend: {
       
