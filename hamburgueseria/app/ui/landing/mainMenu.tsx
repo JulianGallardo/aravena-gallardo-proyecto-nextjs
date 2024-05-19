@@ -8,44 +8,46 @@ const MainMenu: React.FC = () => {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768);
-      };
-
-      if (typeof window !== 'undefined') {
-        window.addEventListener('resize', handleResize);
-          handleResize();
-  
-        return () => {
-          window.removeEventListener('resize', handleResize);
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
         };
-      }
-    }, []); 
+
+        if (typeof window !== 'undefined') {
+            window.addEventListener('resize', handleResize);
+            handleResize();
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }
+    }, []);
 
     return (
-        <div>
+        <div className='flex flex-col items-center m-auto'>
             <div className={`card-container ${isMobile ? 'mobile' : 'desktop'}`}>
                 {isMobile ? (
                     <>
-                        <ButtonCard title="Burgers" photoSrc='/landingCard1.png' button={{ link: '/burgers', className: '', text: 'Ver burgers' }} />
-                        <ButtonCard title="Promos" photoSrc="/landingCard2.png" button={{ link: '/promociones', className: '', text: 'Ver promos' }} />
-                        <ButtonCard title="Club" photoSrc="/landingCard3.png" button={{ link: '/club', className: '', text: 'Ver más' }} />
-                        <ButtonCard title="Encarga" photoSrc="/landingCard4.png" button={{ link: '/pedido', className: '', text: 'Pedir ahora' }} />
+                        <ButtonCard title="Burgers" photoSrc='/landingCard1.png' width={300} heigth={300} button={{ link: '/burgers', className: '', text: 'Ver burgers' }} />
+                        <ButtonCard title="Promos" photoSrc="/landingCard2.png" width={300} heigth={300} button={{ link: '/promociones', className: '', text: 'Ver promos' }} />
+                        <ButtonCard title="Club" photoSrc="/landingCard3.png" width={300} heigth={300} button={{ link: '/club', className: '', text: 'Ver más' }} />
+                        <ButtonCard title="Encarga" photoSrc="/landingCard4.png" width={300} heigth={300} button={{ link: '/pedido', className: '', text: 'Pedir ahora' }} />
                     </>
                 ) : (
                     <>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="grid-item">
-                                <ButtonCard title="Burgers" photoSrc='/landingCard1.png' button={{ link: '/burgers', className: '', text: 'Ver burgers' }} />
+                        <div className="flex flex-column-2 items-center justify-center">
+                            <div className="m-x-0 w-auto h-auto ">
+                                <ButtonCard title="Burgers" photoSrc='/landingCard1.png' width={800} heigth={400} button={{ link: '/burgers', className: '', text: 'Ver burgers' }} />
                             </div>
-                            <div className="grid-item">
-                                <ButtonCard title="Promos" photoSrc="/landingCard2.png" button={{ link: '/promociones', className: '', text: 'Ver promos' }} />
+                            <div className="m-x-0 w-auto h-auto">
+                                <ButtonCard title="Promos" photoSrc="/landingCard2.png" width={410} heigth={400} button={{ link: '/promociones', className: '', text: 'Ver promos' }} />
                             </div>
-                            <div className="grid-item">
-                                <ButtonCard title="Club" photoSrc="/landingCard3.png" button={{ link: '/club', className: '', text: 'Ver más' }} />
+                        </div>
+                        <div className="flex flex-column-2 items-center justify-center">
+                            <div className="m-x-0 w-auto h-auto">
+                                <ButtonCard title="Club" photoSrc="/landingCard3.png" width={500} heigth={500} button={{ link: '/club', className: '', text: 'Ver más' }} />
                             </div>
-                            <div className="grid-item">
-                                <ButtonCard title="Encarga" photoSrc="/landingCard4.png" button={{ link: '/pedido', className: '', text: 'Pedir ahora' }} />
+                            <div className="m-x-0 w-auto h-auto">
+                                <ButtonCard title="Encarga" photoSrc="/landingCard4.png" width={580} heigth={500} button={{ link: '/pedido', className: '', text: 'Pedir ahora' }} />
                             </div>
                         </div>
                     </>
