@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import ButtonCard from '../shared/buttonCard';
+import HeroCard from '../shared/heroCard';
+import Novedades from './novedades';
 
 const MainMenu: React.FC = () => {
 
@@ -29,6 +31,8 @@ const MainMenu: React.FC = () => {
                     <>
                         <ButtonCard title="Burgers" photoSrc='/landingCard1.png' width={300} heigth={300} button={{ link: '/burgers', className: '', text: 'Ver burgers' }} />
                         <ButtonCard title="Promos" photoSrc="/landingCard2.png" width={300} heigth={300} button={{ link: '/promociones', className: '', text: 'Ver promos' }} />
+                        <HeroCard title="Tenemos un nuevo integrante!" body="Chatea con nuestro nuevo asistente virtual, te da recomendaciones y te ayuda a elegir si estas en dudad entre que Byte elegir!" photoSrc="/ByteBurgersLogo.png"/>
+
                         <ButtonCard title="Club" photoSrc="/landingCard3.png" width={300} heigth={300} button={{ link: '/club', className: '', text: 'Ver más' }} />
                         <ButtonCard title="Encarga" photoSrc="/landingCard4.png" width={300} heigth={300} button={{ link: '/pedido', className: '', text: 'Pedir ahora' }} />
                     </>
@@ -42,6 +46,9 @@ const MainMenu: React.FC = () => {
                                 <ButtonCard title="Promos" photoSrc="/landingCard2.png" width={410} heigth={400} button={{ link: '/promociones', className: '', text: 'Ver promos' }} />
                             </div>
                         </div>
+
+                        <HeroCard title="Tenemos un nuevo integrante!" body="Chatea con nuestro nuevo asistente virtual, te da recomendaciones y te ayuda a elegir si estas en dudad entre que Byte elegir!" photoSrc="/ByteBurgersLogo.png"/>
+
                         <div className="flex flex-column-2 items-center justify-center">
                             <div className="m-x-0 w-auto h-auto">
                                 <ButtonCard title="Club" photoSrc="/landingCard3.png" width={500} heigth={500} button={{ link: '/club', className: '', text: 'Ver más' }} />
@@ -50,6 +57,12 @@ const MainMenu: React.FC = () => {
                                 <ButtonCard title="Encarga" photoSrc="/landingCard4.png" width={580} heigth={500} button={{ link: '/pedido', className: '', text: 'Pedir ahora' }} />
                             </div>
                         </div>
+
+                        <Novedades />
+                        
+                        
+
+
                     </>
                 )}
             </div>

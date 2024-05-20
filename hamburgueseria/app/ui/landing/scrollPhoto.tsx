@@ -7,11 +7,14 @@ export default function ScrollPhoto() {
     const photoSrc = "/landingPhoto.jpg";
 
     return (
-        <div className="flex flex-col items-center">
-            <Image src={photoSrc} alt={photoTitle} width={3000} height={1000}/> 
-            {/* buscar como hacer el scroll, poner alguna flecha*/}
-            <br /><br />
-            <h1 className="text-center">{photoTitle}</h1>
+        <div className="hero min-h-screen">
+            <Image src={photoSrc} alt={photoTitle} fill={true}  objectFit='cover' objectPosition='' className="fill " />
+            <div className="hero-overlay bg-opacity-60"></div>
+            <div className="hero-content text-center text-neutral-content">
+                <div className="max-w-md">
+                    <h1 className="font-bold text-white sm:text-3xl md:text-5xl">{photoTitle}</h1>
+                </div>
+            </div>
         </div>
     );
 }
