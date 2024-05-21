@@ -20,8 +20,8 @@ export default function heroCard({ title, body, photoSrc, link, buttonText }: He
           <img src={photoSrc} alt="Icon Photo"  className="rounded-lg w-full h-full bg-lightgrey" />
         </div>
         <div>
-          <h1 className="text-5xl font-bold">{title}</h1>
-          <p className="py-6">{body}</p>
+          <h1 className="text-5xl font-bold text-black">{title}</h1>
+          <p className="py-6 text-black">{body}</p>
           {
             link && buttonText ? (
               <Button text={buttonText} link={link} />
