@@ -27,7 +27,7 @@ const NavMenu: React.FC<NavMenuProps> = ({isTransparent}) => {
         };
     }, [isTransparent]);
 
-    const navbarClass = `navbar bg-darkblue ${isTransparent ? 'fixed top-0 left-0 right-0 z-50': ''} ${isTransparent && isTop ? 'bg-transparent' : ''}`;
+    const navbarClass = `navbar min-h-20 bg-darkblue ${isTransparent ? 'fixed top-0 left-0 right-0 z-50': ''} ${isTransparent && isTop ? 'bg-transparent' : ''}`;
 
     return (
         <>
