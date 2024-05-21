@@ -1,0 +1,30 @@
+{
+    "novedades": [
+      {
+        "title": "Nueva Hamburguesa BBQ",
+        "description": "Descubre nuestra nueva hamburguesa BBQ, con doble carne, queso cheddar derretido, cebolla caramelizada y nuestra salsa BBQ especial.",
+        "image": "https://chefeel.com/chefgeneralfiles/2021/07/front-view-burger-on-stand-scaled-880x587.jpg"
+      },
+      {
+        "title": "Hamburguesa Vegana",
+        "description": "Para nuestros amigos veganos, presentamos la hamburguesa vegana con un delicioso patty de garbanzos, aguacate fresco, tomate y lechuga orgánica.",
+        "image": "https://img2.rtve.es/v/5969140?w=1600&preview=1625251514310.jpg"
+      },
+      {
+        "title": "Combo Familiar",
+        "description": "¡Ideal para compartir en familia! Nuestro combo familiar incluye cuatro hamburguesas clásicas, papas fritas y bebidas a un precio especial.",
+        "image": "https://media.licdn.com/dms/image/C4D12AQEnd8-g7NLQIg/article-cover_image-shrink_720_1280/0/1640033455882?e=2147483647&v=beta&t=gajKLoPKnpC_meITjnpbrHzRcm8xT4R_fFf5UfV9wX4"
+      },
+      {
+        "title": "Salsa Picante de la Casa",
+        "description": "Añade un toque de picante a tus hamburguesas con nuestra nueva salsa picante de la casa, hecha con los mejores chiles.",
+        "image": "https://i.blogs.es/31c4eb/kfc_picante/1366_2000.jpeg"
+      },
+      {
+        "title": "Promoción de Fin de Semana",
+        "description": "Este fin de semana disfruta de un 20% de descuento en todas nuestras hamburguesas gourmet.",
+        "image": "https://www.lanacion.com.ar/resizer/v2/este-fin-de-semana-habra-eventos-especiales-por-UQQXOG2YBBDRBIMA3NSUHQATVM.jpg?auth=44f6b27300e069af3fd9760d60c053f6908e63ac1f16bc9eeef5329444fd8a35&width=420&height=280&quality=70&smart=true"
+      }
+    ]
+  }
+  
