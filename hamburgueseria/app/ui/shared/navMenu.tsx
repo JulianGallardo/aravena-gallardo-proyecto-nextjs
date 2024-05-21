@@ -10,28 +10,39 @@ interface NavMenuProps {
 
 const NavMenu: React.FC<NavMenuProps> = ({isTransparent}) => {
     const [isTop, setIsTop] = useState(true);
+    const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY === 0) {
-                setIsTop(true);
+            setIsTop(window.scrollY === 0);
+        };
+
+        let lastScrollTop = 0;
+
+        const handleScrollUp = () => {
+            const st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st < lastScrollTop){
+                setIsVisible(true);
             } else {
-                setIsTop(false);
+                setIsVisible(false); 
             }
+            lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         };
 
         window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScrollUp);
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScrollUp);
         };
-    }, [isTransparent]);
+    }, []);
 
-    const navbarClass = `navbar min-h-20 bg-darkblue ${isTransparent ? 'fixed top-0 left-0 right-0 z-50': ''} ${isTransparent && isTop ? 'bg-transparent' : ''}`;
+    const navbarClass = `navbar min-h-20 fixed top-0 left-0 right-0 z-50 ${isTransparent ? '' : 'bg-opacity-100 transition-transform duration-500'} ${isTransparent && isTop ? 'bg-transparent' : isVisible ? 'bg-darkblue transition-transform duration-2500 translate-y-0' : 'hidden translate-y-full'}`;
 
     return (
         <>
-            <div className={navbarClass}>
+            <div className={navbarClass} id="navbar">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost bg-lightgrey btn-circle">
