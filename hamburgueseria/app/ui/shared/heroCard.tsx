@@ -14,14 +14,14 @@ interface HeroCardProps {
 export default function heroCard({ title, body, photoSrc, link, buttonText }: HeroCardProps) {
 
   return (
-    <div className="hero w-fit bg-darkblue px-5 py-2 rounded-lg ">
+    <div className="hero bg-darkblue rounded-lg w-4/5 md:w-fit ">
       <div className="hero-content flex-col lg:flex-row-reverse relative">
-        <div className='relative w-1/2 h-1/2 lg:w-1/2 lg:h-1/2'>
+        <div className='relative w-1/3 h-1/3 md:w-1/2 lg:h-1/2'>
           <img src={photoSrc} alt="Icon Photo"  className="rounded-lg w-full h-full bg-lightgrey" />
         </div>
-        <div>
-          <h1 className="text-5xl font-bold text-black">{title}</h1>
-          <p className="py-6 text-black">{body}</p>
+        <div className="flex flex-col justify-center items-center">
+          <h1 className="text-2xl font-bold text-black text-center md:text-5xl  ">{title}</h1>
+          <p className="p-2 text-black text-center md:p-4">{body}</p>
           {
             link && buttonText ? (
               <Button text={buttonText} link={link} />

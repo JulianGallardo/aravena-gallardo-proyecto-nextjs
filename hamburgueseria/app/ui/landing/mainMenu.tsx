@@ -30,14 +30,14 @@ const MainMenu: React.FC = () => {
                 {isMobile ? (
                     <>  
                     <div className="flex flex-col md:flex-row items-center justify-center">
-                        <div className="flex flex-column-2 items-center justify-center">
+                        <div className="items-center justify-center">
                             <ButtonCard title="Burgers" photoSrc='/landingCard1.png' width={300} height={300} button={{ link: '/burgers', className: '', text: 'Ver burgers' }} />
                             <ButtonCard title="Promos" photoSrc="/landingCard2.png" width={300} height={300} button={{ link: '/promociones', className: '', text: 'Ver promos' }} />
                         </div>
                         <div className="flex items-center justify-center">
                             <HeroCard title="Tenemos un nuevo integrante!" body="Chatea con nuestro nuevo asistente virtual, te da recomendaciones y te ayuda a elegir si estas en dudad entre que Byte elegir!" photoSrc="/ByteBurgersLogo.png" buttonText='Ver más' link='/asistente' />
                         </div>
-                        <div className="flex flex-column-2 items-center justify-center">
+                        <div className="items-center justify-center">
                             <ButtonCard title="Club" photoSrc="/landingCard3.png" width={300} height={300} button={{ link: '/club', className: '', text: 'Ver más' }} />
                             <ButtonCard title="Encarga" photoSrc="/landingCard4.png" width={300} height={300} button={{ link: '/pedido', className: '', text: 'Pedir ahora' }} />
                         </div>
