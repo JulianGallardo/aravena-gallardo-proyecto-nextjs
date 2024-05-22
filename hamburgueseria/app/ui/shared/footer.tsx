@@ -15,7 +15,7 @@ const Contact = () => {
     );
 };
 
-const Footer = () => {
+const Footer: React.FC<{}> = () => {
     return (
         <footer className="footer p-10 bg-darkblue text-white md:place-items-center">
             <nav className="">

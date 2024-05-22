@@ -1,7 +1,7 @@
 import React from 'react';
-import Header from '../ui/shared/header';
-import Footer from '../ui/shared/footer';
-import Card from '../ui/shared/burgerInfoCard';
+import { Header } from '../../ui';
+import { Footer } from '../../ui';
+import { Card } from '../../ui';
 const Page: React.FC = () => {
     const menu = [
         { name: 'Cheeseburger', photoSrc: '', description: 'burger 1', price: 9.99 },

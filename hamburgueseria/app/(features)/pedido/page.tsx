@@ -1,7 +1,7 @@
 import React from 'react';
-import Header from '../ui/shared/header';
-import Footer from '../ui/shared/footer';
-import Categorias from '../ui/pedido/categorias';
+import { Header } from '../../ui';
+import { Footer } from '../../ui';
+import { Categorias } from '../../ui';
 
 const categories = ['Simple', 'Doble', 'Bebidas', 'Postres'];
 
