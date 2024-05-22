@@ -13,6 +13,7 @@ const Page: React.FC = () => {
         <div>
             <Header isTransparent = {false} />
             <h1>Burgers</h1>
+            
             <ul>
                 {menu.map((burger, index) => (
                     <li key={index}>
