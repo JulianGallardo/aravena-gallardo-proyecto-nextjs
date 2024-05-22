@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import ButtonCard from '../shared/buttonCard';
 import HeroCard from '../shared/heroCard';
-import Novedades from './novedades';
 
 const MainMenu: React.FC = () => {
 
