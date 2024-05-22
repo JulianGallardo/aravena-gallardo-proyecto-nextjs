@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//--------USER---------
+model Client {
+  clientId    Int     @id @default(autoincrement())
+  user        User?
+  guest       Guest?
+  orders      Order[]   @relation("ClientOrders")
+}
+
+model User {
+  userId       Int       @id @default(autoincrement())
+  clientId     Int       @unique
+  fullName     String    
+  password     String    //Ver hash o encrypt
+  email        String    @unique
+  cellphone    String?   
+  address      String?   
+  client       Client    @relation(fields: [clientId], references: [clientId])
+}
+
+model Guest {
+  guestId      Int       @id @default(autoincrement())
+  clientId     Int       @unique
+  name         String
+  visitDate    DateTime  @default(now())
+  client       Client    @relation(fields: [clientId], references: [clientId])
+}
+
+//-------ORDER--------
+model Order {
+  orderId       Int      @id @default(autoincrement())
+  clientId      Int
+  date          DateTime @default(now())
+  totalAmount   Float    //debe calcularse en base a los productos que contiene
+  paymentMethod PaymentMethod
+  client        Client   @relation("ClientOrders", fields: [clientId], references: [clientId])
+  products      Product[]
+}
+
+enum PaymentMethod {
+  EFECTIVO
+  TARJETA_CREDITO
+  TARJETA_DEBITO
+  MERCADO_PAGO
+}
+
+//-------PRODUCT-------
+model Product {
+  productId    Int       @id @default(autoincrement())
+  orders       Order[]
+  burger       Burger?   
+  promo        Promo?
+}
+
+model Burger{
+  burgerId    Int       @id @default(autoincrement())
+  productId   Int       @unique
+  name        String
+  category    Category   
+  description String    @default("")
+  extras      Extra[]   @relation("BurgerExtras")
+  stock       Int       @default(0)
+  price       Float
+  promos      PromoBurger[]
+  product     Product   @relation(fields: [productId], references: [productId])
+}
+
+model Promo{
+  promoId     Int       @id @default(autoincrement())
+  productId   Int       @unique
+  name        String
+  description String    @default("")
+  category    Category  @default(PROMO)
+  product     Product   @relation(fields: [productId], references: [productId])
+  burgers     PromoBurger[]
+  price       Float     @default(0) //debe calcularse en base a los productos que contiene
+}
+
+enum Category {
+  SIMPLE
+  DOBLE
+  TRIPLE
+  PROMO
+}
+
+model Extra {
+  extraId     Int       @id @default(autoincrement())
+  name        String
+  price       Float     
+  maxQuantity Int       @default(1)
+  burgers     Burger[]  @relation("BurgerExtras")
+}
+
+model PromoBurger {
+  id          Int       @id @default(autoincrement())
+  promoId     Int
+  burgerId    Int
+  quantity    Int       @default(1)
+  newPrice    Float     
+  promo       Promo     @relation(fields: [promoId], references: [promoId])
+  burger      Burger    @relation(fields: [burgerId], references: [burgerId])
+  @@unique([promoId, burgerId]) // Garantiza que no haya duplicados de la misma combinación
+}
