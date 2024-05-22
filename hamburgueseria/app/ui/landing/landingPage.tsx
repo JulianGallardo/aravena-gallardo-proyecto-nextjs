@@ -4,7 +4,6 @@ import Footer from '../shared/footer';
 import ScrollPhoto from './scrollPhoto';
 import MainMenu from './mainMenu';
 
-
 const LandingPage: React.FC = () => {
     return (
         <div className='bg-lightgrey overflow-x-hidden'>
