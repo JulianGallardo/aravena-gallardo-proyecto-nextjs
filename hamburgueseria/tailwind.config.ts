@@ -13,6 +13,7 @@ const config: Config = {
       white: '#FFFFFF',
       dark: '#000000',
       black: '#000000',
+      red: '#FF0000',
     },
     extend: {
       

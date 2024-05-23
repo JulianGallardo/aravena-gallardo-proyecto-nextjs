@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "@/app/ui";
 import { Footer } from "@/app/ui";
-import LoginForm from "@/app/ui/login/loginForm";
+import LoginForm from "@/app/ui/auth/login/loginForm";
 
 const page: React.FC = () => {
     return (
