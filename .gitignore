@@ -15,3 +15,4 @@ node_modules
 # Otros
 .DS_Store
 dist/
+.vercel
