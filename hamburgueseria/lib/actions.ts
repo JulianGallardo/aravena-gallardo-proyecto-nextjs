@@ -4,14 +4,14 @@ import { signIn } from '@/auth';
 import { signOut } from '@/auth';
 import { AuthError } from 'next-auth';
  
-// ...
- 
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData,
 ) {
   try {
-    await signIn('credentials', formData);
+    await signIn('credentials', formData, { redirectTo: '/perfil'});
+
+
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -26,6 +26,5 @@ export async function authenticate(
 }
 
 export async function logout() {
-  await signOut();
-
+  await signOut({redirectTo: "/"});
 }
