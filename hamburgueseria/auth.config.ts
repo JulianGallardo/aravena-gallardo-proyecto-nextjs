@@ -11,11 +11,10 @@ export const authConfig = {
     },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnProfile = nextUrl.pathname.startsWith('/perfil');
-      console.log('isLoggedIn', isLoggedIn);
+      const isOnProfile = nextUrl.pathname.startsWith('/');
       if (isOnProfile) {
         if (isLoggedIn) return true;
-        return false;
+        return Response.redirect(new URL('/auth/login', nextUrl));
       } else if (isLoggedIn) {
         return Response.redirect(new URL('/perfil', nextUrl));
       }

@@ -1,25 +1,21 @@
 'use client'
 
-import React, { use, useEffect, useState } from 'react';
+import { revalidatePath } from 'next/cache';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { logout } from '@/lib/actions';
 import { useSession } from 'next-auth/react';
-import { auth } from '@/auth';
-import { Session } from 'next-auth';
 interface NavMenuProps {
     isTransparent: boolean;
 }
 
+
 const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
     const [isTop, setIsTop] = useState(true);
     const [isVisible, setIsVisible] = useState(true);
-    const [login, setStatusLogin] = useState(false);
-    const { data: session,status,update } = useSession();
+    const { data: session, status, update } = useSession();
 
-
-    
-   
 
 
     useEffect(() => {
@@ -65,18 +61,32 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                             <li><Link href="/promociones">Promos</Link></li>
                             <li><Link href="/club">Club Byte</Link></li>
                             <li><Link href="/pedido">Encarga tu Byte</Link></li>
-                            <li><Link href="/perfil">Perfil</Link></li>
-                            {(!session) ? <li><Link href="/auth/login">Login</Link></li> : <li><form
-                                        action={() => logout()}
+
+                            {
+                                (!session) ?
+                                <>
+                                    <li><Link href="/auth/register">Registro</Link></li>
+                                    <li><Link href="/auth/login">Login</Link></li>
+                                </>
+                                :
+                                <>
+                                    
+                                    <li><Link href="/perfil">Perfil</Link></li>
+                                    <li><form
+                                        action={() =>{ 
+                                            logout()
+                                        }}
                                     >
                                         <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
                                             <div className="hidden md:block">Sign Out</div>
                                         </button>
                                     </form>
                                     </li>
+                                </>
+
                             }
 
-                            
+
 
 
 
