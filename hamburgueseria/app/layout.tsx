@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { inter } from '@/app/ui/fonts';
 import React from 'react';
 import '@/app/ui/global.css';
+import { SessionWrapper } from "./ui/shared/sessionWrapper";
 
 const title = "ByteBurgers";
 
@@ -16,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <SessionWrapper>
+      <html lang="es">
+        <body className={inter.className}>{children}</body>
+      </html>
+    </SessionWrapper>
   );
 }
