@@ -30,6 +30,27 @@ export class ClientRepository {
     });
     return client.guest!;
   }
+
+  async findAllUsers(): Promise<User[]> {
+    const clients = await prisma.client.findMany({
+      include: {
+        user: true,
+      },
+    });
+
+    return clients.map(client => client.user!);
+  }
+
+  async findAllGuests(): Promise<Guest[]> {
+    const clients = await prisma.client.findMany({
+      include: {
+        guest: true,
+      },
+    });
+
+    return clients.map(client => client.guest!);
+  }
+
   async findAllClients(): Promise<(User | Guest)[]> {
     const clients = await prisma.client.findMany({
       include: {
@@ -40,7 +61,7 @@ export class ClientRepository {
 
     return clients.map(client => client.user ?? client.guest!);
   }
-
+  
   async findClientById(clientId: number): Promise<User | Guest | null> {
     const client = await prisma.client.findUnique({
       where: { clientId },

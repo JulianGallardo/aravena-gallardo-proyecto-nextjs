@@ -12,10 +12,17 @@ export class ClientService {
     return clientRepository.createGuest(data);
   }
 
+  async getAllUsers(): Promise<User[]> {
+    return clientRepository.findAllUsers();
+  }
+
+  async getAllGuests(): Promise<Guest[]> {
+    return clientRepository.findAllGuests();
+  }
+
   async getAllClients(): Promise<(User | Guest)[]> {
     return clientRepository.findAllClients();
   }
-
   async getClientById(clientId: number): Promise<User | Guest | null> {
     return clientRepository.findClientById(clientId);
   }
