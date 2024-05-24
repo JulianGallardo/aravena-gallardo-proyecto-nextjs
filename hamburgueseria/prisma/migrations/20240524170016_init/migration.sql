@@ -172,4 +172,3 @@ ALTER TABLE "_BurgerExtras" ADD CONSTRAINT "_BurgerExtras_A_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "_BurgerExtras" ADD CONSTRAINT "_BurgerExtras_B_fkey" FOREIGN KEY ("B") REFERENCES "Extra"("extraId") ON DELETE CASCADE ON UPDATE CASCADE;
-
