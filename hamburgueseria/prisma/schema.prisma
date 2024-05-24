@@ -29,16 +29,7 @@ model User {
   cellphone    String?   
   address      String?   
   client       Client    @relation(fields: [clientId], references: [clientId])
-  sessions     Session[]
-}
-
-
-model Session {
-  id           Int       @id @default(autoincrement())
-  token        String    @unique
-  userId       Int
-  expiration   DateTime
-  user         User      @relation(fields: [userId], references: [userId])
+  
 }
 
 
