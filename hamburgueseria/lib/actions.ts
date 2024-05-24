@@ -9,7 +9,7 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
-    await signIn('credentials', formData, { redirectTo: '/perfil'});
+    await signIn('credentials', formData);
 
 
   } catch (error) {

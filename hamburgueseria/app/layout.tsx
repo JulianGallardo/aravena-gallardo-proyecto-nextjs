@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { inter } from '@/app/ui/fonts';
 import React from 'react';
 import '@/app/ui/global.css';
-import { SessionWrapper } from "./ui/shared/sessionWrapper";
+import SessionWrapper from "@/app/ui/shared/sessionWrapper";
 
 const title = "ByteBurgers";
 

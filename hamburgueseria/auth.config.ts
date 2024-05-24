@@ -5,6 +5,10 @@ export const authConfig = {
     signIn: '/auth/login',
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Redirige a la página deseada después del inicio de sesión
+      return baseUrl ;
+    },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnProfile = nextUrl.pathname.startsWith('/perfil');
