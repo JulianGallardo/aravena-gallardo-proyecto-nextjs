@@ -1,28 +1,37 @@
 'use client';
- 
+
 
 import { useFormState, useFormStatus } from 'react-dom';
 import { signIn } from 'next-auth/react';
-import { useSession } from 'next-auth/react';
-import { sign } from 'crypto';
+import { useState } from 'react';
 
-  
 
 
 export default function LoginForm() {
-  const { data: session,status,update } = useSession();
- 
+  const [error, setError] = useState<string | null>(null);
+
   return (
-    <form action={(formData)=>{
-      signIn('credentials', { email: formData.get('email') as string, password: formData.get('password') as string });
-      
-      update();
+    <form action={(formData) => {
+      signIn('credentials', { redirect: false, email: formData.get('email') as string, password: formData.get('password') as string }).then(
+        (response) => {
+          if (response?.error) {
+            setError("Invalid Credentials");
+          } else {
+            // Redirect to the home page
+            window.location.href = '/';
+          }
+        }
+      ).catch((error) => {
+        setError(error.message);
+      });
+      console.log('error: ', error);
+
     }
 
     } className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`mb-3 text-2xl`}>
-          Please log in to continue.
+          Login
         </h1>
         <div className="w-full">
           <div>
@@ -41,7 +50,7 @@ export default function LoginForm() {
                 placeholder="Enter your email address"
                 required
               />
-                  </div>
+            </div>
           </div>
           <div className="mt-4">
             <label
@@ -59,8 +68,16 @@ export default function LoginForm() {
                 placeholder="Enter password"
                 required
               />
-              </div>
+            </div>
           </div>
+          {
+            error && (
+              <div className="mt-4 text-red" role="alert">
+                {error}
+              </div>
+            )
+          }
+
         </div>
         <LoginButton />
         <div
@@ -68,19 +85,19 @@ export default function LoginForm() {
           aria-live="polite"
           aria-atomic="true"
         >
-          
+
         </div>
       </div>
     </form>
   );
 }
- 
+
 function LoginButton() {
   const { pending } = useFormStatus();
- 
+
   return (
     <button className="mt-4 w-full" aria-disabled={pending}>
-      Log in 
+      Log in
     </button>
   );
 }

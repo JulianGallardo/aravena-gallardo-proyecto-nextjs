@@ -35,7 +35,7 @@ export const { auth,handlers, signIn, signOut } = NextAuth({
 
                     if (passwordsMatch) return user;
                 }
-                console.log('Credentials not valid');
+                
                 return null;
             },
             
