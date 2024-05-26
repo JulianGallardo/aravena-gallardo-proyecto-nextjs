@@ -4,6 +4,7 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 
 
@@ -11,11 +12,12 @@ export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
 
   return (
+    <div className="flex flex-col items-center justify-center h-screen">
     <form action={(formData) => {
       signIn('credentials', { redirect: false, email: formData.get('email') as string, password: formData.get('password') as string }).then(
         (response) => {
           if (response?.error) {
-            setError("Invalid Credentials");
+            setError("Usuario o contraseña invalidos");
           } else {
             // Redirect to the home page
             window.location.href = '/';
@@ -43,7 +45,7 @@ export default function LoginForm() {
             </label>
             <div className="relative">
               <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
                 id="email"
                 type="email"
                 name="email"
@@ -61,7 +63,7 @@ export default function LoginForm() {
             </label>
             <div className="relative">
               <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
                 id="password"
                 type="password"
                 name="password"
@@ -80,15 +82,11 @@ export default function LoginForm() {
 
         </div>
         <LoginButton />
-        <div
-          className="flex h-8 items-end space-x-1"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-
-        </div>
+        
       </div>
     </form>
+    <Link href="/auth/register" className=' text-sm hover:text-yellow'> No sos parte de la familia byte? Unete </Link>
+  </div>
   );
 }
 
@@ -96,7 +94,7 @@ function LoginButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button className="mt-4 w-full" aria-disabled={pending}>
+    <button className="btn bg-darkblue mt-2 w-full" aria-disabled={pending}>
       Log in
     </button>
   );

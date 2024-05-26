@@ -16,12 +16,6 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
     const [isVisible, setIsVisible] = useState(true);
     const { data: session, status, update } = useSession();
 
-    useEffect(() => {
-        console.log(status);
-        console.log(session);
-    }, [status]);
-
-
 
     useEffect(() => {
         const handleScroll = () => {
@@ -77,14 +71,13 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                 <>
                                     
                                     <li><Link href="/perfil">Perfil</Link></li>
-                                    <li><form
+                                    <li><form className='w-full flex'
                                         action={() =>{ 
                                             signOut()
-                                            update()
                                         }}
                                     >
-                                        <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-                                            <div className="hidden md:block">Sign Out</div>
+                                        <button className="btn bg-darkblue text-sm w-full hover:bg-lightgrey  ">
+                                            Sign out
                                         </button>
                                     </form>
                                     </li>
