@@ -1,5 +1,8 @@
 import { NextAuthConfig, Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
+import { User } from './prisma/generated/client';
+
+type ExtendedSession = Session & { user: User };
 
 export const authConfig = {
   pages: {
@@ -25,19 +28,46 @@ export const authConfig = {
       return true;
     },
     async jwt({ token, user, session, trigger }) {
-      if (trigger==='signIn') return token;
-      
-      if (trigger==='update' && session?.user) {
-        return { ...token, id: session.user.id, email: session.user.email };
+      if (trigger === 'signIn') return token;
+
+      if (trigger === 'update' && session?.user) {
+        return {
+          ...token,
+          id: session.user.id,
+          email: session.user.email,
+          fullName: session.user.fullName,
+          city: session.user.city,
+          cellphone: session.user.cellphone,
+          address: session.user.address,
+        };
       }
 
       if (user) {
-        return { ...token, id: user.id, email: user.email };
+        return {
+          ...token,
+          id: session.user.id,
+          email: session.user.email,
+          fullName: session.user.fullName,
+          city: session.user.city,
+          cellphone: session.user.cellphone,
+          address: session.user.address,
+        };
       }
       return token;
     },
-    async session({ session, token }: { session: any, token: JWT }) {
-      return { ...session, user: { ...session.user, id: token.id as string | undefined, email: token.email } };
+    async session({ session, token }: { session: any; token: JWT }) {
+      console.log('session', session);
+      return {
+        ...session, user: {
+          ...session.user,
+          id: token.id,
+          email: token.email,
+          fullName: token.fullName,
+          city: token.city,
+          cellphone: token.cellphone,
+          address: token.address,
+        }
+      };
     }
   },
 

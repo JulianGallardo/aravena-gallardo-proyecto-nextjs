@@ -28,6 +28,7 @@ model User {
   email        String    @unique
   cellphone    String?   
   address      String?   
+  city         String?
   client       Client    @relation(fields: [clientId], references: [clientId])
   
 }
