@@ -10,7 +10,6 @@ import bcrypt from 'bcryptjs';
 async function getUser(email: string): Promise<User | undefined> {
 
     const user = await db.user.findUnique({ where: { email } });
-    console.log(user)
     if (!user) return undefined;
     return user;
 
@@ -25,7 +24,6 @@ export const { auth,handlers, signIn, signOut } = NextAuth({
                     .object({ email: z.string().email(), password: z.string() })
                     .safeParse(credentials);
 
-                console.log(parsedCredentials);
 
                 if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;

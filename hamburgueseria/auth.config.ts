@@ -1,6 +1,5 @@
 import { NextAuthConfig, Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
-import { User } from './prisma/generated/client';
 
 export const authConfig = {
   pages: {
@@ -26,7 +25,6 @@ export const authConfig = {
       return true;
     },
     async jwt({ token, user, session, trigger }) {
-      console.log('jwt callback', { token, user, session });
       if (trigger==='signIn') return token;
       
       if (trigger==='update' && session?.user) {
@@ -39,7 +37,6 @@ export const authConfig = {
       return token;
     },
     async session({ session, token }: { session: any, token: JWT }) {
-      console.log('session callback', { session, token });
       return { ...session, user: { ...session.user, id: token.id as string | undefined, email: token.email } };
     }
   },

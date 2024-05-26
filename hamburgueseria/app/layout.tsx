@@ -18,18 +18,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth(); // Await the session promise
-  if (!session) {
-    return (
-      <SessionWrapper>
-        <html lang="es">
-          <body className={inter.className}>{children}</body>
-        </html>
-      </SessionWrapper>
-    );
-  }
+  
   return (
-    <SessionWrapper session={session} >
+    <SessionWrapper  >
       <html lang="es">
         <body className={inter.className}>{children}</body>
       </html>

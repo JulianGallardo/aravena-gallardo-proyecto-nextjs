@@ -33,7 +33,6 @@ export default function RegisterForm() {
         }
 
     });
-    console.log(errors);
     return (
         <div className="flex flex-col items-center justify-center h-screen gap-2">
             <h1 className="text-2xl text-start w-full mt-2">Unete a la familia</h1>
