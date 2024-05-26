@@ -1,6 +1,6 @@
 import { ProductRepository } from '../repositories/productRepository';
 import { ExtraRpository } from '../repositories/extraRepository';
-import { Prisma, Burger, Promo, Extra } from '@prisma/client';
+import { Prisma, Burger, Promo, Extra } from '@/prisma/generated/client';
 
 const productRepository = new ProductRepository();
 const extraRepository = new ExtraRpository();

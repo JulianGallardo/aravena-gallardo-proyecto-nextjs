@@ -1,5 +1,5 @@
 import { ClientRepository } from '../repositories/clientRepository';
-import { Prisma, User, Guest } from '@prisma/client';
+import { Prisma, User, Guest } from '@/prisma/generated/client';
 
 const clientRepository = new ClientRepository();
 
