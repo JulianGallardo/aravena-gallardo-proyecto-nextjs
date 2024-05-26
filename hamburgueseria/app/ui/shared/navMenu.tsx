@@ -1,16 +1,21 @@
 'use client'
 
+import { revalidatePath } from 'next/cache';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { logout } from '@/lib/actions';
+import { signOut, useSession } from 'next-auth/react';
 interface NavMenuProps {
     isTransparent: boolean;
-  }
+}
 
-const NavMenu: React.FC<NavMenuProps> = ({isTransparent}) => {
+
+const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
     const [isTop, setIsTop] = useState(true);
     const [isVisible, setIsVisible] = useState(true);
+    const { data: session, status, update } = useSession();
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -21,10 +26,10 @@ const NavMenu: React.FC<NavMenuProps> = ({isTransparent}) => {
 
         const handleScrollUp = () => {
             const st = window.pageYOffset || document.documentElement.scrollTop;
-            if (st < lastScrollTop){
+            if (st < lastScrollTop) {
                 setIsVisible(true);
             } else {
-                setIsVisible(false); 
+                setIsVisible(false);
             }
             lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         };
@@ -49,12 +54,36 @@ const NavMenu: React.FC<NavMenuProps> = ({isTransparent}) => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="black"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-lightgrey rounded-box w-52">
+
                             <li><Link href="/">Inicio</Link></li>
-                            <li><Link href="/perfil">Perfil</Link></li>
                             <li><Link href="/burgers">Burgers</Link></li>
                             <li><Link href="/promociones">Promos</Link></li>
                             <li><Link href="/club">Club Byte</Link></li>
                             <li><Link href="/pedido">Encarga tu Byte</Link></li>
+
+                            {
+                                (!session) ?
+                                <>
+                                    <li><Link href="/auth/register">Registro</Link></li>
+                                    <li><Link href="/auth/login">Login</Link></li>
+                                </>
+                                :
+                                <>
+                                    
+                                    <li><Link href="/perfil">Perfil</Link></li>
+                                    <li><form className='w-full flex'
+                                        action={() =>{ 
+                                            signOut()
+                                        }}
+                                    >
+                                        <button className="btn bg-darkblue text-sm w-full hover:bg-lightgrey  ">
+                                            Sign out
+                                        </button>
+                                    </form>
+                                    </li>
+                                </>
+
+                            }
 
                         </ul>
                     </div>
@@ -86,4 +115,4 @@ const NavMenu: React.FC<NavMenuProps> = ({isTransparent}) => {
     );
 };
 
-            export default NavMenu;
+export default NavMenu;

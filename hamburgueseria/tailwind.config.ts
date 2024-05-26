@@ -13,8 +13,12 @@ const config: Config = {
       white: '#FFFFFF',
       dark: '#000000',
       black: '#000000',
+      red: '#FF0000',
+      yellow: '#FABC51',
+
     },
     extend: {
+
       
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

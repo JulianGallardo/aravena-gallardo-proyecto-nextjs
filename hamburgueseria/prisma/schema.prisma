@@ -29,7 +29,9 @@ model User {
   cellphone    String?   
   address      String?   
   client       Client    @relation(fields: [clientId], references: [clientId])
+  
 }
+
 
 model Guest {
   guestId      Int       @id @default(autoincrement())
