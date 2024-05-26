@@ -1,15 +1,20 @@
-import type { NextAuthConfig } from 'next-auth';
- 
+import { NextAuthConfig, Session } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+import { User } from './prisma/generated/client';
+
 export const authConfig = {
   pages: {
     signIn: '/auth/login',
   },
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
     async redirect({ url, baseUrl }) {
       // Redirige a la página deseada después del inicio de sesión
-      return baseUrl ;
+      return baseUrl;
     },
-    authorized({ auth, request: { nextUrl } }) {
+    async authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnProfile = nextUrl.pathname.startsWith('/');
       if (isOnProfile) {
@@ -20,6 +25,24 @@ export const authConfig = {
       }
       return true;
     },
+    async jwt({ token, user, session, trigger }) {
+      console.log('jwt callback', { token, user, session });
+      if (trigger==='signIn') return token;
+      
+      if (trigger==='update' && session?.user) {
+        return { ...token, id: session.user.id, email: session.user.email };
+      }
+
+      if (user) {
+        return { ...token, id: user.id, email: user.email };
+      }
+      return token;
+    },
+    async session({ session, token }: { session: any, token: JWT }) {
+      console.log('session callback', { session, token });
+      return { ...session, user: { ...session.user, id: token.id as string | undefined, email: token.email } };
+    }
   },
+
   providers: [], // Add providers with an empty array for now
 } satisfies NextAuthConfig;

@@ -2,13 +2,24 @@
  
 
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/lib/actions';
- 
+import { signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import { sign } from 'crypto';
+
+  
+
+
 export default function LoginForm() {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const { data: session,status,update } = useSession();
  
   return (
-    <form action={dispatch} className="space-y-3">
+    <form action={(formData)=>{
+      signIn('credentials', { email: formData.get('email') as string, password: formData.get('password') as string });
+      
+      update();
+    }
+
+    } className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`mb-3 text-2xl`}>
           Please log in to continue.
@@ -57,11 +68,7 @@ export default function LoginForm() {
           aria-live="polite"
           aria-atomic="true"
         >
-          {errorMessage && (
-            <>
-              <p className="text-sm text-red-500">{errorMessage}</p>
-            </>
-          )}
+          
         </div>
       </div>
     </form>

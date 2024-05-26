@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { logout } from '@/lib/actions';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 interface NavMenuProps {
     isTransparent: boolean;
 }
@@ -15,6 +15,11 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
     const [isTop, setIsTop] = useState(true);
     const [isVisible, setIsVisible] = useState(true);
     const { data: session, status, update } = useSession();
+
+    useEffect(() => {
+        console.log(status);
+        console.log(session);
+    }, [status]);
 
 
 
@@ -74,7 +79,8 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                     <li><Link href="/perfil">Perfil</Link></li>
                                     <li><form
                                         action={() =>{ 
-                                            logout()
+                                            signOut()
+                                            update()
                                         }}
                                     >
                                         <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
@@ -85,11 +91,6 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                 </>
 
                             }
-
-
-
-
-
 
                         </ul>
                     </div>
