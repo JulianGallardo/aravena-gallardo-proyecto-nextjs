@@ -9,8 +9,7 @@ export default function RegisterPage() {
         <div>
             <Header isTransparent={true} />
             
-            <div className="flex flex-col items-center justify-center h-screen gap-5">
-                <h1 className="text-2xl ">Registro</h1>
+            <div className="flex flex-col items-center justify-center h-screen">
                 <RegisterForm />
             </div>
             <Footer />

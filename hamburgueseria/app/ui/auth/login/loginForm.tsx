@@ -17,7 +17,7 @@ export default function LoginForm() {
       signIn('credentials', { redirect: false, email: formData.get('email') as string, password: formData.get('password') as string }).then(
         (response) => {
           if (response?.error) {
-            setError("Usuario o contraseña invalidos");
+            setError("Email o contraseña invalidos");
           } else {
             // Redirect to the home page
             window.location.href = '/';
@@ -26,8 +26,6 @@ export default function LoginForm() {
       ).catch((error) => {
         setError(error.message);
       });
-      console.log('error: ', error);
-
     }
 
     } className="space-y-3">

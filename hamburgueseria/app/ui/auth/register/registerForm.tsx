@@ -36,13 +36,13 @@ export default function RegisterForm() {
     console.log(errors);
     return (
         <div className="flex flex-col items-center justify-center h-screen gap-2">
-            <h1 className="text-2xl text-start w-full">Unete a la familia</h1>
+            <h1 className="text-2xl text-start w-full mt-2">Unete a la familia</h1>
             <form onSubmit={onSubmit} className="flex flex-col justify-items-center gap-2">
                 <label className="mb-2 mt-2 block text-xs font-medium text-gray-900">Username</label>
                 <input type="text" {
                     ...register("username", { required:{value:true, message:"Username is required"	},
                          maxLength: 80 })
-                } placeholder="Name"
+                } placeholder="Enter your username"
                     className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
                 />
                 {errors.username && <span className="text-red text-sm ">{String(errors.username.message)}</span>}
@@ -54,7 +54,7 @@ export default function RegisterForm() {
                         value: true, message: "Email is required"
                     
                     }, maxLength: 80 })}
-                    placeholder="Email"
+                    placeholder="Enter your email address"
                     className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500" />
                 {errors.email && <span className="text-red text-sm">{String(errors.email.message)}</span>}
                 
@@ -78,7 +78,7 @@ export default function RegisterForm() {
                     className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500" />
                 {errors.confirmPassword && <span className="text-red text-sm">{String(errors.confirmPassword.message)}</span>}
 
-                <button className="btn bg-darkblue mt-2" >Register</button>
+                <button className="btn bg-darkblue mt-2" >Unirse</button>
 
             </form>
             <Link href="/auth/login" className=' text-sm hover:text-yellow'> Ya sos parte de la familia? Logeate </Link>
