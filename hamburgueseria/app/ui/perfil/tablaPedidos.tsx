@@ -1,26 +1,55 @@
-import { fetchFilteredOrderById } from "@/lib/pagination";
+"use client"
+
 import PedidosCard from "@/app/ui/perfil/pedidosCard";
+import { fetchPaginationOrders } from "@/lib/pagination";
+import Link from "next/link";
+import { usePathname, useSearchParams } from 'next/navigation';
 
 
 export default async function TablePedidos(
-    {
-        query,
-        currentPage,
-      }: {
-        query: string;
-        currentPage: number;
-      }) {
-        const ordenes = await fetchFilteredOrderById(query, currentPage);
+  {
+    totalPages
+  }:{
+    totalPages: number
+  }) {
 
-        return (
-            <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-5">
-                    {ordenes.paginatedOrders.map((order:any) => (
-                        <div key={order.id} className="flex flex-col gap-2">
-                            <PedidosCard {...order} />
-                        </div>
-                    ))}
-                    </div>
-            </div>
-        );
-      }
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page')) || 1;
+  const orders = await fetchPaginationOrders(currentPage);
+
+
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
+  };
+
+  return (
+    <div className="flex flex-col gap-5 justify-center items-center w-full">
+      <div className="flex flex-col gap-5 md:grid grid-cols-2">
+        {
+          orders.paginatedOrders.map((order) => (
+            <PedidosCard
+              key={order.id}
+              id={Number(order.id)}
+              date={order.date}
+              nombre={order.nombre}
+              precio={order.precio}
+              cantidad={order.cantidad}
+            />
+          ))
+        }
+      </div>
+      <div className="flex flex-row gap-3">
+        {
+          Array.from({ length: totalPages }).map((_, index) => (
+            <Link key={index} href={createPageURL(index + 1)} scroll={false} className="btn bg-darkblue text-white dark:hover:text-black">
+              {index + 1}
+            </Link>
+          ))
+        }
+    </div>
+  </div>
+  );
+}
