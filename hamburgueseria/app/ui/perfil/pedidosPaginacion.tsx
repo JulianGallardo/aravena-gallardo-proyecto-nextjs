@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import TablaPedidos from "@/app/ui/perfil/tablaPedidos";
 import Search from "@/app/ui/perfil/search";
 import { fetchPaginationOrders } from "@/lib/pagination";
@@ -13,14 +13,16 @@ export default async function PedidosPaginacion({
 }) {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  const { paginatedOrders, totalPages } = await fetchPaginationOrders( currentPage);
+  const { paginatedOrders, totalPages } = await fetchPaginationOrders(currentPage);
 
 
   return (
     <div className="flex flex-col gap-5 ">
       <h1 className="text-2xl font-bold text-dark dark:text-lightgrey">Pedidos</h1>
       <div className="flex flex-col justify-center gap-5 items-center ">
-      <TablaPedidos  totalPages={totalPages} />
+        <Suspense key={query+currentPage} fallback={<div>Cargando...</div>}>
+          <TablaPedidos totalPages={totalPages} />
+        </Suspense>
       </div>
     </div>
   );
