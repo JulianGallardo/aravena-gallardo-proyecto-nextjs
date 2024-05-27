@@ -2,48 +2,34 @@ import React from 'react';
 import Image from 'next/image';
 import ByteBurgersLogo from '@/public/ByteBurgersLogoVectorizado.svg';
 
-const Orden = {
-    id: 1,
-    date: new Date(),
-    products: [
-        {
-            id: 1,
-            name: "Hamburguesa",
-            extras: [
-                {
-                    id: 1,
-                    name: "Queso",
-                    price: 50,
-                },
-                {
-                    id: 2,
-                    name: "Tocino",
-                    price: 50,
-                },
-            ],
-            cant: 2,
-            price: 100,
-        },
-        {
-            id: 2,
-            name: "Papas",
-            extras: [],
-            cant: 1,
-            price: 50,
-        },
-    ],
-    total: 250,
-};
+interface Orden {
+    id: number;
+    date: Date;
+    products: {
+        id: number;
+        name: string;
+        cant: number;
+        price: number;
+        extras: {
+            id: number;
+            name: string;
+            price: number;
+        }[];
+    }[];
+    total: number;
+}
 
-const PedidosCard = () => {
+
+
+const PedidosCard = (orden:Orden) => {
     return (
         <div className="relative max-w-md mx-auto bg-darkblue text-white border border-lightgrey rounded-md p-5 shadow-lg ">
             <div className="flex flex-col gap-3 mb-4 relative z-10">
-                <p className="text-lg font-semibold">Orden: {Orden.id}</p>
-                <p className="text-sm">Fecha: {`${Orden.date.getDate()}/${Orden.date.getMonth() + 1}/${Orden.date.getFullYear()}`}</p>
+                <p className="text-lg font-semibold">Orden: {orden.id}</p>
+                <p className="text-sm">Fecha: {`${orden.date.getDate()}/${orden.date.getMonth() + 1}/${orden.date.getFullYear()}`}</p>
             </div>
             <div className="flex flex-col gap-4 relative z-10">
-                {Orden.products.map((product) => (
+                {orden.products.map((product) => (
                     <div key={product.id} className="flex flex-col bg-white text-darkblue p-3 rounded-md shadow-sm opacity-90">
                         <div className="flex justify-between items-center mb-2">
                             <p className="font-semibold">{product.name}</p>
@@ -63,7 +49,7 @@ const PedidosCard = () => {
                 ))}
             </div>
             <div className="flex justify-end mt-4 relative z-10">
-                <p className="text-lg font-bold">Total: ${Orden.total}</p>
+                <p className="text-lg font-bold">Total: ${orden.total}</p>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
                 <Image src={ByteBurgersLogo} alt="ByteBurgers Logo" className="w-full h-full p-5" />
