@@ -34,7 +34,6 @@ export const authConfig = {
           id: user.id,
           email: user.email,
           fullName: user.fullName,
-          city: user.city,
           cellphone: user.cellphone,
           address: user.address,
         };
@@ -50,7 +49,6 @@ export const authConfig = {
           where: { email: session.user.email },
           data: {
             fullName: session.user.fullName,
-            city: session.user.city,
             email: session.user.email,
             cellphone: session.user.cellphone,
             address: session.user.address,

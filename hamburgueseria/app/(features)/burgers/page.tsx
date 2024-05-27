@@ -1,26 +1,15 @@
+'use client'
+
 import React from 'react';
 import { Header } from '../../ui';
 import { Footer } from '../../ui';
-import { Card } from '../../ui';
-const Page: React.FC = () => {
-    const menu = [
-        { name: 'Cheeseburger', photoSrc: '', description: 'burger 1', price: 9.99 },
-        { name: 'Bacon Burger', photoSrc: '', description: 'burger 2', price: 10.99 },
-        { name: 'Veggie Burger', photoSrc: '', description: 'burger 3', price: 8.99 },
-    ];
-
+import  BurgerList from '../../ui/dbRequests/burgersList';
+const Page: React.FC = () => {    
     return (
         <div>
             <Header isTransparent = {false} />
             <h1>Burgers</h1>
-            
-            <ul>
-                {menu.map((burger, index) => (
-                    <li key={index}>
-                        <Card key={index} title={burger.name} description={burger.description} photoSrc={burger.photoSrc} price={burger.price} />
-                    </li>
-                ))}
-            </ul>
+            <BurgerList />
             <Footer />
         </div>
     );
