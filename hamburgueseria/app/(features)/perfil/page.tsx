@@ -1,13 +1,15 @@
 import { Footer, Header } from '@/app/ui';
 import React from 'react';
 import Datos from '@/app/ui/perfil/datos';
+import Pedidos from '@/app/ui/perfil/pedidosPaginacion';
 
 const Page: React.FC = () => {
     return (
-        <div>
+        <div className='flex flex-col'>
             <Header isTransparent={true} />
-            <div className="flex flex-col items-center justify-center h-screen gap-5">
+            <div className="flex flex-col items-center justify-center gap-5 mt-20 mb-10">
                 <Datos />
+                <Pedidos/>
             </div>
             <Footer />
         </div>
