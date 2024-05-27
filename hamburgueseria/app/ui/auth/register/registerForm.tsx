@@ -77,7 +77,7 @@ export default function RegisterForm() {
                     className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500" />
                 {errors.confirmPassword && <span className="text-red text-sm">{String(errors.confirmPassword.message)}</span>}
 
-                <button className="btn bg-darkblue mt-2" >Unirse</button>
+                <button className="btn bg-darkblue mt-2 text-white" >Unirse</button>
 
             </form>
             <Link href="/auth/login" className=' text-sm hover:text-yellow'> Ya sos parte de la familia? Logeate </Link>

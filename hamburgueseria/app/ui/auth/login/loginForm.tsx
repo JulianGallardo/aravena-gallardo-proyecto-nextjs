@@ -12,7 +12,7 @@ export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen ">
     <form action={(formData) => {
       signIn('credentials', { redirect: false, email: formData.get('email') as string, password: formData.get('password') as string }).then(
         (response) => {
@@ -29,14 +29,14 @@ export default function LoginForm() {
     }
 
     } className="space-y-3">
-      <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
+      <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8 text-black dark:text-lightgrey">
         <h1 className={`mb-3 text-2xl`}>
           Login
         </h1>
         <div className="w-full">
           <div>
             <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+              className="mb-3 mt-5 block text-xs font-medium "
               htmlFor="email"
             >
               Email
@@ -92,7 +92,7 @@ function LoginButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button className="btn bg-darkblue mt-2 w-full" aria-disabled={pending}>
+    <button className="btn bg-darkblue mt-2 w-full text-white " aria-disabled={pending}>
       Log in
     </button>
   );

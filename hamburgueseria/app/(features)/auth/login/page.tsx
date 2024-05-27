@@ -5,9 +5,9 @@ import LoginForm from "@/app/ui/auth/login/loginForm";
 
 const page: React.FC = () => {
     return (
-        <div>
+        <div className="bg-lightgrey dark:bg-black">
             <Header isTransparent={true} />
-            <div className="flex flex-col items-center justify-center h-screen gap-5">
+            <div className="flex flex-col items-center justify-center gap-5">
                 <LoginForm />
             </div>
             <Footer />

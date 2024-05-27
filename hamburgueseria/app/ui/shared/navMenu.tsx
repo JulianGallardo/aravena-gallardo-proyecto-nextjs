@@ -76,7 +76,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                             signOut()
                                         }}
                                     >
-                                        <button className="btn bg-darkblue text-sm w-full hover:bg-lightgrey  ">
+                                        <button className="btn bg-darkblue text-sm w-full text-white hover:bg-lightgrey hover:text-dark  ">
                                             Sign out
                                         </button>
                                     </form>

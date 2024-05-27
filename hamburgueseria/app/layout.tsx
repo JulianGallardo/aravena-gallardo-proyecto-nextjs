@@ -3,7 +3,6 @@ import { inter } from '@/app/ui/fonts';
 import React from 'react';
 import '@/app/ui/global.css';
 import SessionWrapper from "@/app/ui/shared/sessionWrapper";
-import { auth } from "@/auth";
 
 const title = "ByteBurgers";
 
