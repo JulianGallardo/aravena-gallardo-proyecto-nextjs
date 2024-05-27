@@ -1,8 +1,8 @@
 import { NextAuthConfig, Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
-import { User } from './prisma/generated/client';
+import { PrismaClient } from '@/prisma/generated/client';
 
-type ExtendedSession = Session & { user: User };
+const db = new PrismaClient();
 
 export const authConfig = {
   pages: {
@@ -28,9 +28,44 @@ export const authConfig = {
       return true;
     },
     async jwt({ token, user, session, trigger }) {
-      if (trigger === 'signIn') return token;
+      if (trigger === 'signIn') {
+        return {
+          ...token,
+          id: user.id,
+          email: user.email,
+          fullName: user.fullName,
+          city: user.city,
+          cellphone: user.cellphone,
+          address: user.address,
+        };
+      }
 
       if (trigger === 'update' && session?.user) {
+        const user = await db.user.findUnique({ where: { email: session.user.email } });
+        if (!user) return token;
+
+        try{
+          
+        const newUser = await db.user.update({
+          where: { email: session.user.email },
+          data: {
+            fullName: session.user.fullName,
+            city: session.user.city,
+            email: session.user.email,
+            cellphone: session.user.cellphone,
+            address: session.user.address,
+          },
+        });
+
+        console.log("new User",newUser);
+
+
+        }catch(e){
+          console.log(e);
+          return token;
+        }
+
+
         return {
           ...token,
           id: session.user.id,
@@ -56,7 +91,6 @@ export const authConfig = {
       return token;
     },
     async session({ session, token }: { session: any; token: JWT }) {
-      console.log('session', session);
       return {
         ...session, user: {
           ...session.user,
@@ -68,7 +102,7 @@ export const authConfig = {
           address: token.address,
         }
       };
-    }
+    },
   },
 
   providers: [], // Add providers with an empty array for now

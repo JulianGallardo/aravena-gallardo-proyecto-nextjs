@@ -29,6 +29,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "nextauth.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts,scripts/**/*.ts",
