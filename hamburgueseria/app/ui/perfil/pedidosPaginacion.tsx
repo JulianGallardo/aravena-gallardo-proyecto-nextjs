@@ -6,7 +6,7 @@ const PedidosPaginacion = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <h1 className="text-2xl font-bold text-lightgrey">Pedidos</h1>
+      <h1 className="text-2xl font-bold text-dark dark:text-lightgrey">Pedidos</h1>
       <div className="flex flex-col justify-center gap-5 md:grid grid-cols-2 ">
 
         <PedidosCard />
