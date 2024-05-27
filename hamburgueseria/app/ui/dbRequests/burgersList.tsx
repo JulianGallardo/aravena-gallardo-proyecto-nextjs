@@ -7,12 +7,12 @@ const BurgerList = () => {
   useEffect(() => {
     const fetchBurgers = async () => {
       try {
-        const response = await fetch('/api/products/burgers');
-        if (!response.ok) {
+        const res = await fetch('/api/products/burgers');
+        if (!res.ok) {
           throw new Error('Network response was not ok');
         }
-        const data = await response.json();
-        setBurgers(data);
+        const data = await res.json();
+        setBurgers(data.body);
       } catch (error) {
         console.error('Error fetching burgers:', error);
       }
@@ -23,6 +23,9 @@ const BurgerList = () => {
 
   return (
     <div>
+    <br />
+    <br />
+    <br />
       <h1>Burger List</h1>
       <ul>
         {burgers.map((burger) => (
