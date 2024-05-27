@@ -1,5 +1,6 @@
 import { Burger } from '@prisma/client';
 import { useEffect, useState } from 'react';
+import Card from '../shared/burgerInfoCard';
 
 const BurgerList = () => {
   const [burgers, setBurgers] = useState<Burger[]>([]);
@@ -26,15 +27,19 @@ const BurgerList = () => {
     <br />
     <br />
     <br />
-      <h1>Burger List</h1>
       <ul>
-        {burgers.map((burger) => (
-          <li key={burger.burgerId}>
-            <h2>{burger.name}</h2>
-            <p>{burger.description}</p>
-            <p>Price: ${burger.price}</p>
-          </li>
-        ))}
+        <div className="flex flex-wrap justify-center">
+          {burgers.map((burger) => (
+            <li key={burger.burgerId} className="mx-4 my-4">
+              <Card
+                title={burger.name}
+                description={burger.description}
+                photoSrc="/burger.jpg"
+                price={burger.price}
+              />
+            </li>
+          ))}
+        </div>
       </ul>
     </div>
   );
