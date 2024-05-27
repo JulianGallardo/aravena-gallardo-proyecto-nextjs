@@ -91,7 +91,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                 <div className="navbar-center">
                     <Image src="/ByteBurgersLogoVectorizado.svg" alt="logo" width={50} height={100} />
                 </div>
-                <div className="navbar-end">
+                <div className="navbar-end text-black">
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost bg-lightgrey btn-circle">
                             <div className="indicator">
@@ -104,7 +104,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                 <span className="font-bold text-lg">0 Items</span>
                                 <span className="white">Subtotal: $0</span>
                                 <div className="card-actions">
-                                    <button className="bg-darkblue text-white btn btn-block">Ver carrito</button>
+                                    <button className="btn bg-darkblue text-sm w-full text-white  hover:bg-lightgrey hover:text-dark">Ver carrito</button>
                                 </div>
                             </div>
                         </div>

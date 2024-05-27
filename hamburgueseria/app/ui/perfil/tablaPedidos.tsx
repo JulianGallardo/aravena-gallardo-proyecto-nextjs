@@ -41,10 +41,10 @@ export default async function TablePedidos(
           ))
         }
       </div>
-      <div className="flex flex-row gap-3">
+      <div className="flex flex-row gap-3 justify-center items-center">
         {
           Array.from({ length: totalPages }).map((_, index) => (
-            <Link key={index} href={createPageURL(index + 1)} scroll={false} className="btn bg-darkblue text-white dark:hover:text-black">
+            <Link key={index} href={createPageURL(index + 1)} scroll={false} className="btn bg-darkblue w-1/5 text-white hover:bg-lightgrey hover:text-dark">
               {index + 1}
             </Link>
           ))
