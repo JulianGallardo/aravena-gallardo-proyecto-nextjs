@@ -26,7 +26,7 @@ const Datos = () => {
         }
     }, [session]);
 
-    const handleChange = (e) => {
+    const handleChange = (e:any) => {
         const { id, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
@@ -34,7 +34,7 @@ const Datos = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:any) => {
         e.preventDefault();
         update({
             ...session,
