@@ -10,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^0.0.16",
+    "@google/generative-ai": "^0.11.4",
     "@nanostores/react": "github:ai/react",
     "@prisma/client": "^5.14.0",
     "ai": "^3.1.15",
