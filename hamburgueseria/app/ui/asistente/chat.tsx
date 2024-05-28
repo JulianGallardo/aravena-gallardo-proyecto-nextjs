@@ -28,17 +28,18 @@ const Chat = () => {
             <div className='flex flex-col flex-grow'>
                 {messages.map((message, index) => (
                     <div key={index} className={(message.role === 'user') ? 'flex flex-row-reverse items-end mb-4 chat chat-end' : 'flex flex-row items-start mb-4 chat chat-start'}>
-                        <div className='min-w-12 min-h-12'>
+                        <div className='min-w-12 min-h-12 max-w-14 max-h-14 w-fit h-fit chat-image bg-white rounded-full p-2 relative'>
                             <Image
                                 src={(message.role === 'user') ? UserLogo : ByteBurgersLogo}
                                 alt='Avatar'
-                                className='rounded-full chat-image bg-white'
-                                width={48}
-                                height={48}
+                                className=''
+                                
+                                width={50}
+                                height={50}
                             />
                         </div>
                         <div className=''>
-                            <p className='text-sm chat-bubble bg-darkblue dark:bg-white'>
+                            <p className='text-sm chat-bubble bg-darkblue dark:bg-lightgrey dark:text-black'>
                                 {message.content}
                             </p>
                         </div>
