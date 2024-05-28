@@ -1,5 +1,5 @@
-import { ProductService } from '../../../../prisma/services/productService';
-import { Burger } from '../../../../prisma/generated/client';
+import { ProductService } from '@/prisma/services/productService';
+import { Burger } from '@/prisma/generated/client';
 import { NextRequest, NextResponse } from "next/server";
 const productService = new ProductService();
 
