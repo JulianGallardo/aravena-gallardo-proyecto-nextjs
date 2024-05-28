@@ -7,10 +7,9 @@ import Chat from '@/app/ui/asistente/chat';
 
 export default function Page() {
   return (
-    <div>
-        <div className='mt-20 h-screen'>
+    <div className='flex flex-row '>
             <Chat />
-        </div>
+        
     </div>
   );
 }
