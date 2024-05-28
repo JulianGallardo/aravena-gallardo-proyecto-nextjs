@@ -33,7 +33,6 @@ const Chat = () => {
                                 src={(message.role === 'user') ? UserLogo : ByteBurgersLogo}
                                 alt='Avatar'
                                 className=''
-                                
                                 width={50}
                                 height={50}
                             />
@@ -63,7 +62,7 @@ const Chat = () => {
                     value={input}
                     className='flex-grow p-2 border border-dark rounded-lg w-full'
                 />
-                <button type='submit' className='px-4 py-2 bg-blue-500 text-white rounded-lg bg-dark hover:bg-white hover:text-dark'>
+                <button type='submit' className='px-4 py-2 bg-blue-500 text-white rounded-lg bg-dark  border-white hover:border-2 '>
                     Enviar
                 </button>
             </form>
