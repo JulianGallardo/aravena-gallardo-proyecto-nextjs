@@ -4,6 +4,7 @@ import {useChat} from 'ai/react';
 import Image from 'next/image';
 import {useEffect,useRef} from 'react';
 import ByteBurgersLogo from '@/public/ByteBurgersLogo.png';
+import UserLogo from '@/public/user-avatar-default.png';
 
 const Chat = () => {
     const {messages,input,handleInputChange,handleSubmit} = useChat({
@@ -25,20 +26,20 @@ const Chat = () => {
 
     const renderResponse = () => {
         return (
-            <div className='response'>
+            <div className=''>
                 {
                     messages.map((message, index) => {
                         return (
-                            <div key={index} className='message'>
-                                <div className='message-avatar'>
+                            <div key={index} className={(message.role=='user') ? "chat flex-row-reverse chat-end" : "chat flex-row chat-start"  }>
+                                <div className='chat-image'>
                                     <Image
-                                        src={ByteBurgersLogo}
+                                        src={(message.role=='user') ? UserLogo:ByteBurgersLogo}
                                         alt='Avatar'
                                         width={50}
                                         height={50}
                                     />
                                 </div>
-                                <div className='message-text'>
+                                <div className='chat-bubble'>
                                     <p className='message'>
                                         {message.content}
                                     </p>
@@ -58,16 +59,16 @@ const Chat = () => {
 
 
     return(
-        <div ref={chatContainer} className='chat h-full flex flex-col'>
+        <div ref={chatContainer} className='chat h-full bg-lightgrey flex flex-col'>
             {renderResponse()}
-            <form onSubmit={handleSubmit} className='mainForm'>
+            <form onSubmit={handleSubmit} className='items-center flex gap-5 w-full mt-5'>
                 <input
                     type='text'
                     name='input-field'
                     onChange={handleInputChange}
                     placeholder='Escribe tu mensaje'
                     value={input}
-                    className='input'
+                    className='input w-full'
                 />
                 <button type='submit' className='btn'>
                     Enviar
