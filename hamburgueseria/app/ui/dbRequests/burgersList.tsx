@@ -1,4 +1,4 @@
-import { Burger } from '@prisma/client';
+import { Burger } from '../../../prisma/generated/client';
 import { useEffect, useState } from 'react';
 import Card from '../shared/burgerInfoCard';
 
