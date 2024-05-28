@@ -8,7 +8,6 @@ const categories = ['Simple', 'Doble', 'Bebidas', 'Postres'];
 const Page: React.FC = () => {
     return (
         <div>
-            <Header isTransparent={true} />
             <Categorias categories={categories}  /> 
             {categories.map((category, i) => (
                 <div id={category} className="category" key={i}>
@@ -24,7 +23,6 @@ const Page: React.FC = () => {
                     </div>
                 </div>
             ))}
-            <Footer />
         </div>
     );
 };
