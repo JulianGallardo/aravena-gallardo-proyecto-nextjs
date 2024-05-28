@@ -112,7 +112,7 @@ const Datos = () => {
                             </div>
                             <div className="items-center justify-center flex flex-row">
 
-                                <button type="submit" className="bg-darkblue btn btn-circle text-white  px-10 py-2 rounded-md w-fit hover:bg-dark dark:hover:bg-lightgrey dark:hover:text-black">Guardar</button>
+                                <button type="submit" className="btn bg-darkblue text-sm w-full text-white hover:bg-lightgrey hover:text-dark">Guardar</button>
 
                             </div>
                         </form>
@@ -129,7 +129,7 @@ const Datos = () => {
                             <p className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2">Direccion: {session.user?.address}</p>
                         </div>
                         <div className="items-center justify-center flex flex-row">
-                            <button onClick={() => setEditar(true)} className="bg-darkblue btn btn-circle text-white  px-10 py-2 rounded-md w-fit hover:bg-dark dark:hover:bg-lightgrey dark:hover:text-black ">Editar</button>
+                            <button onClick={() => setEditar(true)} className="btn bg-darkblue text-sm text-white hover:bg-lightgrey hover:text-dark ">Editar</button>
                         </div>
                     </div>
                 )
