@@ -8,10 +8,8 @@ import  BurgerList from '../../ui/dbRequests/burgersList';
 const Page: React.FC = () => {    
     return (
         <div>
-            <Header isTransparent = {false} />
             <h1>Burgers</h1>
             <BurgerList />
-            <Footer />
         </div>
     );
 };
