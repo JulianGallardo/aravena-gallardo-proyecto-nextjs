@@ -60,6 +60,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                             <li><Link href="/promociones">Promos</Link></li>
                             <li><Link href="/club">Club Byte</Link></li>
                             <li><Link href="/pedido">Encarga tu Byte</Link></li>
+                            <li><Link href="/chat">ByteAssistant</Link></li>
 
                             {
                                 (!session) ?

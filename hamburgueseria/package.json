@@ -10,10 +10,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^0.0.16",
+    "@google/generative-ai": "^0.11.4",
+    "@nanostores/react": "github:ai/react",
     "@prisma/client": "^5.14.0",
+    "ai": "^3.1.15",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "next-auth": "^5.0.0-beta.18",
+    "openai": "^4.47.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.5",
