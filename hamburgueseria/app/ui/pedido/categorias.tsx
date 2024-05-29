@@ -2,10 +2,6 @@
 import React from 'react';
 import { Category } from '@/prisma/generated/client';
 
-interface CategoriasProps {
-    categories: string[];
-}
-
 const Categorias: React.FC = () => {
     const categories = Object.values(Category);
     function scrollToCategory(category: string): void {
@@ -16,7 +12,7 @@ const Categorias: React.FC = () => {
     }
 
     return (
-        <div className="categories bg-darkblue">
+        <div className="flex flex-grow flex-col pt-20">
             <h2 className="text-2xl font-bold text-white">Categorias</h2>
             <div className="scroll-container">
                 {categories.map((category, index) => (

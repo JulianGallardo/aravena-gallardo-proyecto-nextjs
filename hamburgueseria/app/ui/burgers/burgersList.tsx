@@ -1,3 +1,5 @@
+'use client'
+
 import { Burger, Category } from '@/prisma/generated/client';
 import { useEffect, useState } from 'react';
 import { Card } from '@/app/ui';
