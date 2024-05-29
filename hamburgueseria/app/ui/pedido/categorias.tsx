@@ -13,12 +13,12 @@ const Categorias: React.FC = () => {
 
     return (
         <div className="flex flex-grow flex-col pt-20">
-            <h2 className="text-2xl font-bold text-darkblue m-8">Categorías</h2>
+            <h2 className="text-2xl font-bold m-8">Categorías</h2>
             <div className="scroll-container flex space-x-2 overflow-x-auto justify-center items-center">
                 {categories.map((category, index) => (
                     <button
                         key={index}
-                        className="bg-white hover:bg-[#BDC3C7] text-darkblue font-bold py-2 px-4 rounded-md shadow-md transition-colors duration-200 ease-in-out text-lg max-sm:ml-20"
+                        className="bg-white hover:bg-hoveredButton font-bold py-2 px-4 rounded-md shadow-md transition-colors duration-200 ease-in-out text-lg max-sm:ml-20"
                         onClick={() => scrollToCategory(category)}
                     >
                         {category}

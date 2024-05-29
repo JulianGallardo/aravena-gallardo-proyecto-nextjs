@@ -8,10 +8,11 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ title, description, photoSrc, price }) => {
+    // TODO: change to image
     return (
-        <div className="max-w-xs bg-white shadow-lg rounded-lg overflow-hidden">
-            <img className="w-full h-64 object-cover object-center" src={photoSrc} alt="Card" />
-            <div className="px-6 py-4">
+        <div className="flex flex-col w-64 h-80 bg-white shadow-lg rounded-lg overflow-hidden">
+            <img className="w-full h-32 object-cover object-center" src={photoSrc} alt="Card" />
+            <div className="px-6 py-4 flex-grow">
                 <h2 className="text-xl font-bold mb-2">{title}</h2>
                 <p className="text-gray-500 text-base">{description}</p>
             </div>

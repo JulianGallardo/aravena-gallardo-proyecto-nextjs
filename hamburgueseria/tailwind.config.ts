@@ -15,7 +15,7 @@ const config: Config = {
       black: '#000000',
       red: '#FF0000',
       yellow: '#FABC51',
-      
+      hoveredButton: '#BDC3C7',
 
     },
     extend: {
