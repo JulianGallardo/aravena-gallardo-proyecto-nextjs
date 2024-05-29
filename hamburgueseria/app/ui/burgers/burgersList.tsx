@@ -10,7 +10,9 @@ const BurgerList: React.FC = () => {
   useEffect(() => {
     const fetchBurgers = async () => {
       try {
-        const res = await fetch('/api/products/burgers', {next: {revalidate: 300}}); // 5 minutes
+        const res = await fetch('/api/products/burgers', {
+          cache: 'no-cache'
+        });
         if (!res.ok) {
           throw new Error('Network response was not ok');
         }
@@ -25,14 +27,11 @@ const BurgerList: React.FC = () => {
   }, []);
 
   return (
-    <div className='bg-lightgrey'>
-    <br />
-    <br />
-    <br />
+    <div className='pt-16'>
       {categories.map((category) => (
         <ul id={category} key={category}>
-          <h2 className="text-2xl font-bold text-black">{category}</h2>
-          <div className="flex flex-wrap justify-center">
+          <h2 className="text-2xl font-bold text-darkblue m-4 text-center">{category}</h2>
+          <div className="flex flex-wrap justify-center items-center">
             {burgers.map((burger) => (
               <li key={burger.burgerId} className="mx-4 my-4">
                 <Card
