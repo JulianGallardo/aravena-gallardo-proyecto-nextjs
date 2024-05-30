@@ -19,6 +19,24 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
     const [DropdownMenuShow, setDropdownMenuShow] = useState(false);
     const [CartMenuShow, setCartMenuShow] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    const handleResize = () => {
+        if (window.innerWidth <= 768) {
+            setIsMobile(true);
+        } else {
+            setIsMobile(false);
+        }
+    }
+
+    useEffect(() => {
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, []);
+        
 
     useEffect(() => {
         const handleScroll = () => {
@@ -86,42 +104,45 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="black"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
                         </div>
                         {
-                            DropdownMenuShow &&
-                            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-lightgrey dark:text-black rounded-box w-52  ">
-                                <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
-                                <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
-                                <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
-                                <li><Link href="/club" onClick={handleDropdownClose}>Club Byte</Link></li>
-                                <li><Link href="/pedido" onClick={handleDropdownClose}>Encarga tu Byte</Link></li>
-                                <li><Link href="/chat" onClick={handleDropdownClose}>ByteAssistant</Link></li>
-                                {
-                                    !session ?
-                                        <>
-                                            <li><Link href="/auth/register" onClick={handleDropdownClose}>Registro</Link></li>
-                                            <li><Link href="/auth/login" onClick={handleDropdownClose}>Login</Link></li>
-                                        </>
-                                        :
-                                        <>
-                                            <li><Link href="/perfil" onClick={handleDropdownClose}>Perfil</Link></li>
-                                            <li>
-                                                <form className='w-full flex' action={() => { signOut() }}>
-                                                    <button className="btn bg-darkblue text-sm w-full text-white hover:bg-lightgrey hover:text-dark" onClick={handleDropdownClose}>
-                                                        Sign out
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        </>
-                                }
-                            </ul>
+                            DropdownMenuShow && !isMobile &&
+                            <div>
+                                <ul tabIndex={0} className={`menu menu-sm dropdown-content mt-3  p-2 shadow bg-lightgrey dark:text-black rounded-box w-60 ${isClosing ? "animate-slide-up" : "animate-slide-down"}`}>
+                                    <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
+                                    <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
+                                    <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
+                                    <li><Link href="/club" onClick={handleDropdownClose}>Club Byte</Link></li>
+                                    <li><Link href="/pedido" onClick={handleDropdownClose}>Encarga tu Byte</Link></li>
+                                    <li><Link href="/chat" onClick={handleDropdownClose}>ByteAssistant</Link></li>
+                                    {
+                                        !session ?
+                                            <>
+                                                <li><Link href="/auth/register" onClick={handleDropdownClose}>Registro</Link></li>
+                                                <li><Link href="/auth/login" onClick={handleDropdownClose}>Login</Link></li>
+                                            </>
+                                            :
+                                            <>
+                                                <li><Link href="/perfil" onClick={handleDropdownClose}>Perfil</Link></li>
+                                                <li>
+                                                    <form className='w-full flex' action={() => { signOut() }}>
+                                                        <button className="btn bg-darkblue text-sm w-full text-white hover:bg-lightgrey hover:text-dark" onClick={handleDropdownClose}>
+                                                            Sign out
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </>
+                                    }
+                                </ul>
+
+                            </div>
 
                         }
                         {
-                            DropdownMenuShow &&
-                            <div className={` h-screen fixed inset-0 bg-darkblue z-10  ${isClosing ? "animate-slide-up" : "animate-slide-down"} md:hidden `}>
+                            DropdownMenuShow && isMobile &&
+                            <div className={` h-screen fixed inset-0 bg-darkblue z-10  ${isClosing ? "animate-slide-up" : "animate-slide-down"} `}>
                                 <button className='btn btn-circle mt-4 ml-2 text-lg bg-transparent border-transparent bg-white ' onClick={handleDropdownToggle}>
                                     X
                                 </button>
-                                <ul tabIndex={0} className="flex flex-col mt-20 h-screen w-screen p-2 shadow text-white items-center gap-10 text-2xl dark:text-black rounded-box ">
+                                <ul tabIndex={0} className="flex flex-col mt-20 h-screen w-screen p-2 shadow text-white items-center gap-5 text-2xl dark:text-black rounded-box z-0">
                                     <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
                                     <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
                                     <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
