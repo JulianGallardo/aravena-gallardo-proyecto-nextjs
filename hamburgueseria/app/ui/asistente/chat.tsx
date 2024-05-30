@@ -1,24 +1,28 @@
 "use client"
-import {useChat} from 'ai/react';
+import { useChat } from 'ai/react';
 import Image from 'next/image';
-import {useEffect, useRef} from 'react';
+import { useEffect, useRef } from 'react';
 import ByteBurgersLogo from '@/public/ByteBurgersLogo.png';
 import UserLogo from '@/public/user-avatar-default.png';
 
 const Chat = () => {
-    const {messages, input, handleInputChange, handleSubmit} = useChat({
+    const { messages, input, handleInputChange, handleSubmit } = useChat({
         api: '/api/openai',
     });
+
+    function convertToStrong(text: string) {
+        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    }
 
     const chatContainer = useRef<HTMLDivElement>(null);
 
     const scroll = () => {
-        const {offsetHeight, scrollHeight, scrollTop} = chatContainer.current as HTMLDivElement;
+        const { offsetHeight, scrollHeight, scrollTop } = chatContainer.current as HTMLDivElement;
         if (scrollHeight >= scrollTop + offsetHeight) {
             chatContainer.current?.scrollTo(0, scrollHeight + 200);
         }
     };
- 
+
     useEffect(() => {
         scroll();
     }, [messages]);
@@ -38,9 +42,7 @@ const Chat = () => {
                             />
                         </div>
                         <div className=''>
-                            <p className='text-sm chat-bubble bg-darkblue dark:bg-lightgrey dark:text-black'>
-                                {message.content}
-                            </p>
+                            <p className='text-sm chat-bubble bg-darkblue dark:bg-lightgrey dark:text-black' dangerouslySetInnerHTML={{ __html: convertToStrong(message.content) }} />
                         </div>
                     </div>
                 ))}

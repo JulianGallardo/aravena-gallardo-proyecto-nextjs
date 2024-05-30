@@ -2,8 +2,12 @@
 import React from 'react';
 import { Category } from '@/prisma/generated/client';
 
-const Categorias: React.FC = () => {
-    const categories = Object.values(Category);
+interface categoriesProps {
+    categories: string[];
+}
+
+const Categorias: React.FC<categoriesProps> = ({ categories }) => {
+
     function scrollToCategory(category: string): void {
         const categoryElement = document.getElementById(category);
         if (categoryElement) {

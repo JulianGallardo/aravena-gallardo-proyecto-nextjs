@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { z } from "zod";
 
 const config: Config = {
   content: [
@@ -7,7 +8,7 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    colors:{
+    colors: {
       lightgrey: '#ECF0F1',
       darkblue: '#2C3E50',
       white: '#FFFFFF',
@@ -19,9 +20,23 @@ const config: Config = {
 
     },
     extend: {
+      keyframes: {
+        'slide-down': {
+          '0%': { transform: 'translateY(-100%)',opacity: "0"},
+          '100%': { transform: 'translateY(0)',opacity: "1"},
+        },
+        'slide-up': {
+          '0%': { transform: 'translateY(0)', opacity: "1"},
+          '100%': { transform: 'translateY(-100%)', opacity: "0"},
+        },
+      },
+      animation: {
+        'slide-down': 'slide-down 0.5s ease-out forwards',
+        'slide-up': 'slide-up 0.5s ease-in forwards',
+      },
 
 
-      
+
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
