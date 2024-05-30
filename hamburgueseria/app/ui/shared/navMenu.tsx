@@ -72,7 +72,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                         </div>
                         {
                             DropdownMenuShow &&
-                            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-lightgrey dark:text-black rounded-box w-52">
+                            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-lightgrey dark:text-black rounded-box w-52 sm: hidden">
                                 <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
                                 <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
                                 <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
@@ -98,10 +98,45 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                         </>
                                 }
                             </ul>
+
+                        }
+                        {
+                            DropdownMenuShow &&
+                            <div className="h-screen fixed inset-0 bg-darkblue " onClick={handleDropdownClose}>
+                                <button className='btn btn-circle mt-4 ml-2 text-lg bg-transparent border-transparent bg-white '>
+                                    X
+                                </button>
+                                <ul tabIndex={0} className="flex flex-col mt-20 h-screen w-screen  p-2 shadow text-white items-center gap-10 text-2xl dark:text-black rounded-box ">
+                                    <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
+                                    <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
+                                    <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
+                                    <li><Link href="/club" onClick={handleDropdownClose}>Club Byte</Link></li>
+                                    <li><Link href="/pedido" onClick={handleDropdownClose}>Encarga tu Byte</Link></li>
+                                    <li><Link href="/chat" onClick={handleDropdownClose}>ByteAssistant</Link></li>
+                                    {
+                                        !session ?
+                                            <>
+                                                <li><Link href="/auth/register" onClick={handleDropdownClose}>Registro</Link></li>
+                                                <li><Link href="/auth/login" onClick={handleDropdownClose}>Login</Link></li>
+                                            </>
+                                            :
+                                            <>
+                                                <li><Link href="/perfil" onClick={handleDropdownClose}>Perfil</Link></li>
+                                                <li>
+                                                    <form className='w-full flex' action={() => { signOut() }}>
+                                                        <button className="btn bg-darkblue text-sm w-full text-white hover:bg-lightgrey hover:text-dark" onClick={handleDropdownClose}>
+                                                            Sign out
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </>
+                                    }
+                                </ul>
+                            </div>
                         }
                     </div>
                 </div>
-                <div className="navbar-center">
+                <div className="navbar-center z-10">
                     <Image src="/ByteBurgersLogoVectorizado.svg" alt="logo" width={50} height={100} />
                 </div>
                 <div className="navbar-end text-black">
@@ -115,14 +150,14 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                         {
                             CartMenuShow &&
                             <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-lightgrey shadow">
-                            <div className="card-body">
-                                <span className="font-bold text-lg">0 Items</span>
-                                <span className="white">Subtotal: $0</span>
-                                <div className="card-actions">
-                                    <button className="btn bg-darkblue text-sm w-full text-white hover:bg-lightgrey hover:text-dark"  onClick={handleCartClose}>Ver carrito</button>
+                                <div className="card-body">
+                                    <span className="font-bold text-lg">0 Items</span>
+                                    <span className="white">Subtotal: $0</span>
+                                    <div className="card-actions">
+                                        <button className="btn bg-darkblue text-sm w-full text-white hover:bg-lightgrey hover:text-dark" onClick={handleCartClose}>Ver carrito</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                     </div>
                 </div>
