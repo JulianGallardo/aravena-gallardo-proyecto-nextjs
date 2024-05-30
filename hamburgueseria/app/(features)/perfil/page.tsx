@@ -1,4 +1,3 @@
-import { Footer, Header } from '@/app/ui';
 import React from 'react';
 import Datos from '@/app/ui/perfil/datos';
 import Pedidos from '@/app/ui/perfil/pedidosPaginacion';

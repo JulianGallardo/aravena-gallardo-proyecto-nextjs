@@ -39,6 +39,7 @@ const BurgerList: React.FC = () => {
                   description={burger.description}
                   photoSrc={`/${burger.name.replace(/\s/g, '')}.jpg`}
                   price={burger.price}
+                  burgerId={burger.burgerId}
                 />
               </li>
             ))}
