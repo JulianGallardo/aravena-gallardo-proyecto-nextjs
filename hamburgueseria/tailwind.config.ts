@@ -7,7 +7,7 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    colors:{
+    colors: {
       lightgrey: '#ECF0F1',
       darkblue: '#2C3E50',
       white: '#FFFFFF',
@@ -19,9 +19,23 @@ const config: Config = {
 
     },
     extend: {
+      keyframes: {
+        'slide-down': {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        'slide-up': {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-100%)' },
+        },
+      },
+      animation: {
+        'slide-down': 'slide-down 0.5s ease-out forwards',
+        'slide-up': 'slide-up 0.5s ease-in forwards',
+      },
 
 
-      
+
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

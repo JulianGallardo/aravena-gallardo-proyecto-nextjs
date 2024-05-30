@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { logout } from '@/lib/actions';
 import { signOut, useSession } from 'next-auth/react';
+import { set } from 'zod';
 
 interface NavMenuProps {
     isTransparent: boolean;
@@ -17,6 +18,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
     const { data: session, status, update } = useSession();
     const [DropdownMenuShow, setDropdownMenuShow] = useState(false);
     const [CartMenuShow, setCartMenuShow] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -45,12 +47,25 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
     }, []);
 
     const handleDropdownToggle = () => {
-        setDropdownMenuShow(!DropdownMenuShow);
+        if (DropdownMenuShow) {
+            setIsClosing(true);
+            setTimeout(() => {
+                setDropdownMenuShow(false);
+                setIsClosing(false);
+            }, 500);
+        } else {
+            setDropdownMenuShow(true);
+        }
     };
 
     const handleDropdownClose = () => {
-        setDropdownMenuShow(false);
+        setIsClosing(true);
+        setTimeout(() => {
+            setDropdownMenuShow(false);
+            setIsClosing(false);
+        }, 500);
     };
+
 
     const handleCartToggle = () => {
         setCartMenuShow(!CartMenuShow);
@@ -72,7 +87,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                         </div>
                         {
                             DropdownMenuShow &&
-                            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-lightgrey dark:text-black rounded-box w-52 sm: hidden">
+                            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-lightgrey dark:text-black rounded-box w-52  ">
                                 <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
                                 <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
                                 <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
@@ -102,11 +117,11 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                         }
                         {
                             DropdownMenuShow &&
-                            <div className={"h-screen fixed inset-0 bg-darkblue animate-slide-down z-10"} >
+                            <div className={` h-screen fixed inset-0 bg-darkblue z-10  ${isClosing ? "animate-slide-up" : "animate-slide-down"} md:hidden `}>
                                 <button className='btn btn-circle mt-4 ml-2 text-lg bg-transparent border-transparent bg-white ' onClick={handleDropdownToggle}>
                                     X
                                 </button>
-                                <ul tabIndex={0} className="flex flex-col mt-20 h-screen w-screen  p-2 shadow text-white items-center gap-10 text-2xl dark:text-black rounded-box ">
+                                <ul tabIndex={0} className="flex flex-col mt-20 h-screen w-screen p-2 shadow text-white items-center gap-10 text-2xl dark:text-black rounded-box ">
                                     <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
                                     <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
                                     <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
@@ -134,6 +149,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                 </ul>
                             </div>
                         }
+
                     </div>
                 </div>
                 <div className="navbar-center z-10">
