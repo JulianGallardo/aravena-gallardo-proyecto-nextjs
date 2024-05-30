@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { BurgerList, Categorias } from '@/app/ui';
+import { Category } from '@/prisma/generated/client';
 
-const categories = ['Simple', 'Doble', 'Bebidas', 'Postres'];
+const categories = Object.values(Category) as Category[];
 
 const Page: React.FC = () => {    
     return (
