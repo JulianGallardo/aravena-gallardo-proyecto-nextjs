@@ -102,8 +102,8 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                         }
                         {
                             DropdownMenuShow &&
-                            <div className="h-screen fixed inset-0 bg-darkblue " onClick={handleDropdownClose}>
-                                <button className='btn btn-circle mt-4 ml-2 text-lg bg-transparent border-transparent bg-white '>
+                            <div className={"h-screen fixed inset-0 bg-darkblue animate-slide-down z-10"} >
+                                <button className='btn btn-circle mt-4 ml-2 text-lg bg-transparent border-transparent bg-white ' onClick={handleDropdownToggle}>
                                     X
                                 </button>
                                 <ul tabIndex={0} className="flex flex-col mt-20 h-screen w-screen  p-2 shadow text-white items-center gap-10 text-2xl dark:text-black rounded-box ">
