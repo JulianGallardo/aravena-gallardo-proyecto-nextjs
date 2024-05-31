@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 
-const UploadPhotos: React.FC = () => {
+const   UploadPhotos: React.FC = () => {
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string>("");

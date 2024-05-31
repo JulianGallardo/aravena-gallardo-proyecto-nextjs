@@ -4,9 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    console.log(body.publicId);
     const uploadedResponse = await cloudinary.uploader.upload(body.data, {
       public_id: `${body.publicId}`,
     });
+    
     return NextResponse.json({ url: uploadedResponse.secure_url });
   } catch (error) {
     return NextResponse.json(
