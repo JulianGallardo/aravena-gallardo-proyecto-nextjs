@@ -38,7 +38,7 @@ const BurgerList: React.FC = () => {
     <div className='pt-16'>
       {categories.map((category) => (
         <ul id={category} key={category}>
-          <h2 className="text-2xl font-bold text-darkblue m-4 text-center">{category}</h2>
+          <h2 className="text-2xl font-bold text-darkblue dark:text-white m-4 text-center">{category}</h2>
           <div className="flex flex-wrap justify-center items-center">
             {burgers.map((burger, index) => (
               <li key={burger.burgerId} className="w-64 m-4">

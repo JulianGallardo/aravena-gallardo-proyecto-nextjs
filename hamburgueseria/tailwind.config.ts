@@ -9,6 +9,7 @@ const config: Config = {
   ],
   theme: {
     colors: {
+      darkmodebg: '#252525',
       lightgrey: '#ECF0F1',
       darkblue: '#2C3E50',
       white: '#FFFFFF',
@@ -17,6 +18,7 @@ const config: Config = {
       red: '#FF0000',
       yellow: '#FABC51',
       hoveredButton: '#BDC3C7',
+      green: '#2ECC71',
 
     },
     extend: {

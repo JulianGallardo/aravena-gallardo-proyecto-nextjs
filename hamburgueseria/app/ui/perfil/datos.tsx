@@ -9,7 +9,6 @@ const Datos = () => {
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
-        city: '',
         cellphone: '',
         address: ''
     });
@@ -19,7 +18,6 @@ const Datos = () => {
             setFormData({
                 fullName: session.user?.fullName || '',
                 email: session.user?.email || '',
-                city: session.user?.city || '',
                 cellphone: session.user?.cellphone || '',
                 address: session.user?.address || ''
             });
@@ -42,7 +40,6 @@ const Datos = () => {
                 ...session?.user,
                 fullName: formData.fullName || session?.user?.fullName,
                 email: formData.email || session?.user?.email,
-                city: formData.city || session?.user?.city,
                 cellphone: formData.cellphone || session?.user?.cellphone,
                 address: formData.address || session?.user?.address
             }
@@ -76,16 +73,6 @@ const Datos = () => {
                                         className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
                                         type="email"
                                         value={formData.email}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="mb-3 mt-5 block text-xs font-medium">Ciudad:</label>
-                                    <input
-                                        id="city"
-                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
-                                        type="text"
-                                        value={formData.city}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -124,7 +111,6 @@ const Datos = () => {
                         <div className="flex flex-col text-sm text-black dark:text-white gap-3 md:grid grid-cols-2">
                             <p className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2">Nombre: {session.user?.fullName}</p>
                             <p className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2">Email: {session.user?.email}</p>
-                            <p className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2">Ciudad: {session.user?.city}</p>
                             <p className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2">Telefono: {session.user?.cellphone}</p>
                             <p className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2">Direccion: {session.user?.address}</p>
                         </div>
