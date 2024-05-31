@@ -22,7 +22,7 @@ const Categorias: React.FC<categoriesProps> = ({ categories }) => {
                 {categories.map((category, index) => (
                     <button
                         key={index}
-                        className="bg-white hover:bg-hoveredButton font-bold py-2 px-4 rounded-md shadow-md transition-colors duration-200 ease-in-out text-lg max-sm:ml-20"
+                        className="bg-white hover:bg-hoveredButton dark:bg-darkblue font-bold py-2 px-4 rounded-md shadow-md transition-colors duration-200 ease-in-out text-lg max-sm:ml-20"
                         onClick={() => scrollToCategory(category)}
                     >
                         {category}

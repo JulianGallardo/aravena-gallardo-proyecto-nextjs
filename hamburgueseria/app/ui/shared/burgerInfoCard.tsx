@@ -12,8 +12,8 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, description, photoSrc, price, burgerId }) => {
     return (
-        <Link href={`/burgers/${burgerId}`}>
-        <div className="flex flex-col w-64 h-80 bg-white shadow-lg rounded-lg overflow-hidden">
+        <Link href={`/burgers/${burgerId}`} >
+        <div className="flex flex-col w-64 h-80 bg-white dark:text-darkblue shadow-lg rounded-lg overflow-hidden ">
             <Image className="w-full h-32 object-cover object-center" src={photoSrc} alt="Card" width={500} height={200} />
             <div className="px-6 py-4 flex-grow">
                 <h2 className="text-xl font-bold mb-2">{title}</h2>

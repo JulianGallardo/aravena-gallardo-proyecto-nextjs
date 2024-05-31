@@ -8,7 +8,7 @@ const categories = Object.values(Category) as Category[];
 
 const Page: React.FC = () => {    
     return (
-        <div className='flex flex-col bg-lightgrey text-darkblue dark:bg-dark dark:text-white'>
+        <div className='flex flex-col bg-lightgrey text-darkblue dark:bg-darkmodebg dark:text-white'>
             <Categorias categories={categories} />
             <BurgerList />
         </div>

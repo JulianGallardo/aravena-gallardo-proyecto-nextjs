@@ -55,7 +55,6 @@ export const authConfig = {
           },
         });
 
-        console.log("new User",newUser);
 
 
         }catch(e){

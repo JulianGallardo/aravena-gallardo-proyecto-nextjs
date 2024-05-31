@@ -7,16 +7,16 @@ import Link from "next/link";
 import { useState } from "react";
 
 const Page: React.FC = () => {
-    const { cart, items, total,clearCart } = useCart();
-    
+    const { cart, items, total, clearCart } = useCart();
+
 
     return (
-        <div className="flex flex-col mt-20 h-screen gap-5 p-4 mb-10">
+        <div className="flex flex-col  mt-20 h-fit gap-5 p-4 ">
             <h1 className="text-2xl font-bold mb-4 text-white">Carrito</h1>
-            <div className="flex flex-col gap-4 h-screen ">
+            <div className="flex flex-col flex-grow gap-4 min-h-screen h-fit ">
                 {(items !== 0) &&
                     <div className="flex flex-col gap-5 mx-5  md:flex-row">
-                        <div className="flex flex-col  bg-darkblue p-4 rounded-lg w-full mb-5">
+                        <div className="flex flex-col flex-grow  bg-darkblue p-4 rounded-lg w-full mb-5">
                             <h1 className="text-white text-2xl text-start mb-5 ">Productos</h1>
                             {
                                 cart.map((item: CartItem) => (
@@ -24,6 +24,10 @@ const Page: React.FC = () => {
                                 ))
                             }
                             <div className="flex flex-col gap-4 items-center justify-center w-full ">
+
+                                <Link href="/burgers" className=" w-fit mt-5 ">
+                                    <p className="btn bg-lightgrey text-black hover:text-white">Volver al menu</p>
+                                </Link>
                                 <button className="btn bg-yellow text-darkblue w-fit " onClick={() => clearCart()}>
                                     <p className="text-white">Vaciar Carrito</p>
                                 </button>
@@ -43,8 +47,8 @@ const Page: React.FC = () => {
                                 </Link>
 
 
-                            </div>
 
+                            </div>
 
                         </div>
                     </div>
@@ -62,6 +66,8 @@ const Page: React.FC = () => {
                 }
             </div>
         </div>
+
+
     );
 }
 
