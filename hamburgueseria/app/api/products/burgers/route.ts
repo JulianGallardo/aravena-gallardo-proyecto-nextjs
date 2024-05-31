@@ -38,6 +38,7 @@ export async function GET(req: NextRequest) {
     const productId = searchParams.get('productId');
     if (productId) {
         const burger = await productService.getBurgerById(Number(productId));
+        console.log(burger);
         return NextResponse.json({
             status: 200,
             body: burger
