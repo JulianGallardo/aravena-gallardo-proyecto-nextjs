@@ -4,7 +4,8 @@ import React from "react";
 import "@/app/ui/global.css";
 import SessionWrapper from "@/app/ui/shared/sessionWrapper";
 import { Header } from "@/app/ui";
-import { Footer }from "@/app/ui";
+import { Footer } from "@/app/ui";
+import FooterDev from "./ui/shared/footerDev";
 
 const title = "ByteBurgers";
 
@@ -19,16 +20,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionWrapper>
-      <html lang="es">
-        <body className={`${inter.className} flex flex-col min-h-screen`}>          
+    <html lang="es">
+
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
+        <SessionWrapper>
           <Header isTransparent={false} />
           <main className="flex-grow">
             {children}
           </main>
+          <FooterDev />
           <Footer />
-        </body>
-      </html>
-    </SessionWrapper>
+        </SessionWrapper>
+      </body>
+    </html>
   );
 }
