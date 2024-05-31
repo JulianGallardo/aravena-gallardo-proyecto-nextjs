@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import ByteBurgersLogo from '@/public/ByteBurgersLogo.png';
 import UserLogo from '@/public/user-avatar-default.png';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const Chat = () => {
     const { messages, input, handleInputChange, handleSubmit } = useChat({
@@ -42,7 +44,11 @@ const Chat = () => {
                             />
                         </div>
                         <div className=''>
-                            <p className='text-sm chat-bubble bg-darkblue dark:bg-lightgrey dark:text-black' dangerouslySetInnerHTML={{ __html: convertToStrong(message.content) }} />
+                            <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                                className='text-sm chat-bubble bg-darkblue dark:bg-lightgrey dark:text-black'
+                                children={message.content}
+                            />
                         </div>
                     </div>
                 ))}
