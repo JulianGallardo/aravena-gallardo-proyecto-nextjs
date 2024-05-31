@@ -68,7 +68,6 @@ export const authConfig = {
           id: session.user.id,
           email: session.user.email,
           fullName: session.user.fullName,
-          city: session.user.city,
           cellphone: session.user.cellphone,
           address: session.user.address,
         };
@@ -80,7 +79,6 @@ export const authConfig = {
           id: session.user.id,
           email: session.user.email,
           fullName: session.user.fullName,
-          city: session.user.city,
           cellphone: session.user.cellphone,
           address: session.user.address,
         };
@@ -94,7 +92,6 @@ export const authConfig = {
           id: token.id,
           email: token.email,
           fullName: token.fullName,
-          city: token.city,
           cellphone: token.cellphone,
           address: token.address,
         }
