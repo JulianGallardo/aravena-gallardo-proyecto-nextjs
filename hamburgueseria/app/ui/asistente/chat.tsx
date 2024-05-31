@@ -47,8 +47,10 @@ const Chat = () => {
                             <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 className='text-sm chat-bubble bg-darkblue dark:bg-lightgrey dark:text-black'
-                                children={message.content}
-                            />
+                            >
+                                {message.content}
+                            </ReactMarkdown>
+
                         </div>
                     </div>
                 ))}
