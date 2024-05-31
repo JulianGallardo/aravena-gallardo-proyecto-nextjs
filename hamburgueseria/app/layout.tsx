@@ -5,7 +5,6 @@ import "@/app/ui/global.css";
 import SessionWrapper from "@/app/ui/shared/sessionWrapper";
 import { Header } from "@/app/ui";
 import { Footer } from "@/app/ui";
-import FooterDev from "./ui/shared/footerDev";
 
 const title = "ByteBurgers";
 
@@ -28,7 +27,6 @@ export default async function RootLayout({
           <main className="flex-grow">
             {children}
           </main>
-          <FooterDev />
           <Footer />
         </SessionWrapper>
       </body>
