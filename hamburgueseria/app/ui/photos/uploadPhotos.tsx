@@ -1,9 +1,11 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from "react";
 
 const UploadPhotos: React.FC = () => {
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [productId, setProductId] = useState<string>("");
+  const [name, setName] = useState<string>("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -17,12 +19,12 @@ const UploadPhotos: React.FC = () => {
   };
 
   const handleUpload = async () => {
-    if (image) {
+    if (image && productId && name) {
       setLoading(true);
-      const res = await fetch('/api/photos', {
-        method: 'POST',
-        body: JSON.stringify({ data: image }),
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/images", {
+        method: "POST",
+        body: JSON.stringify({ data: image, publicId: `${productId}-${name}` }),
+        headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();
       setImageUrl(data.url);
@@ -32,13 +34,26 @@ const UploadPhotos: React.FC = () => {
 
   return (
     <div>
+      <input
+        type="text"
+        value={productId}
+        onChange={(e) => setProductId(e.target.value)}
+        placeholder="Product ID"
+      />
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name"
+      />
+
       <input type="file" onChange={handleChange} />
       <button onClick={handleUpload} disabled={loading}>
-        {loading ? 'Uploading...' : 'Upload'}
+        {loading ? "Uploading..." : "Upload"}
       </button>
       {imageUrl && (
         <div>
-          <p>Uploaded Image:</p>
+          <p>Uploaded Image: {imageUrl}</p>
           <img src={imageUrl} alt="Uploaded" width="300" />
         </div>
       )}
