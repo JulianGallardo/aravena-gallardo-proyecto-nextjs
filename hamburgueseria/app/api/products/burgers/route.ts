@@ -37,7 +37,11 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     const productId = searchParams.get('productId');
     if (productId) {
-        const burger = await productService.getBurgerById(Number(productId));
+        {
+            //const burger = await productService.getBurgerById(Number(productId));
+            //cambiar cuando usemos bdd
+        }
+        const burger = burgersPlaceholder.find(burger => burger.productId === Number(productId));
         console.log(burger);
         return NextResponse.json({
             status: 200,

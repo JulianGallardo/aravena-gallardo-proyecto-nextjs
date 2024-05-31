@@ -4,8 +4,8 @@ import { Burger } from '@/prisma/generated/client';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/app/hooks/useCart';
-import { AddToCartIcon,RemoveFromCartIcon } from '@/app/ui/shared/cartIcons';
-
+import { AddToCartIcon, RemoveFromCartIcon } from '@/app/ui/shared/cartIcons';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 
 
@@ -13,6 +13,12 @@ import { AddToCartIcon,RemoveFromCartIcon } from '@/app/ui/shared/cartIcons';
 
 const BurgerPage: React.FC = () => {
     const { cart, addToCart, removeFromCart } = useCart();
+
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    
+
 
     const [burgerData, setBurgerData] = useState({
         burgerId: 0,
@@ -25,9 +31,8 @@ const BurgerPage: React.FC = () => {
     }
     );
 
-    const parseData = (data: Burger[]) => {
-        const burger = data[0];
-        console.log(burger);
+    const parseData = (data: Burger) => {
+        const burger = data;
         setBurgerData({
             burgerId: burger.burgerId,
             productId: burger.productId,
@@ -47,7 +52,13 @@ const BurgerPage: React.FC = () => {
 
     useEffect(() => {
         function getBurger() {
-            fetch('/api/products/burgers', {
+            
+            const pathnameArray = pathname.split('/');
+            const burgerId = pathnameArray[pathnameArray.length - 1];
+            const query = burgerId ? `?productId=${burgerId}` : '';
+            const url = `/api/products/burgers${query}`;
+
+            fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,14 +78,13 @@ const BurgerPage: React.FC = () => {
         <div className='flex flex-col h-screen mt-20 items-center '>
             <h1>{burgerData.name}</h1>
             <p>{burgerData.description}</p>
-            <p>{burgerData.stock}</p>
             <p>{burgerData.category}</p>
             <p>{burgerData.price}</p>
             <div className='flex flex-row gap-5 justify-center items-center '>
-                <button className='btn btn-circle bg-darkblue ' onClick={()=>addToCart(burgerData)}>
+                <button className='btn btn-circle bg-darkblue ' onClick={() => addToCart(burgerData)}>
                     <AddToCartIcon />
                 </button>
-                <button className='btn btn-circle bg-darkblue' onClick={()=>removeFromCart(burgerData)}>
+                <button className='btn btn-circle bg-darkblue' onClick={() => removeFromCart(burgerData)}>
                     <RemoveFromCartIcon />
                 </button>
 
