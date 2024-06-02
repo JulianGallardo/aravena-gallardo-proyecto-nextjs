@@ -36,7 +36,7 @@ const BurgerList: React.FC = () => {
 
   return (
     <div className='pt-16'>
-      {categories.map((category) => (
+      {burgers.length !==0 && categories.map((category) => (
         <ul id={category} key={category}>
           <h2 className="text-2xl font-bold text-darkblue dark:text-white m-4 text-center">{category}</h2>
           <div className="flex flex-wrap justify-center items-center">
@@ -58,6 +58,13 @@ const BurgerList: React.FC = () => {
           </div>
         </ul>
       ))}
+      {
+        burgers.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-screen">
+            <h1 className="text-2xl font-bold text-darkblue dark:text-white">Cargando menu...</h1>
+          </div>
+        )
+      }
     </div>
   );
 };
