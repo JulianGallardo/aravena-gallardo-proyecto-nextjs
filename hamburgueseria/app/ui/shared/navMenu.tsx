@@ -143,7 +143,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                 <button className='btn btn-circle mt-4 ml-2 text-lg bg-transparent border-transparent bg-white ' onClick={handleDropdownToggle}>
                                     X
                                 </button>
-                                <ul tabIndex={0} className="flex flex-col mt-20 h-screen w-screen p-2 shadow text-white items-center gap-5 text-2xl dark:text-black rounded-box z-0">
+                                <ul tabIndex={0} className="flex flex-col mt-20 h-screen w-screen p-2 shadow text-white items-center gap-5 text-2xl  rounded-box z-0">
                                     <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
                                     <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
                                     <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
