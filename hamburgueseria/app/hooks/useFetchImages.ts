@@ -17,12 +17,11 @@ const useFetchBurgers = (url: string = '/api/products/burgers') => {
           throw new Error('Network response was not ok');
         }
         const data = await res.json();
-        console.log('Data received from API:', data);
 
-        if (Array.isArray(data)) {
-          setBurgers(data);
+        if (Array.isArray(data.body)) {
+          setBurgers(data.body);
     
-          const urls: string[] = await Promise.all(data.map((burger: Burger) =>
+          const urls: string[] = await Promise.all(data.body.map((burger: Burger) =>
             getImageUrl(`${burger.burgerId}-${burger.name.replace(/\s/g, '')}`)
           ));
           setImageUrls(urls);
