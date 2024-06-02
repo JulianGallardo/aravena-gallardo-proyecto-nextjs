@@ -110,7 +110,7 @@ const extras = [
 
 const seed = async () => {
   await prisma.productsOnOrder.deleteMany();
-  await prisma.promoBurger.deleteMany();
+  await prisma.burgerOnPromo.deleteMany();
   await prisma.order.deleteMany();
   await prisma.extra.deleteMany();
   await prisma.burger.deleteMany();
