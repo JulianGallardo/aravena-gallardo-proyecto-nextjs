@@ -44,7 +44,7 @@ const CartItems: React.FC<CartItemsProps> = ({ item }) => {
         <div className={`flex items-center border  rounded-lg shadow-lg mb-4 p-4`} >
             {
                     !isMobile&&<div className="invisible flex items-center justify-center w-fit  bg-darkblue rounded-lg md:visible md:w-2/3">
-                        <Image width={200} height={200} src={ByteBurgersLogo} alt="Byte Burgers Logo" className=" bg-lightgrey rounded-md p-2 " />
+                        <Image width={200} height={200} src={item.imageUrl} alt="Byte Burgers Logo" className=" bg-lightgrey rounded-md p-2 " />
                     </div>
             }
             
