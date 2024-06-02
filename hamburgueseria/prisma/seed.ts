@@ -1,5 +1,6 @@
 import prisma from '@/lib/db';
 import { Category, Product } from './generated/client';
+import bcrypt from 'bcryptjs';
 
 const burgers = [
   {
@@ -92,6 +93,8 @@ const promos = [
   }
 ];
 
+const bcryptPassword = bcrypt.hashSync('admin', 10);
+
 const extras = [
   { name: 'Extra Cheese', price: 1.00, maxQuantity: 3 },
   { name: 'Bacon', price: 1.50, maxQuantity: 2 },
@@ -124,7 +127,7 @@ const seed = async () => {
       user: {
         create: {
           email: 'admin@admin.com',
-          password: '$2b$10$6v6b7Q1v2Y5k0nX1tK0QKu9F5s4hQjP1tUd5Wn7tJpX6QY6qg9U2q', // admin
+          password: bcryptPassword , // admin
           role: 'ADMIN',
           fullName: 'Admin',
         },
