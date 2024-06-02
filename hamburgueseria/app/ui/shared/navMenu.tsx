@@ -9,11 +9,8 @@ import { signOut, useSession } from 'next-auth/react';
 import { set } from 'zod';
 import CartMenu from './cartMenu';
 
-interface NavMenuProps {
-    isTransparent: boolean;
-}
 
-const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
+const NavMenu = () => {
     const [isTop, setIsTop] = useState(true);
     const [isVisible, setIsVisible] = useState(true);
     const { data: session, status, update } = useSession();
@@ -21,6 +18,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
     const [CartMenuShow, setCartMenuShow] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [isTransparent, setIsTransparent] = useState(false);
 
     const handleResize = () => {
         if (window.innerWidth <= 768) {
@@ -37,6 +35,14 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
             window.removeEventListener('resize', handleResize);
         }
     }, []);
+
+    useEffect(() => {
+        if (window.location.pathname === '/') {
+            setIsTransparent(true);
+        } else {
+            setIsTransparent(false);
+        }
+    }, [window.location.pathname]);
         
 
     useEffect(() => {
@@ -110,9 +116,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                 <ul tabIndex={0} className={`menu menu-sm dropdown-content mt-3  p-2 shadow bg-lightgrey dark:text-black rounded-box w-60 ${isClosing ? "animate-slide-up" : "animate-slide-down"}`}>
                                     <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
                                     <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
-                                    <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
                                     <li><Link href="/club" onClick={handleDropdownClose}>Club Byte</Link></li>
-                                    <li><Link href="/pedido" onClick={handleDropdownClose}>Encarga tu Byte</Link></li>
                                     <li><Link href="/chat" onClick={handleDropdownClose}>ByteAssistant</Link></li>
                                     {
                                         !session ?
@@ -146,9 +150,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isTransparent }) => {
                                 <ul tabIndex={0} className="flex flex-col mt-20 h-screen w-screen p-2 shadow text-white items-center gap-5 text-2xl  rounded-box z-0">
                                     <li><Link href="/" onClick={handleDropdownClose}>Inicio</Link></li>
                                     <li><Link href="/burgers" onClick={handleDropdownClose}>Burgers</Link></li>
-                                    <li><Link href="/promociones" onClick={handleDropdownClose}>Promos</Link></li>
                                     <li><Link href="/club" onClick={handleDropdownClose}>Club Byte</Link></li>
-                                    <li><Link href="/pedido" onClick={handleDropdownClose}>Encarga tu Byte</Link></li>
                                     <li><Link href="/chat" onClick={handleDropdownClose}>ByteAssistant</Link></li>
                                     {
                                         !session ?
