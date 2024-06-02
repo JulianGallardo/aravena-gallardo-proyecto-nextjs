@@ -3,6 +3,7 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import BurgerItems from './tabs/burger/burgerTab';
 
 const Dashboard = () => {
   return (
@@ -15,8 +16,7 @@ const Dashboard = () => {
       </TabList>
 
       <TabPanel>
-        <h2>Burgers</h2>
-        <p>Contenido relacionado con Burgers.</p>
+        <BurgerItems />
       </TabPanel>
       <TabPanel>
         <h2>Promos</h2>
