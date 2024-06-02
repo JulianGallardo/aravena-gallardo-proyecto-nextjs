@@ -5,14 +5,6 @@ import BurgerForm from './newBurgerForm';
 
 const BurgerItems = () => {
     const [burgers, setBurgers] = useState([]);
-    const [newBurger, setNewBurger] = useState({
-        name: '',
-        category: 'SIMPLE',
-        imageUrl: '',
-        description: '',
-        stock: 0,
-        price: 0.0,
-    });
 
     useEffect(() => {
         fetchBurgers();
@@ -29,18 +21,9 @@ const BurgerItems = () => {
         }
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewBurger({ ...newBurger, [name]: value });
-    };
+   
 
-    const handleCreateBurger = async () => {
-        try {
-            console.log('Se creó la siguiente burger:', newBurger);
-        } catch (error) {
-            console.error('Error creating burger:', error);
-        }
-    };
+   
 
     const handleDeleteBurger = async (burgerId: number) => {
         try {
@@ -74,10 +57,7 @@ const BurgerItems = () => {
             </ul>
             <div className="mt-8">
                 <h3 className="text-xl font-bold mb-4">Add New Burger</h3>
-                <BurgerForm
-                    handleInputChange={handleInputChange}
-                    handleCreateBurger={handleCreateBurger}
-                />
+                <BurgerForm/>
             </div>
         </div>
     );
