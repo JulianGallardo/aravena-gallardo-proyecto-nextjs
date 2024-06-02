@@ -1,5 +1,5 @@
 import prisma from '@/lib/db';
-import { Category } from './generated/client';
+import { Category, Product } from './generated/client';
 
 const burgers = [
   {
@@ -202,7 +202,7 @@ const seed = async () => {
     let totalAmount = 0;
 
     for (let j = 0; j < 5; j++) {
-      let product, productExists;
+      let product:Product, productExists;
       do {
         product = products[Math.floor(Math.random() * productCount)];
         productExists = orderProducts.some(op => op.productId === product.productId);
