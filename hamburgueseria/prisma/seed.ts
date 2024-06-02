@@ -1,8 +1,5 @@
-import { faker } from '@faker-js/faker';
 import prisma from '@/lib/db';
 import { Category } from './generated/client';
-
-
 
 const burgers = [
   {
@@ -108,12 +105,8 @@ const extras = [
   { name: 'Special Sauce', price: 0.75, maxQuantity: 3 }
 ];
 
-
-
-
 const seed = async () => {
   await prisma.productsOnOrder.deleteMany();
-  await prisma.extrasOnBurgers.deleteMany();
   await prisma.promoBurger.deleteMany();
   await prisma.order.deleteMany();
   await prisma.extra.deleteMany();
@@ -134,16 +127,11 @@ const seed = async () => {
           password: '$2b$10$6v6b7Q1v2Y5k0nX1tK0QKu9F5s4hQjP1tUd5Wn7tJpX6QY6qg9U2q', // admin
           role: 'ADMIN',
           fullName: 'Admin',
-
-
         },
       },
     },
   });
 
-
-
-  // Create Products, Burgers, Promos, and Extras
   // Create Extras
   for (const extra of extras) {
     await prisma.extra.create({
@@ -216,18 +204,22 @@ const seed = async () => {
     for (let j = 0; j < 5; j++) {
       let product, productExists;
       do {
-        product = products[faker.number.int({ min: 0, max: products.length - 1 })];
+        product = products[Math.floor(Math.random() * productCount)];
         productExists = orderProducts.some(op => op.productId === product.productId);
       } while (productExists);
 
-      const quantity = faker.number.int({ min: 1, max: 5 });
-      const price = faker.number.float({ min: 5, max: 20 });
+      const quantity = Math.floor(Math.random() * 5) + 1;
+      const productData = await prisma.product.findUnique({
+        where: { productId: product.productId },
+        include: { burger: true, promo: true }
+      });
+
+      const price = productData?.burger?.price || productData?.promo?.price || 0;
 
       orderProducts.push({
         orderId: order.orderId,
         productId: product.productId,
         quantity,
-        price,
       });
 
       totalAmount += price * quantity;
