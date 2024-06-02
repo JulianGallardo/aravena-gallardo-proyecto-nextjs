@@ -29,7 +29,7 @@ const BurgerItems = () => {
         }
     };
 
-    const handleInputChange = (e:) => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewBurger({ ...newBurger, [name]: value });
     };
