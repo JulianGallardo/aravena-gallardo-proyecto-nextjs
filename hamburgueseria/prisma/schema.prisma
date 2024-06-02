@@ -77,7 +77,8 @@ model Burger{
   burgerId    Int       @id @default(autoincrement())
   productId   Int       @unique
   name        String
-  category    Category   
+  category    Category 
+  imageUrl    String    @default("https://s7d1.scene7.com/is/image/mcdonalds/Header_BigMacCombo_v1_832x472:nutrition-calculator-tile?wid=472&hei=472&dpr=off")  
   description String    @default("")
   extras      ExtraOnBurger[]
   stock       Int       @default(0)
@@ -89,6 +90,7 @@ model Burger{
 model Promo{
   promoId     Int       @id @default(autoincrement())
   productId   Int       @unique
+  imageUrl    String    @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
   name        String
   description String    @default("")
   category    Category  @default(PROMO)
