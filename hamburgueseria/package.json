@@ -25,10 +25,11 @@
     "dotenv": "^16.4.5",
     "next-auth": "^5.0.0-beta.18",
     "openai": "^4.47.1",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.5",
     "react-markdown": "^9.0.1",
+    "react-tabs": "^6.0.2",
     "remark-gfm": "^4.0.0",
     "zod": "^3.23.8"
   },
