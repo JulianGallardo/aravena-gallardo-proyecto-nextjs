@@ -4,10 +4,11 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import BurgerItems from './tabs/burger/burgerTab';
+import PromoItems from './tabs/promos/promoTab';
 
 const Dashboard = () => {
   return (
-    <Tabs>
+    <Tabs >
       <TabList>
         <Tab>Burgers</Tab>
         <Tab>Promos</Tab>
@@ -18,10 +19,11 @@ const Dashboard = () => {
       <TabPanel>
         <BurgerItems />
       </TabPanel>
+
       <TabPanel>
-        <h2>Promos</h2>
-        <p>Contenido relacionado con Promos.</p>
+        <PromoItems />
       </TabPanel>
+
       <TabPanel>
         <h2>Extras</h2>
         <p>Contenido relacionado con Extras.</p>

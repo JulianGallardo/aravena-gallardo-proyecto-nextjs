@@ -22,7 +22,7 @@ const BurgerForm = () => {
     };
 
     return (
-        <form className="grid gap-4 mb-4" onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex flex-col gap-5 mx-10 md:grid grid-cols-2 " onSubmit={handleSubmit(onSubmit)}>
             <input
                 className="p-2 border border-gray-300 rounded"
                 id="name"
@@ -31,9 +31,9 @@ const BurgerForm = () => {
                 {...register('name', { required: true })}
             />
             {errors.name && <span className="text-red-500">This field is required</span>}
-            
-            <UploadPhotos/>
-            
+
+            <UploadPhotos />
+
             <textarea
                 className="p-2 border border-gray-300 rounded"
                 id="description"
@@ -41,7 +41,7 @@ const BurgerForm = () => {
                 {...register('description', { required: true })}
             />
             {errors.description && <span className="text-red-500">This field is required</span>}
-            
+
             <select
                 className="p-2 border border-gray-300 rounded"
                 id="category"
@@ -52,7 +52,7 @@ const BurgerForm = () => {
                 ))}
             </select>
             {errors.category && <span className="text-red-500">This field is required</span>}
-            
+
             <input
                 className="p-2 border border-gray-300 rounded"
                 id="stock"
@@ -60,7 +60,7 @@ const BurgerForm = () => {
                 placeholder="Stock"
                 {...register('stock', { valueAsNumber: true, })}
             />
-            
+
             <input
                 className="p-2 border border-gray-300 rounded"
                 id="price"
@@ -69,13 +69,15 @@ const BurgerForm = () => {
                 {...register('price', { valueAsNumber: true, required: true })}
             />
             {errors.price && <span className="text-red-500">This field is required</span>}
-            
-            <button
-                className="btn bg-green text-white px-4 py-2 rounded hover:bg-green-600"
-                type="submit"
-            >
-                Create New Burger
-            </button>
+            <div className="flex flex-col gap-5 items-center justify-center col-span-2">
+
+                <button
+                    className="btn bg-green text-white px-4 py-2 rounded hover:bg-green-600"
+                    type="submit"
+                >
+                    Create New Burger
+                </button>
+            </div>
         </form>
     );
 }

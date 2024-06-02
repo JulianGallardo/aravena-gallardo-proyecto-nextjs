@@ -33,7 +33,7 @@ const   UploadPhotos: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-screen flex flex-col">
       <input
         type="text"
         value={productId}

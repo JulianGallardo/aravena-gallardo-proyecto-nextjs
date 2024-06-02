@@ -1,29 +1,18 @@
 import { Burger, Promo,PromoBurger } from "@/prisma/generated/client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 
 
-interface BurgerItemProps {
+interface PromoItemProps {
     promo: Promo;
-    promoBurgers: PromoBurger;
+    burgersInPromo: Burger[];
+    relationBurgersPromo: PromoBurger[];
     handleDeleteBurger: (burgerId: number) => void;
     handleUpdateBurger: (burgerId: number, updatedBurger: any) => void;
 }
 
-const BurgerItem = ({ promo,promoBurgers, handleDeleteBurger, handleUpdateBurger }: BurgerItemProps) => {
-    const [burgers, setBurgers] = useState<Burger[]>([]);
-
-    useEffect(() => {
-        const fetchBurgers = async () => {
-            const query = promoBurgers.burgerId ? `?productId=${promoBurgers.burgerId}` : '';
-            const url = `/api/products/burgers${query}`;
-            const res = await fetch('/api/products/burgers');
-            const data = await res.json();
-            setBurgers(data);
-        };
-
-        fetchBurgers();
-    }, [promoBurgers]);
+const PromoItem = ({ promo,relationBurgersPromo,burgersInPromo, handleDeleteBurger, handleUpdateBurger }: PromoItemProps) => {
+   
 
     return (
         <li key={promo.promoId} className="flex flex-col gap-5 bg-white shadow-md rounded-lg p-4 ">
@@ -48,7 +37,12 @@ const BurgerItem = ({ promo,promoBurgers, handleDeleteBurger, handleUpdateBurger
                 <div className="">
                     <h4 className="text-lg font-semibold mb-2">Burgers Incluidas</h4>
                     {
-                        
+                        relationBurgersPromo.map((promoBurger) => {
+                            const burger = burgersInPromo.find((burger) => burger.burgerId === promoBurger.burgerId);
+                            return (
+                                <p key={promoBurger.burgerId} className="mb-2">{burger?.name} x {promoBurger.quantity}</p>
+                            )
+                        })
 
                     }
 
@@ -77,4 +71,4 @@ const BurgerItem = ({ promo,promoBurgers, handleDeleteBurger, handleUpdateBurger
 
 };
 
-export default BurgerItem;
+export default PromoItem;
