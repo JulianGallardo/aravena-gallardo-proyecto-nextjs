@@ -1,6 +1,7 @@
 import { NextAuthConfig, Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import { PrismaClient } from '@/prisma/generated/client';
+import { NextResponse } from 'next/server';
 
 const db = new PrismaClient();
 
@@ -13,19 +14,41 @@ export const authConfig = {
   },
   callbacks: {
     async redirect({ url, baseUrl }) {
-      // Redirige a la página deseada después del inicio de sesión
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
       return baseUrl;
     },
     async authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnProfile = nextUrl.pathname.startsWith('/');
-      if (isOnProfile) {
-        if (isLoggedIn) return true;
-        return Response.redirect(new URL('/auth/login', nextUrl));
-      } else if (isLoggedIn) {
-        return Response.redirect(new URL('/perfil', nextUrl));
+      const isOnProfile = nextUrl.pathname.startsWith('/perfil');
+      const isOnAdmin = nextUrl.pathname.startsWith('/admin');
+      const isOnLogin = nextUrl.pathname.startsWith('/auth/login');
+      const isOnRegister = nextUrl.pathname.startsWith('/auth/register');
+      
+
+      if (isLoggedIn){
+        if (isOnLogin || isOnRegister){
+          return NextResponse.redirect(process.env.NEXTAUTH_URL + '/');
+        }
+        if (isOnProfile){
+          return true;
+        }
+        if (isOnAdmin && auth.user.role === 'ADMIN'){
+          return true;
+        }
+        if (isOnAdmin && auth.user.role !== 'ADMIN'){
+          return NextResponse.redirect(process.env.NEXTAUTH_URL + '/');
+        }
       }
-      return true;
+      else{
+        if (isOnProfile || isOnAdmin){
+          return NextResponse.redirect(process.env.NEXTAUTH_URL + '/auth/login');
+        }
+        if (isOnLogin || isOnRegister){
+          return true;
+        }
+      }
     },
     async jwt({ token, user, session, trigger }) {
       if (trigger === 'signIn') {
@@ -33,6 +56,7 @@ export const authConfig = {
           ...token,
           id: user.id,
           email: user.email,
+          role: user.role,
           fullName: user.fullName,
           cellphone: user.cellphone,
           address: user.address,
@@ -50,6 +74,7 @@ export const authConfig = {
           data: {
             fullName: session.user.fullName,
             email: session.user.email,
+            role: session.user.role,
             cellphone: session.user.cellphone,
             address: session.user.address,
           },
@@ -67,6 +92,7 @@ export const authConfig = {
           ...token,
           id: session.user.id,
           email: session.user.email,
+          role: session.user.role,
           fullName: session.user.fullName,
           cellphone: session.user.cellphone,
           address: session.user.address,
@@ -78,6 +104,7 @@ export const authConfig = {
           ...token,
           id: session.user.id,
           email: session.user.email,
+          role: session.user.role,
           fullName: session.user.fullName,
           cellphone: session.user.cellphone,
           address: session.user.address,
@@ -91,6 +118,7 @@ export const authConfig = {
           ...session.user,
           id: token.id,
           email: token.email,
+          role: token.role,
           fullName: token.fullName,
           cellphone: token.cellphone,
           address: token.address,
