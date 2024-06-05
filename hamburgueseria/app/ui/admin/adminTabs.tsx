@@ -8,8 +8,8 @@ import PromoItems from './tabs/promos/promoTab';
 
 const Dashboard = () => {
   return (
-    <Tabs >
-      <TabList>
+    <Tabs className={``} >
+      <TabList >
         <Tab>Burgers</Tab>
         <Tab>Promos</Tab>
         <Tab>Extras</Tab>
