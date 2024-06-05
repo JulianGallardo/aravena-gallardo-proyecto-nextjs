@@ -110,7 +110,7 @@ model Extra {
   name        String
   price       Float     
   maxQuantity Int       @default(1)
-  burgers    ExtraOnBurger[]
+  burgers     ExtraOnBurger[]
 }
 
 model BurgerOnPromo {
