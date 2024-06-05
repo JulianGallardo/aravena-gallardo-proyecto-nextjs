@@ -1,5 +1,5 @@
-import { date } from "zod";
-
+import { ProductService } from '@/prisma/services/productService';
+const productService = new ProductService();
 const ordenes = [
   {
     id: "1",
@@ -138,3 +138,18 @@ export async function fetchFilteredOrderById(query: string, currentPage: number)
     return await fetchPaginationOrders(currentPage);
   }
 }
+
+export async function fetchPaginationBurgers( page: number) {
+
+  const burgers = await productService.getAllBurgers();
+  if (!burgers) {
+    return { paginatedOrders: [], totalPages: 0 };
+  }
+  const totalItems = burgers.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const start = (page - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const paginatedOrders = burgers.slice(start, end);
+  return { paginatedOrders, totalPages };
+}
+

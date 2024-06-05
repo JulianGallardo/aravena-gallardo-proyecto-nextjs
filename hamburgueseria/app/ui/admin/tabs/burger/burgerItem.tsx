@@ -6,11 +6,9 @@ import arrowIcon from '@/public/arrow.svg';
 
 interface BurgerItemProps {
     burger: Burger;
-    handleDeleteBurger: (burgerId: number) => void;
-    handleUpdateBurger: (burgerId: number, updatedBurger: any) => void;
 }
 
-const BurgerItem = ({ burger, handleDeleteBurger, handleUpdateBurger }: BurgerItemProps) => {
+const BurgerItem = ({ burger}: BurgerItemProps) => {
 
     return (
         <Link href={`/admin/burgers/${burger.burgerId}`} >
