@@ -186,3 +186,90 @@ export async function fetchPaginationBurgersByName(query: String, page: number) 
     return await fetchPaginationBurgers(page);
   }
 }
+
+export async function fetchPaginatedPromos(page: number) {
+  const promos = await productService.getAllPromos();
+  if (!promos) {
+    return { paginatedOrders: [], totalPages: 0 };
+  }
+  const totalItems = promos.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const start = (page - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const paginatedOrders = promos.slice(start, end);
+  return { paginatedOrders, totalPages };
+}
+
+export async function fetchPaginatedPromosByName(query: String, page: number) {
+  const splittedQuery = query.split("&").map((item) => item.split("="));
+  const promos = await productService.getAllPromos();
+  if (!promos) {
+    return { paginatedOrders: [], totalPages: 0 };
+  }
+  if (query !== "" || query !== null) { // query is not empty
+
+    let queryName = "";
+    let queryCategory = "";
+    for (let i = 0; i < splittedQuery.length; i++) {
+      if (splittedQuery[i][0] === "query") {
+        queryName= splittedQuery[i][1];
+      }
+      if (splittedQuery[i][0] === "category") {
+        queryCategory = splittedQuery[i][1];
+      }
+    }
+    const filteredPromos = promos.filter((promo) => promo.name.toLowerCase().includes(queryName.toLowerCase())).filter((promo) => promo.category.toLowerCase().includes(queryCategory.toLowerCase()));
+    const totalItems = filteredPromos.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    const paginatedOrders = filteredPromos.slice(start, end);
+    return { paginatedOrders, totalPages };
+  }
+  else {
+    return await fetchPaginatedPromos(page);
+  }
+}
+
+
+export async function fetchPaginationExtras(page: number) {
+  const extras = await productService.getAllExtras();
+  if (!extras) {
+    return { paginatedOrders: [], totalPages: 0 };
+  }
+  const totalItems = extras.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const start = (page - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const paginatedOrders = extras.slice(start, end);
+  return { paginatedOrders, totalPages };
+}
+
+export async function fetchPaginationExtrasByName(query: String, page: number) {
+  const splittedQuery = query.split("&").map((item) => item.split("="));
+  const extras = await productService.getAllExtras();
+  if (!extras) {
+    return { paginatedOrders: [], totalPages: 0 };
+  }
+  if (query !== "" || query !== null) { // query is not empty
+
+    let queryName = "";
+    for (let i = 0; i < splittedQuery.length; i++) {
+      if (splittedQuery[i][0] === "query") {
+        queryName= splittedQuery[i][1];
+      }
+    }
+    const filteredExtras = extras.filter((extra) => extra.name.toLowerCase().includes(queryName.toLowerCase()));
+    const totalItems = filteredExtras.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    const paginatedOrders = filteredExtras.slice(start, end);
+    return { paginatedOrders, totalPages };
+  }
+  else {
+    return await fetchPaginationExtras(page);
+  }
+}
+
+

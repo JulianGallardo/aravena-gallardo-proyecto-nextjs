@@ -1,10 +1,10 @@
 import React, { Suspense } from "react";
-import { fetchPaginationBurgers } from "@/lib/pagination";
+import { fetchPaginatedPromos } from "@/lib/pagination";
 import BurgerTable from "@/app/ui/admin/tabs/burger/burgerTable";
 import BurgerSearch from "@/app/ui/admin/tabs/burger/burgerSearch";
 import Link from "next/link";
 
-export default async function BurgerPagination({
+export default async function PromosPagination({
     searchParams,
 }: {
     searchParams?: {
@@ -14,7 +14,7 @@ export default async function BurgerPagination({
 }) {
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const { paginatedOrders, totalPages } = await fetchPaginationBurgers(currentPage);
+    const { paginatedOrders, totalPages } = await fetchPaginatedPromos(currentPage);
 
     return (
         <div className="flex flex-col gap-5 my-24 mx-10 h-full">
@@ -22,8 +22,8 @@ export default async function BurgerPagination({
                 <h1 className="text-4xl font-bold">Admin</h1>
                 <div className="flex flex-col  gap-5 w-full">
                     <div className="flex flex-row-reverse items-center gap-4">
-                        <Link href="/admin/promos" className="btn rounded-md bg-yellow text-white">
-                            Promos
+                        <Link href="/admin/burgers" className="btn rounded-md bg-yellow text-white">
+                            Burgers
                         </Link>
                         <Link href="/admin/extras" className="btn rounded-md bg-yellow text-white">
                             Extras
