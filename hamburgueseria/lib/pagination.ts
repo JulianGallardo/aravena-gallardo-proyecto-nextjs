@@ -123,10 +123,7 @@ export async function fetchPaginationOrders(page: number) {
 }
 
 export async function fetchFilteredOrderById(query: string, currentPage: number) {
-
-  console.log(query, currentPage)
   if (query) {
-    console.log("entro")
     console.log(ordenes.map((order) => console.log(order.id === query)));
     const filteredOrders = ordenes.filter((order) => console.log(order.id === query));
     const totalItems = filteredOrders.length;
@@ -203,10 +200,7 @@ export async function fetchPaginatedPromos(page: number) {
 export async function fetchPaginatedPromosByName(query: String, page: number) {
   const splittedQuery = query.split("&").map((item) => item.split("="));
   const promos = await productService.getAllPromos();
-  const promoBurger = await productService.getAllPromoBurgers();
-  console.log('promos:',promos);
-  console.log('promoBurger:',promoBurger);
-  /**
+  
   if (!promos) {
     return { paginatedOrders: [], totalPages: 0 };
   }
@@ -233,7 +227,6 @@ export async function fetchPaginatedPromosByName(query: String, page: number) {
   else {
     return await fetchPaginatedPromos(page);
   }
-  */
 }
 
 

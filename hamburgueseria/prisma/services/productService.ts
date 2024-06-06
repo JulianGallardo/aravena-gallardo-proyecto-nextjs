@@ -22,10 +22,6 @@ export class ProductService {
     return productRepository.findAllPromos();
   }
 
-  async getAllPromoBurgers(): Promise<PromoBurger[]> {
-    return productRepository.findAllPromoBurgers();
-  }
-
   async getBurgerById(burgerId: number): Promise<Burger | null> {
     return productRepository.findBurgerById(burgerId);
   }

@@ -41,10 +41,6 @@ export class ProductRepository {
     });
   }
 
-  async findAllPromoBurgers(): Promise<PromoBurger[]> {
-    return prisma.promoBurger.findMany();
-  }
-
   async findBurgerById(burgerId: number): Promise<Burger | null> {
     return prisma.burger.findUnique({ where: { burgerId } });
   }
