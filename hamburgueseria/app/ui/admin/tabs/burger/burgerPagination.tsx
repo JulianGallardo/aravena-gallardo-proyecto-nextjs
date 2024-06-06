@@ -1,5 +1,3 @@
-
-
 import React, { Suspense } from "react";
 import { fetchPaginationBurgers } from "@/lib/pagination";
 import BurgerTable from "./burgerTable";

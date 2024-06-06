@@ -5,9 +5,14 @@ import Link from "next/link";
 import { Burger } from "@/prisma/generated/client";
 import { usePathname, useSearchParams } from 'next/navigation';
 import { fetchPaginationBurgers } from "@/lib/pagination";
+import { useEffect, useState } from "react";
 
+interface FetchBurger {
+  paginatedOrders: Burger[],
+  totalPages: number
+}
 
-export default async function BurgerTable(
+export default function BurgerTable(
   {
     totalPages
   }:{
@@ -17,7 +22,16 @@ export default async function BurgerTable(
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
-  const burgers = await fetchPaginationBurgers(currentPage);
+  const [burgers, setBurgers] = useState<FetchBurger>({ paginatedOrders: [], totalPages: 0 });
+
+  useEffect(() => {
+    const fetchBurgers =  () => {
+      fetchPaginationBurgers(currentPage).then((data) => { setBurgers(data) }).catch((error) => { console.error(error) });
+    };
+
+    fetchBurgers();
+
+  }, [currentPage]);
 
 
   const createPageURL = (pageNumber: number | string) => {
@@ -32,6 +46,7 @@ export default async function BurgerTable(
         {
           burgers.paginatedOrders.map((burger:Burger) => (
             <BurgerItem
+              key={burger.burgerId}
               burger={burger}
             />
           ))
