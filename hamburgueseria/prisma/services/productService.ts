@@ -1,6 +1,6 @@
 import { ProductRepository } from '../repositories/productRepository';
 import { ExtraRpository } from '../repositories/extraRepository';
-import { Prisma, Burger, Promo, Extra } from '@/prisma/generated/client';
+import { Prisma, Burger, Promo, Extra, PromoBurger } from '@/prisma/generated/client';
 
 const productRepository = new ProductRepository();
 const extraRepository = new ExtraRpository();
@@ -20,6 +20,10 @@ export class ProductService {
 
   async getAllPromos(): Promise<Promo[]> {
     return productRepository.findAllPromos();
+  }
+
+  async getAllPromoBurgers(): Promise<PromoBurger[]> {
+    return productRepository.findAllPromoBurgers();
   }
 
   async getBurgerById(burgerId: number): Promise<Burger | null> {
@@ -66,4 +70,5 @@ export class ProductService {
   async deleteExtra(extraId: number): Promise<void> {
     return extraRepository.deleteExtra(extraId);
   }
+
 }

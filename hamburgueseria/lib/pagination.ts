@@ -203,6 +203,10 @@ export async function fetchPaginatedPromos(page: number) {
 export async function fetchPaginatedPromosByName(query: String, page: number) {
   const splittedQuery = query.split("&").map((item) => item.split("="));
   const promos = await productService.getAllPromos();
+  const promoBurger = await productService.getAllPromoBurgers();
+  console.log('promos:',promos);
+  console.log('promoBurger:',promoBurger);
+  /**
   if (!promos) {
     return { paginatedOrders: [], totalPages: 0 };
   }
@@ -229,6 +233,7 @@ export async function fetchPaginatedPromosByName(query: String, page: number) {
   else {
     return await fetchPaginatedPromos(page);
   }
+  */
 }
 
 

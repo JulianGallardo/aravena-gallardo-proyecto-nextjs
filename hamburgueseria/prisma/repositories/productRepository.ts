@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, Burger, Promo } from '@/prisma/generated/client';
+import { PrismaClient, Prisma, Burger, Promo,PromoBurger } from '@/prisma/generated/client';
 
 import prisma from '@/lib/db';
 
@@ -39,6 +39,10 @@ export class ProductRepository {
         },
       },
     });
+  }
+
+  async findAllPromoBurgers(): Promise<PromoBurger[]> {
+    return prisma.promoBurger.findMany();
   }
 
   async findBurgerById(burgerId: number): Promise<Burger | null> {
