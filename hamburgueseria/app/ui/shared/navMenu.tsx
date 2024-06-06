@@ -1,12 +1,8 @@
 'use client'
-
-import { revalidatePath } from 'next/cache';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { logout } from '@/lib/actions';
 import { signOut, useSession } from 'next-auth/react';
-import { set } from 'zod';
 import CartMenu from './cartMenu';
 
 
@@ -18,7 +14,7 @@ const NavMenu = () => {
     const [CartMenuShow, setCartMenuShow] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-    const [isTransparent, setIsTransparent] = useState(false);
+    const [isTransparent, setIsTransparent] = useState(true);
 
     const handleResize = () => {
         if (window.innerWidth <= 768) {
