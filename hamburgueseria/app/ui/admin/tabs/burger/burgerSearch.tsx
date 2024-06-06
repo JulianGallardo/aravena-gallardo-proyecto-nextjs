@@ -1,16 +1,28 @@
 'use client';
 
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { Category } from '@/prisma/generated/client';
 
 
 export default function BurgerSearch({ placeholder }: { placeholder: string }) {
-    function handleSearch(term: string) {
+    function handleSearchByName(term: string) {
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
         if (term) {
             params.set('query', term);
         } else {
             params.delete('query');
+        }
+        replace(`${pathname}?${params.toString()}`);
+    }
+
+    function handleSearchByCategory(category: string) {
+        const params = new URLSearchParams(searchParams);
+        params.set('page', '1');
+        if (category) {
+            params.set('category', category);
+        } else {
+            params.delete('category');
         }
         replace(`${pathname}?${params.toString()}`);
     }
@@ -25,13 +37,30 @@ export default function BurgerSearch({ placeholder }: { placeholder: string }) {
                 Search
             </label>
             <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="w-full h-10 px-3 py-2 text-base placeholder-gray-400 border rounded-lg focus:shadow-outline"
                 placeholder={placeholder}
                 onChange={(e) => {
-                    handleSearch(e.target.value);
+                    handleSearchByName(e.target.value);
                 }}
                 defaultValue={searchParams.get('query')?.toString()}
             />
+            <select
+                className="w-full h-10 px-3 py-2 text-base placeholder-gray-400 border rounded-lg focus:shadow-outline"
+                onChange={(e) => {
+                    handleSearchByCategory(e.target.value);
+                }}
+                defaultValue={searchParams.get('category')?.toString()}
+            >
+                <option value="">ALL</option>
+                {
+                    
+                    Object.values(Category).map((category) => (
+                        <option key={category} value={category}>
+                            {category}
+                        </option>
+                    ))
+                }
+            </select>
         </div>
     );
 }

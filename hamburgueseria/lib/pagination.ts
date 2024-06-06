@@ -112,7 +112,7 @@ const ordenes = [
 
 
 const ITEMS_PER_PAGE = 4;
-export async function fetchPaginationOrders( page: number) {
+export async function fetchPaginationOrders(page: number) {
   const orders = ordenes;
   const totalItems = orders.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
@@ -141,7 +141,7 @@ export async function fetchFilteredOrderById(query: string, currentPage: number)
   }
 }
 
-export async function fetchPaginationBurgers( page: number) {
+export async function fetchPaginationBurgers(page: number) {
 
   const burgers = await productService.getAllBurgers();
   if (!burgers) {
@@ -155,3 +155,34 @@ export async function fetchPaginationBurgers( page: number) {
   return { paginatedOrders, totalPages };
 }
 
+export async function fetchPaginationBurgersByName(query: String, page: number) {
+  const splittedQuery = query.split("&").map((item) => item.split("="));
+  const burgers = await productService.getAllBurgers();
+  if (!burgers) {
+    return { paginatedOrders: [], totalPages: 0 };
+  }
+  if (query !== "" || query !== null) { // query is not empty
+    console.log('entro');
+
+    let queryName = "";
+    let queryCategory = "";
+    for (let i = 0; i < splittedQuery.length; i++) {
+      if (splittedQuery[i][0] === "query") {
+        queryName= splittedQuery[i][1];
+      }
+      if (splittedQuery[i][0] === "category") {
+        queryCategory = splittedQuery[i][1];
+      }
+    }
+    const filteredBurgers = burgers.filter((burger) => burger.name.toLowerCase().includes(queryName.toLowerCase())).filter((burger) => burger.category.toLowerCase().includes(queryCategory.toLowerCase()));
+    const totalItems = filteredBurgers.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    const paginatedOrders = filteredBurgers.slice(start, end);
+    return { paginatedOrders, totalPages };
+  }
+  else {
+    return await fetchPaginationBurgers(page);
+  }
+}

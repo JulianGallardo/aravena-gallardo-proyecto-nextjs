@@ -4,7 +4,7 @@ import BurgerItem from "./burgerItem";
 import Link from "next/link";
 import { Burger } from "@/prisma/generated/client";
 import { usePathname, useSearchParams } from 'next/navigation';
-import { fetchPaginationBurgers } from "@/lib/pagination";
+import { fetchPaginationBurgersByName } from "@/lib/pagination";
 import { useEffect, useState } from "react";
 
 interface FetchBurger {
@@ -16,22 +16,24 @@ export default function BurgerTable(
   {
     totalPages
   }:{
-    totalPages: number
+    totalPages: number,
   }) {
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
   const [burgers, setBurgers] = useState<FetchBurger>({ paginatedOrders: [], totalPages: 0 });
+  const query = searchParams.toString();
+
 
   useEffect(() => {
     const fetchBurgers =  () => {
-      fetchPaginationBurgers(currentPage).then((data) => { setBurgers(data) }).catch((error) => { console.error(error) });
+      fetchPaginationBurgersByName(query,currentPage).then((data) => { setBurgers(data) }).catch((error) => { console.error(error) });
     };
 
     fetchBurgers();
 
-  }, [currentPage]);
+  }, [currentPage,query]);
 
 
   const createPageURL = (pageNumber: number | string) => {
@@ -55,7 +57,7 @@ export default function BurgerTable(
       </div>
       <div className="flex flex-row gap-3 justify-center items-center">
         {
-          Array.from({ length: totalPages }).map((_, index) => (
+          Array.from({ length: burgers.totalPages }).map((_, index) => (
             <Link key={index} href={createPageURL(index + 1)} scroll={false} className="btn bg-darkblue w-1/5 text-white hover:bg-lightgrey hover:text-dark">
               {index + 1}
             </Link>
