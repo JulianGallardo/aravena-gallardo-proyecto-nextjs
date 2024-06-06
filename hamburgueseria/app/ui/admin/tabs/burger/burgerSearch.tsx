@@ -32,7 +32,7 @@ export default function BurgerSearch({ placeholder }: { placeholder: string }) {
     const { replace } = useRouter();
 
     return (
-        <div className="relative flex flex-1 flex-shrink-0">
+        <div className="relative flex flex-1 flex-shrink-0 gap-5">
             <label htmlFor="search" className="sr-only">
                 Search
             </label>
