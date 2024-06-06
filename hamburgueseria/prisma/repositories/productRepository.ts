@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma, Burger, Promo } from '@/prisma/generated/client';
 
-const prisma = new PrismaClient();
+import prisma from '@/lib/db';
 
 export class ProductRepository {
   async createBurger(data: Prisma.BurgerCreateInput): Promise<Burger> {

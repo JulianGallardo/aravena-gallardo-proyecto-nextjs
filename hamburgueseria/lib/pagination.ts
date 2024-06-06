@@ -1,3 +1,5 @@
+"use server";
+
 import { ProductService } from '@/prisma/services/productService';
 const productService = new ProductService();
 const ordenes = [
