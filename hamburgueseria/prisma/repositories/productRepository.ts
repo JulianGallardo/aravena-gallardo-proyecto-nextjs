@@ -76,10 +76,16 @@ export class ProductRepository {
     });
   }
 
-  async updateBurger(burgerId: number, data: Prisma.BurgerUpdateInput): Promise<Burger> {
+  async updateBurger(burgerId: number, data: BurgerDataForm): Promise<Burger> {
     return prisma.burger.update({
       where: { burgerId },
-      data,
+      data: {
+        name: data.name,
+        category: data.category as Category,
+        description: data.description,
+        stock: data.stock,
+        price: data.price,
+      },
     });
   }
 

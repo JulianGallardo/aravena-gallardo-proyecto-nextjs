@@ -28,3 +28,20 @@ export async function createBurger(form: FormData) {
   };
   return await productService.createBurger(burger);
 }
+
+
+export async function updateBurger(id:number,data:FormData) {
+  const burger:BurgerDataForm = {
+    name: data.get('name') as string,
+    description: data.get('description') as string,
+    category: data.get('category') as Category,
+    stock: Number(data.get('stock')),
+    price: Number(data.get('price')),
+  };
+  return await productService.updateBurger(id,burger);
+}
+
+
+export async function deleteBurger(id:number) {
+  return await productService.deleteBurger(id);
+}

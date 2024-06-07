@@ -16,3 +16,4 @@ export interface BurgerDataForm { //create burger, define los atributos de un bu
   stock: number;
   price: number;
 }
+

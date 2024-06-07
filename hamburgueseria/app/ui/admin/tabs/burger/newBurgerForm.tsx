@@ -24,7 +24,6 @@ const BurgerForm = () => {
             formData.append(key, value);
         });
         const burger = await createBurger(formData);
-        console.log(burger);
     });
 
     return (
