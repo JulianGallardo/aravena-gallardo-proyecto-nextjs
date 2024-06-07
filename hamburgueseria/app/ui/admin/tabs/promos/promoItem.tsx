@@ -14,7 +14,7 @@ const PromoItem = ({ promo }: PromoItemProps) => {
 
 
     return (
-        <Link href={`/admin/tabs/promos/${promo.promoId}`}>
+        <Link href={`/admin/promos/${promo.promoId}`}>
             <li key={promo.promoId} className="flex flex-col gap-5 bg-white shadow-md rounded-lg text-black p-4 hover:bg-lightgrey">
                 <h3 className="text-xl font-semibold mb-2 ">{promo.name}</h3>
                 <div className="flex flex-col  md:grid grid-cols-4 gap-2">

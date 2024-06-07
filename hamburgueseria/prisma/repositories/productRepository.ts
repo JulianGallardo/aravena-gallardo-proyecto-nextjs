@@ -48,14 +48,16 @@ export class ProductRepository {
     return prisma.burger.findUnique({ where: { burgerId } });
   }
 
-  async findPromoById(promoId: number): Promise<Promo | null> {
+  async findPromoById(promoId: number): Promise<PromoExtendida | null> {
     return prisma.promo.findUnique({
       where: { promoId },
       include: {
         burgers: {
-          include: {
+          select: {
             burger: true,
-          },
+            quantity: true,
+            newPrice: true,
+          }
         },
       },
     });

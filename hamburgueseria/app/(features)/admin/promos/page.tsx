@@ -34,7 +34,7 @@ export default async function PromosPagination({
             <div className="flex flex-col md:flex-row justify-between items-center gap-5 mb-5">
                 <h2 className="text-2xl font-bold mb-4">Promos</h2>
                 <div className="flex items-center gap-4">
-                    <BurgerSearch placeholder="Search for a burger" />
+                    <BurgerSearch placeholder="Search for a promo by name" />
                 </div>
                 <Link href="/admin/promos/new">
                     <button className="bg-green text-white p-2 rounded-lg">Add New</button>

@@ -27,7 +27,7 @@ export class ProductService {
     return productRepository.findBurgerById(burgerId);
   }
 
-  async getPromoById(promoId: number): Promise<Promo | null> {
+  async getPromoById(promoId: number): Promise<PromoExtendida | null> {
     return productRepository.findPromoById(promoId);
   }
 
