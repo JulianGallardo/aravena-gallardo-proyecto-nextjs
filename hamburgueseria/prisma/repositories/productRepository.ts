@@ -1,19 +1,10 @@
 import {  Prisma, Burger, Promo, Category } from '@/prisma/generated/client';
 
 import prisma from '@/lib/db';
-import { PromoExtendida } from '@/lib/definitions';
-
-interface BurgerData {
-  name: string;
-  imageUrl: string;
-  description: string;
-  category: string;
-  stock: number;
-  price: number;
-}
+import { BurgerDataForm, PromoExtendida } from '@/lib/definitions';
 
 export class ProductRepository {
-  async createBurger(data:BurgerData): Promise<Burger> {
+  async createBurger(data:BurgerDataForm): Promise<Burger> {
     const product = await prisma.product.create({
       data: {},
     });
