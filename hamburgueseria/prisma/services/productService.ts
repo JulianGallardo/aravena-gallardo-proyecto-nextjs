@@ -1,6 +1,7 @@
 import { ProductRepository } from '../repositories/productRepository';
 import { ExtraRpository } from '../repositories/extraRepository';
 import { Prisma, Burger, Promo, Extra, PromoBurger } from '@/prisma/generated/client';
+import { PromoExtendida } from '@/lib/definitions';
 
 const productRepository = new ProductRepository();
 const extraRepository = new ExtraRpository();
@@ -18,7 +19,7 @@ export class ProductService {
     return productRepository.findAllBurgers();
   }
 
-  async getAllPromos(): Promise<Promo[]> {
+  async getAllPromos(): Promise<PromoExtendida[]> {
     return productRepository.findAllPromos();
   }
 

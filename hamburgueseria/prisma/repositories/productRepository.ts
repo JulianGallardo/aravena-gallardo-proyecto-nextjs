@@ -1,6 +1,7 @@
-import { PrismaClient, Prisma, Burger, Promo,PromoBurger } from '@/prisma/generated/client';
+import {  Prisma, Burger, Promo } from '@/prisma/generated/client';
 
 import prisma from '@/lib/db';
+import { PromoExtendida } from '@/lib/definitions';
 
 export class ProductRepository {
   async createBurger(data: Prisma.BurgerCreateInput): Promise<Burger> {
@@ -29,14 +30,16 @@ export class ProductRepository {
     return prisma.burger.findMany();
   }
 
-  async findAllPromos(): Promise<Promo[]> {
+  async findAllPromos(): Promise<PromoExtendida[]> {
     return prisma.promo.findMany({
       include: {
-        burgers: {
-          include: {
-            burger: true,
-          },
-        },
+        burgers:{
+          select:{
+            burger:true,
+            quantity:true,
+            newPrice:true
+          }
+        }
       },
     });
   }

@@ -1,13 +1,15 @@
 "use client"
 
 import Link from "next/link";
-import { Promo } from "@/prisma/generated/client";
+import { Burger, Promo } from "@/prisma/generated/client";
 import { usePathname, useSearchParams } from 'next/navigation';
 import { fetchPaginatedPromosByName } from "@/lib/pagination";
 import { useEffect, useState } from "react";
+import PromoItem from "./promoItem";
+import { PromoExtendida } from "@/lib/definitions";
 
 interface FetchPromo {
-  paginatedOrders: Promo[],
+  paginatedOrders: PromoExtendida[]
   totalPages: number
 }
 
@@ -28,7 +30,7 @@ export default function PromoTable(
 
   useEffect(() => {
     const fetchPromos =  () => {
-        fetchPaginatedPromosByName(query,currentPage).then((data) => {  }).catch((error) => { console.error(error) });
+        fetchPaginatedPromosByName(query,currentPage).then((data) => {setPromos(data)  }).catch((error) => { console.error(error) });
     };
 
     fetchPromos();
@@ -46,7 +48,9 @@ export default function PromoTable(
     <div className="flex flex-col gap-5 justify-center items-center w-full">
       <div className="flex flex-col gap-5 md:grid grid-cols-2">
         {
-            
+          promos.paginatedOrders.map((promo) => (
+            <PromoItem key={promo.promoId} promo={promo} />
+          ))
         }
       </div>
       <div className="flex flex-row gap-3 justify-center items-center">

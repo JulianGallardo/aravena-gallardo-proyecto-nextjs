@@ -1,6 +1,7 @@
 "use server";
 
 import { ProductService } from '@/prisma/services/productService';
+import { PromoExtendida } from './definitions';
 const productService = new ProductService();
 const ordenes = [
   {
@@ -197,9 +198,10 @@ export async function fetchPaginatedPromos(page: number) {
   return { paginatedOrders, totalPages };
 }
 
-export async function fetchPaginatedPromosByName(query: String, page: number) {
+export async function fetchPaginatedPromosByName(query: String, page: number):Promise<{paginatedOrders:PromoExtendida[],totalPages:number}> {
   const splittedQuery = query.split("&").map((item) => item.split("="));
-  const promos = await productService.getAllPromos();
+  const promos:PromoExtendida[] = await productService.getAllPromos();
+  console.log('promos',JSON.stringify(promos,null,2));
   
   if (!promos) {
     return { paginatedOrders: [], totalPages: 0 };
