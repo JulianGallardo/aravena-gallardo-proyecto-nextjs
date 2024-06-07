@@ -4,8 +4,12 @@ import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Burger, Category } from "@/prisma/generated/client";
-import { fetchBurgerById, updateBurgerById, deleteBurgerById } from "@/lib/crud";
+import { fetchBurgerById, updateBurger, deleteBurger } from "@/lib/crud";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 type FormValues = {
     name: string;
@@ -16,6 +20,8 @@ type FormValues = {
     imageUrl: string;
 };
 
+
+
 const BurgerManagementPage = () => {
     const pathname = usePathname();
     const pathnameArray = pathname.split('/');
@@ -23,12 +29,15 @@ const BurgerManagementPage = () => {
 
     const [burgerData, setBurgerData] = useState<Burger | null>(null);
     const [isEditing, setIsEditing] = useState(false);
+    
+    const router = useRouter();
 
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormValues>();
 
     useEffect(() => {
         fetchBurgerById(Number(burgerId))
             .then((data) => {
+                if(!data) throw new Error("Burger not found");
                 setBurgerData(data as Burger);
                 setValue("name", data.name);
                 setValue("description", data.description);
@@ -50,22 +59,49 @@ const BurgerManagementPage = () => {
         setIsEditing(false);
     };
 
-    const handleDelete = async () => {
-        const confirmed = window.confirm("Are you sure you want to delete this burger?");
-        if (confirmed) {
-            try {
-                await deleteBurgerById(Number(burgerId));
-                // Handle post-delete actions, like redirecting or showing a message
-                console.log("Burger deleted successfully");
-            } catch (error) {
-                console.error("Failed to delete burger:", error);
+
+    const handleDeleteWithToast = () => {
+        toast(
+            <div>
+                <p className="font-semibold">Estas seguro de que deseas eliminar?</p>
+                <button
+                    className="bg-red text-white p-2 px-4 rounded-lg mt-2"
+                    onClick={async () => {
+                        await deleteBurger(Number(burgerId));
+                        toast.dismiss();
+                        console.log("Burger deleted successfully");
+                        router.push("/admin/burgers");
+                        // Handle post-delete actions here
+                    }}
+                >
+                    Yes, delete it
+                </button>
+                <button
+                    className="bg-green text-white p-2 px-4 rounded-lg mt-2 ml-2"
+                    onClick={() => toast.dismiss()}
+                >
+                    Cancel
+                </button>
+            </div>,
+            {
+                autoClose: false,
+                closeOnClick: false,
+                draggable: false,
+                position: "top-center",
+                closeButton: true,
             }
-        }
+        );
     };
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
         try {
-            await updateBurgerById(Number(burgerId), data);
+            const formData = new FormData();
+            Object.entries(data).forEach(([key, value]) => {
+                formData.append(key, value.toString());
+            });
+
+
+            await updateBurger(Number(burgerId), formData);
             setBurgerData({ ...burgerData, ...data } as Burger);
             setIsEditing(false);
         } catch (error) {
@@ -95,7 +131,7 @@ const BurgerManagementPage = () => {
                                         type="text"
                                         {...register("name", { required: true })}
                                     />
-                                    {errors.name && <span className="text-red-500">This field is required</span>}
+                                    {errors.name && <span className="text-red">This field is required</span>}
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Description:</label>
@@ -103,7 +139,7 @@ const BurgerManagementPage = () => {
                                         className="p-2 border border-gray-300 rounded w-full"
                                         {...register("description", { required: true })}
                                     />
-                                    {errors.description && <span className="text-red-500">This field is required</span>}
+                                    {errors.description && <span className="text-red">This field is required</span>}
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Category:</label>
@@ -115,7 +151,7 @@ const BurgerManagementPage = () => {
                                             <option key={category} value={category}>{category}</option>
                                         ))}
                                     </select>
-                                    {errors.category && <span className="text-red-500">This field is required</span>}
+                                    {errors.category && <span className="text-red">This field is required</span>}
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Price:</label>
@@ -124,7 +160,7 @@ const BurgerManagementPage = () => {
                                         type="number"
                                         {...register("price", { valueAsNumber: true, required: true })}
                                     />
-                                    {errors.price && <span className="text-red-500">This field is required</span>}
+                                    {errors.price && <span className="text-red">This field is required</span>}
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Stock:</label>
@@ -133,11 +169,11 @@ const BurgerManagementPage = () => {
                                         type="number"
                                         {...register("stock", { valueAsNumber: true, required: true })}
                                     />
-                                    {errors.stock && <span className="text-red-500">This field is required</span>}
+                                    {errors.stock && <span className="text-red">This field is required</span>}
                                 </div>
                                 <div className="flex justify-center items-center gap-4 p-6">
-                                    <button className="bg-blue text-white p-2 px-4 rounded-lg" type="submit">Save</button>
-                                    <button className="bg-gray-500 text-white p-2 px-4 rounded-lg" type="button" onClick={handleCancel}>Cancel</button>
+                                    <button className="bg-green text-white p-2 px-4 rounded-lg" type="submit">Save</button>
+                                    <button className="bg-red text-white p-2 px-4 rounded-lg" type="button" onClick={handleCancel}>Cancel</button>
                                 </div>
                             </form>
                         ) : (
@@ -160,15 +196,19 @@ const BurgerManagementPage = () => {
                                 </div>
                                 <div className="flex justify-center items-center gap-4 p-6">
                                     <button className="bg-green text-white p-2 px-4 rounded-lg" onClick={handleEdit}>Edit</button>
-                                    <button className="bg-red text-white p-2 px-4 rounded-lg" onClick={handleDelete}>Delete</button>
+                                    <button className="bg-red text-white p-2 px-4 rounded-lg" onClick={handleDeleteWithToast}>Delete</button>
                                 </div>
                             </div>
                         )}
                     </div>
+                    <Link href="/admin/burgers" className='btn bg-yellow text-white'>
+                        Back to Burgers
+                    </Link>
                 </div>
             ) : (
                 <div>Loading...</div>
             )}
+            <ToastContainer />
         </div>
     );
 }

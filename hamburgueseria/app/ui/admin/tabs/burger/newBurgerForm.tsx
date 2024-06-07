@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Category } from '@/prisma/generated/client';
 import {createBurger} from '@/lib/crud';
 import UploadPhotos from '@/app/ui/photos/uploadPhotos';
+import { useRouter } from 'next/navigation';
 
 
 type FormValues = {
@@ -16,14 +17,15 @@ type FormValues = {
 
 const BurgerForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const router = useRouter();
 
     const onSubmit = handleSubmit(async(data) => {
-        console.log(data);
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
             formData.append(key, value);
         });
         const burger = await createBurger(formData);
+        router.push(`/admin/burgers`);
     });
 
     return (
