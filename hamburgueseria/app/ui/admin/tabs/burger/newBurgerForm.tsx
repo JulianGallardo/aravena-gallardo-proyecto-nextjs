@@ -70,7 +70,8 @@ const BurgerForm = () => {
                 id="stock"
                 type="number"
                 placeholder="Stock"
-                {...register('stock', { valueAsNumber: true, })}
+                defaultValue={0}
+                {...register('stock', { valueAsNumber: true })}
             />
 
             <input

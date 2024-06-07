@@ -71,7 +71,6 @@ const BurgerManagementPage = () => {
                         toast.dismiss();
                         console.log("Burger deleted successfully");
                         router.push("/admin/burgers");
-                        // Handle post-delete actions here
                     }}
                 >
                     Yes, delete it
@@ -159,8 +158,8 @@ const BurgerManagementPage = () => {
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Price:</label>
                                     <input
                                         className="p-2 border border-gray-300 rounded w-full"
-                                        type="number"
-                                        {...register("price", { valueAsNumber: true, required: true })}
+                                        type="float"
+                                        {...register("price", { valueAsNumber: true, required: true})}
                                     />
                                     {errors.price && <span className="text-red">This field is required</span>}
                                 </div>
