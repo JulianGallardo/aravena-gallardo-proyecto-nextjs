@@ -21,30 +21,3 @@ export async function GET(req: NextRequest) {
     });
   }
 }
-/*
-export async function POST(req: NextRequest) {
-    const data = req.text;
-    const newBurger = await productService.createBurger(data);
-    return NextResponse.json({
-        status: 201,
-        body: newBurger
-    });
-}
-
-export async function PUT(req: NextRequest) {
-    const updatedBurger = await productService.updateBurger(Number(req.body.productId), req.body.data);
-    return NextResponse.json({
-        status: 200,
-        body: updatedBurger
-    });
-  }*/
-
-export async function DELETE(req: NextRequest) {
-  await productService.deleteBurger(
-    Number(req.nextUrl.searchParams.get("productId"))
-  );
-  return NextResponse.json({
-    status: 204,
-    body: {},
-  });
-}
