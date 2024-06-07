@@ -97,9 +97,11 @@ const BurgerManagementPage = () => {
         try {
             const formData = new FormData();
             Object.entries(data).forEach(([key, value]) => {
-                formData.append(key, value.toString());
+                if (value !== undefined && value !== null)
+                    formData.append(key, String(value)); // Convert value to string
+                else
+                    formData.append(key, "");
             });
-
 
             await updateBurger(Number(burgerId), formData);
             setBurgerData({ ...burgerData, ...data } as Burger);
