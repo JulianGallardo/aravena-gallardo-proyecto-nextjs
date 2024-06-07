@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Category } from '@/prisma/generated/client';
+import {createBurger} from '@/lib/crud';
 import UploadPhotos from '@/app/ui/photos/uploadPhotos';
 
 
@@ -14,15 +15,20 @@ type FormValues = {
 };
 
 const BurgerForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit: SubmitHandler<FormValues> = (data) => {
-        console.log('Form data:', data);
-        // Aquí puedes añadir la lógica para enviar los datos al servidor
-    };
+    const onSubmit = handleSubmit(async(data) => {
+        console.log(data);
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+        const burger = await createBurger(formData);
+        console.log(burger);
+    });
 
     return (
-        <form className="flex flex-col gap-5 mx-10 md:grid grid-cols-2 " onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex flex-col  h-full gap-5 mx-20 w-fit " onSubmit={(data)=>onSubmit(data)}>
             <input
                 className="p-2 border border-gray-300 rounded"
                 id="name"
@@ -30,9 +36,13 @@ const BurgerForm = () => {
                 placeholder="Name"
                 {...register('name', { required: true })}
             />
-            {errors.name && <span className="text-red-500">This field is required</span>}
+            {errors.name && <span className="text-red">This field is required</span>}
 
-            <UploadPhotos />
+           {
+            //ver despues como cargar las fotos
+            //
+            // <UploadPhotos />
+           }
 
             <textarea
                 className="p-2 border border-gray-300 rounded"
@@ -40,7 +50,7 @@ const BurgerForm = () => {
                 placeholder="Description"
                 {...register('description', { required: true })}
             />
-            {errors.description && <span className="text-red-500">This field is required</span>}
+            {errors.description && <span className="text-red">This field is required</span>}
 
             <select
                 className="p-2 border border-gray-300 rounded"
@@ -48,10 +58,11 @@ const BurgerForm = () => {
                 {...register('category', { required: true })}
             >
                 {Object.values(Category).map((category) => (
+                    category !== Category.PROMO &&
                     <option key={category} value={category}>{category}</option>
                 ))}
             </select>
-            {errors.category && <span className="text-red-500">This field is required</span>}
+            {errors.category && <span className="text-red">This field is required</span>}
 
             <input
                 className="p-2 border border-gray-300 rounded"
@@ -68,7 +79,7 @@ const BurgerForm = () => {
                 placeholder="Price"
                 {...register('price', { valueAsNumber: true, required: true })}
             />
-            {errors.price && <span className="text-red-500">This field is required</span>}
+            {errors.price && <span className="text-red">This field is required</span>}
             <div className="flex flex-col gap-5 items-center justify-center col-span-2">
 
                 <button

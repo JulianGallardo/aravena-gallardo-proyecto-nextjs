@@ -6,8 +6,16 @@ import { PromoExtendida } from '@/lib/definitions';
 const productRepository = new ProductRepository();
 const extraRepository = new ExtraRpository();
 
+interface BurgerData {
+  name: string;
+  imageUrl: string;
+  description: string;
+  category: string;
+  stock: number;
+  price: number;
+}
 export class ProductService {
-  async createBurger(data: Prisma.BurgerCreateInput): Promise<Burger> {
+  async createBurger(data:BurgerData ): Promise<Burger> {
     return productRepository.createBurger(data);
   }
 

@@ -12,7 +12,7 @@ const BurgerItem = ({ burger}: BurgerItemProps) => {
 
     return (
         <Link href={`/admin/burgers/${burger.burgerId}`} >
-            <li key={burger.burgerId} className="flex flex-col gap-5 bg-white shadow-md rounded-lg p-4  shadow-lightgrey hover:bg-lightgrey">
+            <li key={burger.burgerId} className="flex flex-col gap-5 bg-white shadow-md rounded-lg p-4 text-black shadow-lightgrey hover:bg-lightgrey">
                 <h3 className="text-xl font-semibold mb-2">{burger.name}</h3>
                 <div className="flex flex-row gap-2">
                     <div className="flex flex-col  md:grid grid-cols-6 gap-2 w-full ">
