@@ -28,7 +28,7 @@ const Page: React.FC = () => {
                                 <Link href="/burgers" className=" w-fit mt-5 ">
                                     <p className="btn bg-lightgrey text-black hover:text-white">Volver al menu</p>
                                 </Link>
-                                <button className="btn bg-yellow text-darkblue w-fit " onClick={() => clearCart()}>
+                                <button className="btn bg-yellow-500 text-darkblue w-fit " onClick={() => clearCart()}>
                                     <p className="text-white">Vaciar Carrito</p>
                                 </button>
                             </div>
@@ -42,7 +42,7 @@ const Page: React.FC = () => {
                                     <span className="text-lg">Items: {items}</span>
                                 </div>
 
-                                <Link href="/checkout" className="btn bg-yellow text-darkblue w-fit ">
+                                <Link href="/checkout" className="btn bg-yellow-500 text-darkblue w-fit ">
                                     <p className="text-white">Checkout</p>
                                 </Link>
 

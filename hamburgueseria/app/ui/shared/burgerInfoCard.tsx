@@ -20,7 +20,7 @@ const Card: React.FC<CardProps> = ({ title, description, photoSrc, price, burger
                     <p className="text-gray-500 dark:text-gray-300 text-base line-clamp-3 md:line-clamp-5">{description}</p>
                 </div>
                 <div className="px-6 py-4">
-                    <p className="text-yellow-400 dark:text-yellow-400 text-xl font-semibold">${price}</p>
+                    <p className="text-black dark:text-yellow-400 text-xl font-semibold">${price}</p>
                 </div>
             </div>
         </Link>

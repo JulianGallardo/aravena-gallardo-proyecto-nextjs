@@ -1,5 +1,4 @@
-'use client';
-
+"use client"
 import { useEffect, useState } from 'react';
 import { Card } from '@/app/ui';
 import { getImageUrl } from '@/utils/cloudinaryUtils';
@@ -51,14 +50,14 @@ const BurgerList: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col pt-16 px-4 items-center md:px-36 md:items-stretch">
+    <div className="flex flex-col pt-16 px-4 items-center md:mx-36 md:items-stretch">
       {burgers.length !== 0 && promos.length !== 0 &&
         categories.map((category) => (
-          <div key={category} className="mb-8">
+          <div key={category} id={category} className="mb-8">
             <h2 className="text-2xl font-bold text-darkblue dark:text-white mb-4">
               {category}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
               {burgers.map(
                 (burger) =>
                   burger.category === category && (

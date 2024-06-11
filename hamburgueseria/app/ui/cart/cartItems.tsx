@@ -55,9 +55,9 @@ const CartItems: React.FC<CartItemsProps> = ({ item }) => {
                     <p className="text-sm">Total: ${item.price * item.quantity}</p>
                 </div>
                 <div className={`flex flex-row items-center ${isMobile?'justify-center':''} mt-5 `}>
-                    <button className="btn bg-green text-white" onClick={() => addToCart(item)}> <AddToCartIcon /> </button>
+                    <button className="btn bg-green-500 text-white" onClick={() => addToCart(item)}> <AddToCartIcon /> </button>
                     <p className="text-white mx-5">{item.quantity}</p>   
-                    <button className="btn bg-red text-white" onClick={() => removeFromCart(item)}> <RemoveFromCartIcon /> </button>
+                    <button className="btn bg-red-500 text-white" onClick={() => removeFromCart(item)}> <RemoveFromCartIcon /> </button>
                 </div>
 
             </div>
