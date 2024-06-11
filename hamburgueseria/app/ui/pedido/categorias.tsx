@@ -16,13 +16,13 @@ const Categorias: React.FC<categoriesProps> = ({ categories }) => {
     }
 
     return (
-        <div className="flex flex-grow flex-col pt-20">
-            <h2 className="text-2xl font-bold m-8">Categorías</h2>
-            <div className="scroll-container flex space-x-2 overflow-x-auto justify-center items-center">
+        <div className="flex flex-grow flex-col pt-20 w-full">
+            <h2 className="text-2xl font-bold m-8 md:ml-36">Categorías</h2>
+            <div className="flex flex-col gap-5  justify-center items-center md:flex-row">
                 {categories.map((category, index) => (
                     <button
                         key={index}
-                        className="bg-white hover:bg-hoveredButton dark:bg-darkblue font-bold py-2 px-4 rounded-md shadow-md transition-colors duration-200 ease-in-out text-lg max-sm:ml-20"
+                        className="bg-white hover:bg-hoveredButton dark:bg-darkblue font-bold py-2 px-4 rounded-md shadow-md transition-colors duration-200 ease-in-out text-sm w-2/3 md:text-lg md:w-1/6 "
                         onClick={() => scrollToCategory(category)}
                     >
                         {category}
