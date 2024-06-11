@@ -18,6 +18,14 @@ export async function fetchPromoById(id: number) {
   return await productService.getPromoById(id);
 }
 
+export async function fetchAllBurgers() {
+  return await productService.getAllBurgers();
+}
+
+export async function fetchAllPromos() {
+  return await productService.getAllPromos();
+}
+
 export async function createBurger(form: FormData) {
   const burger:BurgerDataForm = {
     name: form.get('name') as string,
@@ -44,4 +52,16 @@ export async function updateBurger(id:number,data:FormData) {
 
 export async function deleteBurger(id:number) {
   return await productService.deleteBurger(id);
+}
+
+export async function createPromo(form: FormData) {
+  const promo = {
+    name: form.get('name') as string,
+    description: form.get('description') as string,
+    imageUrl: form.get('imageUrl') as string,
+    price: Number(form.get('price')),
+    category: form.get('category') as Category,
+    burgers: JSON.parse(form.get('burgers') as string),
+  };
+  return null; //modificar despues
 }

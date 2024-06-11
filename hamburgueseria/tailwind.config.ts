@@ -13,13 +13,8 @@ const config: Config = {
         darkmodebg: '#252525',
         lightgrey: '#ECF0F1',
         darkblue: '#2C3E50',
-        white: '#FFFFFF',
         dark: '#000000',
-        black: '#000000',
-        red: '#FF0000',
-        yellow: '#FABC51',
         hoveredButton: '#BDC3C7',
-        green: '#2ECC71',
   
       },
       keyframes: {
