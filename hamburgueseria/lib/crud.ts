@@ -65,3 +65,9 @@ export async function createPromo(form: FormData) {
   };
   return null; //modificar despues
 }
+
+
+
+export async function fetchAllExtras() {
+  return await productService.getAllExtras();
+} 

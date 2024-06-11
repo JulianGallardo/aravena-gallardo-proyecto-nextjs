@@ -74,7 +74,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const removeFromCart = (product: CartItem) => {
         setCart((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.productId === product.productId);
+            const existingProduct = prevCart.find((item) => item.productId === product.productId && item.extras === product.extras);
             if (existingProduct) {
                 if (existingProduct.quantity > 1) {
                     return prevCart.map((item) =>
