@@ -64,6 +64,7 @@ const BurgerPage: React.FC = () => {
             const burgerId = pathnameArray[pathnameArray.length - 1];
             const query = burgerId ? `?productId=${burgerId}` : '';
             const url = `/api/products/burgers${query}`;
+            
 
             fetch(url, {
                 method: 'GET',
@@ -76,6 +77,8 @@ const BurgerPage: React.FC = () => {
                 .then((data) => {
                     console.log(data);
                     parseData(data.body);
+                }).catch((error) => {
+                    console.error('Error fetching burger:', error);
                 });
         }
         getBurger();
