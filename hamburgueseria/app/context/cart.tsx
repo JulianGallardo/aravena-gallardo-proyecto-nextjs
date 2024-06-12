@@ -12,6 +12,9 @@ interface CartContextType {
     removeWithQuantity: (product: CartItem, quantity: number) => void;
 }
 
+
+
+
 export const CartContext = createContext<CartContextType>({
     cart: [],
     total: 0,
@@ -71,7 +74,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
             return [...prevCart, { ...product, quantity: 1 }];
         });
         setItems((prevItems) => prevItems + 1);
-        setTotal((prevTotal) => prevTotal + product.price);
+        setTotal((prevTotal) => prevTotal + product.price + product.extras.reduce((acc, extra) => acc + extra.extra.price * extra.quantity, 0));
     };
 
     const removeFromCart = (product: CartItem) => {
