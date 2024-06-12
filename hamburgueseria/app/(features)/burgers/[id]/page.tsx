@@ -98,7 +98,6 @@ const BurgerPage: React.FC = () => {
                 }
             });
         }
-
         if (!burgerData) {
             return;
         }
@@ -159,24 +158,34 @@ const BurgerPage: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-full my-28 items-center">
+        <div className="flex flex-col h-full my-28 items-center dark:bg-gray-900 dark:text-white transition duration-500 w-screen">
             {burgerData && burgerData.name ? (
-                <div className="flex flex-col md:grid md:grid-cols-2 items-center gap-5">
-                    <Image src={burgerData.imageUrl} alt={burgerData.name} width={300} height={300} className='rounded-md' />
+                <div className="flex flex-col md:grid md:grid-cols-2 gap-5 p-4">
+                    <div className="flex justify-center items-start">
+                        <div className="w-full h-auto max-w-lg">
+                            <Image
+                                src={burgerData.imageUrl}
+                                alt={burgerData.name}
+                                width={400}
+                                height={400}
+                                className="rounded-lg w-auto h-auto"
+                            />
+                        </div>
+                    </div>
                     <div className='flex flex-col gap-2'>
-                        <h1 className='text-lg font-bold'>{burgerData.name}</h1>
-                        <label>Description:</label>
-                        <p>{burgerData.description}</p>
-                        <label>Category:</label>
-                        <p>{burgerData.category}</p>
-                        <label>Price:</label>
-                        <p>{burgerData.price}</p>
-                        <label>Add Extra:</label>
+                        <h1 className='text-lg md:text-2xl lg:text-3xl font-bold'>{burgerData.name}</h1>
+                        <label className="font-semibold md:text-lg lg:text-xl">Description:</label>
+                        <p className="md:text-lg lg:text-xl">{burgerData.description}</p>
+                        <label className="font-semibold md:text-lg lg:text-xl">Category:</label>
+                        <p className="md:text-lg lg:text-xl">{burgerData.category}</p>
+                        <label className="font-semibold md:text-lg lg:text-xl">Price:</label>
+                        <p className="md:text-lg lg:text-xl">{burgerData.price}</p>
+                        <label className="font-semibold md:text-lg lg:text-xl">Add Extra:</label>
                         <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit(handleFormSubmit)}>
                             {extrasInBurger.map((extra, index) => (
                                 <div key={index} className="flex gap-5 items-center">
                                     <select
-                                        className="p-2 border border-gray-300 rounded"
+                                        className="p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600"
                                         {...register(`extras.${index}.extra`, { required: true })}
                                     >
                                         {extras.map((extra) => (
@@ -184,7 +193,7 @@ const BurgerPage: React.FC = () => {
                                         ))}
                                     </select>
                                     <input
-                                        className="p-2 border border-gray-300 rounded"
+                                        className="p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600"
                                         type="number"
                                         placeholder="Quantity"
                                         {...register(`extras.${index}.quantity`, { required: true })}
@@ -192,13 +201,13 @@ const BurgerPage: React.FC = () => {
                                     <button type="button" className='btn bg-red-500 hover:bg-red-800 text-white' onClick={() => removeExtra(index)}>Remove</button>
                                 </div>
                             ))}
-                            <button type="button" className='btn bg-gray-600 text-white' onClick={addExtra}>Add Extra</button>
+                            <button type="button" className='btn bg-gray-600 text-white dark:bg-gray-700' onClick={addExtra}>Add Extra</button>
                             <div className="flex gap-5">
-                                <button type="submit" className="btn btn-circle bg-green-400" onClick={() => setSubmitBtn(true)}>
+                                <button type="submit" className="btn btn-circle bg-green-400 hover:bg-green-600 text-white" onClick={() => setSubmitBtn(true)}>
                                     <AddToCartIcon />
                                 </button>
 
-                                <button type='submit' className="btn btn-circle bg-red-400" onClick={() => setDeleteBtn(true)}>
+                                <button type='submit' className="btn btn-circle bg-red-400 hover:bg-red-600 text-white" onClick={() => setDeleteBtn(true)}>
                                     <RemoveFromCartIcon />
                                 </button>
                             </div>
