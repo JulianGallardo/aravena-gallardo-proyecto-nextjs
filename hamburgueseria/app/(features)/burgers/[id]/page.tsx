@@ -158,7 +158,7 @@ const BurgerPage: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-full my-28 items-center dark:bg-gray-900 dark:text-white transition duration-500 w-screen">
+        <div className="flex flex-col h-full my-28 items-center  dark:text-white transition duration-500 w-screen">
             {burgerData && burgerData.name ? (
                 <div className="flex flex-col md:grid md:grid-cols-2 gap-5 p-4">
                     <div className="flex justify-center items-start">
@@ -168,7 +168,7 @@ const BurgerPage: React.FC = () => {
                                 alt={burgerData.name}
                                 width={400}
                                 height={400}
-                                className="rounded-lg w-auto h-auto"
+                                className="rounded-lg"
                             />
                         </div>
                     </div>
