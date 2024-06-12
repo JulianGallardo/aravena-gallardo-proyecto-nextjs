@@ -78,6 +78,20 @@ const BurgerPage: React.FC = () => {
         setExtrasInBurger(extrasInBurger.filter((_, i) => i !== index));
     };
 
+    const calculateTotalPrice = () => {
+        if (!burgerData) {
+            return 0;
+        }
+        const extrasTotal = extrasInBurger.reduce((total, currentExtra) => {
+            const extraDetails = extras.find(e => e.extraId === parseInt(currentExtra.extra));
+            if (extraDetails) {
+                return total + extraDetails.price * currentExtra.quantity;
+            }
+            return total;
+        }, 0);
+        return burgerData.price + extrasTotal;
+    };
+
     const handleFormSubmit: SubmitHandler<FormValues> = (data) => {
         if (submitBtn) {
             setSubmitBtn(false);
@@ -179,7 +193,7 @@ const BurgerPage: React.FC = () => {
                         <label className="font-semibold md:text-lg lg:text-xl">Category:</label>
                         <p className="md:text-lg lg:text-xl">{burgerData.category}</p>
                         <label className="font-semibold md:text-lg lg:text-xl">Price:</label>
-                        <p className="md:text-lg lg:text-xl">{burgerData.price}</p>
+                        <p className="md:text-lg lg:text-xl">${burgerData.price}</p>
                         <label className="font-semibold md:text-lg lg:text-xl">Add Extra:</label>
                         <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit(handleFormSubmit)}>
                             {extrasInBurger.map((extra, index) => (
@@ -187,8 +201,16 @@ const BurgerPage: React.FC = () => {
                                     <select
                                         className="text-sm md:text-lg p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600"
                                         {...register(`extras.${index}.extra`, { required: true })}
+                                        onChange={(e) => {
+                                            const newExtras = [...extrasInBurger];
+                                            newExtras[index].extra = e.target.value;
+                                            setExtrasInBurger(newExtras);
+                                            console.log(extrasInBurger);
+                                        }}
                                     >
+                                        <option value="">Select an extra</option>
                                         {extras.map((extra) => (
+                                            
                                             <option key={extra.extraId} value={extra.extraId}>{extra.name}</option>
                                         ))}
                                     </select>
@@ -197,12 +219,20 @@ const BurgerPage: React.FC = () => {
                                         type="number"
                                         placeholder="Quantity"
                                         {...register(`extras.${index}.quantity`, { required: true })}
+                                        onChange={(e) => {
+                                            const newExtras = [...extrasInBurger];
+                                            newExtras[index].quantity = parseInt(e.target.value);
+                                            setExtrasInBurger(newExtras);
+                                            console.log(extrasInBurger);
+                                        }}
                                     />
-                                    
                                     <button type="button" className='btn bg-red-500 hover:bg-red-800 text-white' onClick={() => removeExtra(index)}>Remove</button>
                                 </div>
                             ))}
                             <button type="button" className='btn bg-gray-600 text-white dark:bg-gray-700' onClick={addExtra}>Add Extra</button>
+                            {extrasInBurger.length > 0 && (
+                                <p className="text-red-500">Nuevo precio con extras: ${calculateTotalPrice()}</p>
+                            )}
                             <div className="flex gap-5">
                                 <button type="submit" className="btn btn-circle bg-green-400 hover:bg-green-600 text-white" onClick={() => setSubmitBtn(true)}>
                                     <AddToCartIcon />
