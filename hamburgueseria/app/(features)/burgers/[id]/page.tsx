@@ -183,9 +183,9 @@ const BurgerPage: React.FC = () => {
                         <label className="font-semibold md:text-lg lg:text-xl">Add Extra:</label>
                         <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit(handleFormSubmit)}>
                             {extrasInBurger.map((extra, index) => (
-                                <div key={index} className="flex gap-5 items-center">
+                                <div key={index} className="flex flex-col md:flex-row gap-5 items-center border p-5 rounded-lg border-yellow-200">
                                     <select
-                                        className="p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600"
+                                        className="text-sm md:text-lg p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600"
                                         {...register(`extras.${index}.extra`, { required: true })}
                                     >
                                         {extras.map((extra) => (
@@ -198,6 +198,7 @@ const BurgerPage: React.FC = () => {
                                         placeholder="Quantity"
                                         {...register(`extras.${index}.quantity`, { required: true })}
                                     />
+                                    
                                     <button type="button" className='btn bg-red-500 hover:bg-red-800 text-white' onClick={() => removeExtra(index)}>Remove</button>
                                 </div>
                             ))}
