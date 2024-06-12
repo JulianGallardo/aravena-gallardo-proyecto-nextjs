@@ -1,5 +1,5 @@
-import { createContext, use, useEffect, useState } from "react";
-import { CartItem } from "@/lib/types";
+import { createContext, useEffect, useState } from "react";
+import { CartItem, ExtraInCart } from "@/lib/types";
 
 interface CartContextType {
     cart: CartItem[];
@@ -16,11 +16,11 @@ export const CartContext = createContext<CartContextType>({
     cart: [],
     total: 0,
     items: 0,
-    addToCart: (product: CartItem) => { },
-    removeFromCart: (product: CartItem) => { },
-    clearCart: () => { },
-    addWithQuantity: (product: CartItem, quantity: number) => { },
-    removeWithQuantity: (product: CartItem, quantity: number) => { },
+    addToCart: () => {},
+    removeFromCart: () => {},
+    clearCart: () => {},
+    addWithQuantity: () => {},
+    removeWithQuantity: () => {},
 });
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -29,39 +29,41 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const [total, setTotal] = useState(0);
     const [load, setLoad] = useState(false);
 
-
     const updateLocalStorage = (cart: CartItem[]) => {
         window.localStorage.setItem("cart", JSON.stringify(cart));
-    }
-
-    
+    };
 
     useEffect(() => {   
-        if (load === false) { //si es la primera carga, lo busco en local storage
+        if (load === false) {
             const data = window.localStorage.getItem("cart");
-            console.log("data", data);
             if (data) {
-                console.log("data, entro", data);
                 const cartInitialState = JSON.parse(data) as CartItem[];
-                console.log("cartInitialState", cartInitialState);
                 setCart(cartInitialState);
                 setItems(cartInitialState.reduce((acc, item) => acc + item.quantity, 0));
                 setTotal(cartInitialState.reduce((acc, item) => acc + item.price * item.quantity, 0));
             }
             setLoad(true);
-        }
-        else { //sino lo voy actualizando
+        } else {
             updateLocalStorage(cart);
         }
+        console.log(cart);
     }, [cart]);
 
+    const areExtrasEqual = (extras1: ExtraInCart[], extras2: ExtraInCart[]) => {
+        if (extras1.length !== extras2.length) return false;
+        return extras1.every(extra1 => 
+            extras2.some(extra2 => extra1.extra.extraId === extra2.extra.extraId && extra1.quantity === extra2.quantity)
+        );
+    };
 
     const addToCart = (product: CartItem) => {
         setCart((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.productId === product.productId);
+            const existingProduct = prevCart.find((item) => 
+                item.productId === product.productId && areExtrasEqual(item.extras, product.extras)
+            );
             if (existingProduct) {
                 return prevCart.map((item) =>
-                    item.productId === product.productId
+                    item.productId === product.productId && areExtrasEqual(item.extras, product.extras)
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
@@ -74,16 +76,20 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const removeFromCart = (product: CartItem) => {
         setCart((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.productId === product.productId && item.extras === product.extras);
+            const existingProduct = prevCart.find((item) => 
+                item.productId === product.productId && areExtrasEqual(item.extras, product.extras)
+            );
             if (existingProduct) {
                 if (existingProduct.quantity > 1) {
                     return prevCart.map((item) =>
-                        item.productId === product.productId
+                        item.productId === product.productId && areExtrasEqual(item.extras, product.extras)
                             ? { ...item, quantity: item.quantity - 1 }
                             : item
                     );
                 } else {
-                    return prevCart.filter((item) => item.productId !== product.productId);
+                    return prevCart.filter((item) => 
+                        !(item.productId === product.productId && areExtrasEqual(item.extras, product.extras))
+                    );
                 }
             }
             return prevCart;
@@ -100,10 +106,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const addWithQuantity = (product: CartItem, quantity: number) => {
         setCart((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.productId === product.productId);
+            const existingProduct = prevCart.find((item) => 
+                item.productId === product.productId && areExtrasEqual(item.extras, product.extras)
+            );
             if (existingProduct) {
                 return prevCart.map((item) =>
-                    item.productId === product.productId
+                    item.productId === product.productId && areExtrasEqual(item.extras, product.extras)
                         ? { ...item, quantity: item.quantity + quantity }
                         : item
                 );
@@ -116,16 +124,20 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const removeWithQuantity = (product: CartItem, quantity: number) => {
         setCart((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.productId === product.productId);
+            const existingProduct = prevCart.find((item) => 
+                item.productId === product.productId && areExtrasEqual(item.extras, product.extras)
+            );
             if (existingProduct) {
                 if (existingProduct.quantity > quantity) {
                     return prevCart.map((item) =>
-                        item.productId === product.productId
+                        item.productId === product.productId && areExtrasEqual(item.extras, product.extras)
                             ? { ...item, quantity: item.quantity - quantity }
                             : item
                     );
                 } else {
-                    return prevCart.filter((item) => item.productId !== product.productId);
+                    return prevCart.filter((item) => 
+                        !(item.productId === product.productId && areExtrasEqual(item.extras, product.extras))
+                    );
                 }
             }
             return prevCart;

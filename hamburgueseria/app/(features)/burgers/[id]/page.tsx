@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useCart } from '@/app/hooks/useCart';
@@ -27,49 +28,47 @@ const BurgerPage: React.FC = () => {
     const [extras, setExtras] = useState<Extra[]>([]);
     const [extrasInBurger, setExtrasInBurger] = useState<SelectedExtra[]>([]);
 
+    const [submitBtn, setSubmitBtn] = useState(false);
+    const [deleteBtn, setDeleteBtn] = useState(false);
+
     useEffect(() => {
-        function getExtras() {
-            fetchAllExtras().then((data) => {
-                setExtras(data);
-            }).catch((error) => {
-                console.error('Error fetching extras:', error);
-            });
-        }
-        getExtras();
+        fetchAllExtras().then((data) => {
+            setExtras(data);
+        }).catch((error) => {
+            console.error('Error fetching extras:', error);
+        });
     }, []);
 
     const parseData = (data: Burger) => {
-        const burger = data;
         setBurgerData({
-            ...burger,
+            ...data,
             quantity: 1,
             extras: []
         });
     };
 
     useEffect(() => {
-        function getBurger() {
+        const getBurger = async () => {
             const pathnameArray = pathname.split('/');
             const burgerId = pathnameArray[pathnameArray.length - 1];
             const query = burgerId ? `?productId=${burgerId}` : '';
             const url = `/api/products/burgers${query}`;
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
-                    parseData(data.body);
-                }).catch((error) => {
-                    console.error('Error fetching burger:', error);
+            try {
+                const res = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 });
-        }
+                const data = await res.json();
+                parseData(data.body);
+            } catch (error) {
+                console.error('Error fetching burger:', error);
+            }
+        };
         getBurger();
-    }, []);
+    }, [pathname]);
 
     const addExtra = () => {
         setExtrasInBurger([...extrasInBurger, { extra: '', quantity: 0 }]);
@@ -79,59 +78,30 @@ const BurgerPage: React.FC = () => {
         setExtrasInBurger(extrasInBurger.filter((_, i) => i !== index));
     };
 
-    const handleAddToCart: SubmitHandler<FormValues> = (data) => {
-        const extrasInBurgers: SelectedExtra[] = [];
-
-        data.extras.forEach((extra) => {
-            if (extra.extra !== '' && extra.quantity !== 0) {
-                extrasInBurgers.push(extra);
-            }
-        });
-
-        if (!burgerData) {
-            return;
+    const handleFormSubmit: SubmitHandler<FormValues> = (data) => {
+        if (submitBtn) {
+            setSubmitBtn(false);
+            handleAddToCart(data);
+        } else if (deleteBtn) {
+            setDeleteBtn(false);
+            handleDelete(data);
         }
-
-
-
-        const parsedExtrasByName: ExtraInCart[] = extrasInBurgers.map((extra) => {
-            const extraData = extras.find((e) => e.extraId === parseInt(extra.extra));
-            if (!extraData) {
-                return null;
-            }
-            return {
-                extra: extraData,
-                quantity: extra.quantity
-            };
-        }).filter((extra) => extra !== null) as ExtraInCart[];
-
-
-        const newBurger: CartItem = {
-            ...burgerData,
-            extras: parsedExtrasByName,
-            quantity: 1
-        };
-
-
-        addToCart(newBurger);
-
     };
 
-
-    const handleDelete: SubmitHandler<FormValues> = (data) => {
+    const handleAddToCart = (data: FormValues) => {
         const extrasInBurgers: SelectedExtra[] = [];
 
-        data.extras.forEach((extra) => {
-            if (extra.extra !== '' && extra.quantity !== 0) {
-                extrasInBurgers.push(extra);
-            }
-        });
+        if (data.extras) {
+            data.extras.forEach((extra) => {
+                if (extra.extra !== '' && extra.quantity !== 0) {
+                    extrasInBurgers.push(extra);
+                }
+            });
+        }
 
         if (!burgerData) {
             return;
         }
-
-
 
         const parsedExtrasByName: ExtraInCart[] = extrasInBurgers.map((extra) => {
             const extraData = extras.find((e) => e.extraId === parseInt(extra.extra));
@@ -144,6 +114,40 @@ const BurgerPage: React.FC = () => {
             };
         }).filter((extra) => extra !== null) as ExtraInCart[];
 
+        const newBurger: CartItem = {
+            ...burgerData,
+            extras: parsedExtrasByName,
+            quantity: 1
+        };
+
+        addToCart(newBurger);
+    };
+
+    const handleDelete = (data: FormValues) => {
+        const extrasInBurgers: SelectedExtra[] = [];
+
+        if (data.extras) {
+            data.extras.forEach((extra) => {
+                if (extra.extra !== '' && extra.quantity !== 0) {
+                    extrasInBurgers.push(extra);
+                }
+            });
+        }
+
+        if (!burgerData) {
+            return;
+        }
+
+        const parsedExtrasByName: ExtraInCart[] = extrasInBurgers.map((extra) => {
+            const extraData = extras.find((e) => e.extraId === parseInt(extra.extra));
+            if (!extraData) {
+                return null;
+            }
+            return {
+                extra: extraData,
+                quantity: extra.quantity
+            };
+        }).filter((extra) => extra !== null) as ExtraInCart[];
 
         const newBurger: CartItem = {
             ...burgerData,
@@ -151,14 +155,12 @@ const BurgerPage: React.FC = () => {
             quantity: 1
         };
 
-
         removeFromCart(newBurger);
-
     };
 
     return (
         <div className="flex flex-col h-full my-28 items-center">
-            {burgerData && burgerData.name && (
+            {burgerData && burgerData.name ? (
                 <div className="flex flex-col md:grid md:grid-cols-2 items-center gap-5">
                     <Image src={burgerData.imageUrl} alt={burgerData.name} width={300} height={300} className='rounded-md' />
                     <div className='flex flex-col gap-2'>
@@ -170,7 +172,7 @@ const BurgerPage: React.FC = () => {
                         <label>Price:</label>
                         <p>{burgerData.price}</p>
                         <label>Add Extra:</label>
-                        <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit(handleAddToCart)}>
+                        <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit(handleFormSubmit)}>
                             {extrasInBurger.map((extra, index) => (
                                 <div key={index} className="flex gap-5 items-center">
                                     <select
@@ -192,19 +194,18 @@ const BurgerPage: React.FC = () => {
                             ))}
                             <button type="button" className='btn bg-gray-600 text-white' onClick={addExtra}>Add Extra</button>
                             <div className="flex gap-5">
-                                <button type="submit" className="btn btn-circle bg-green-400">
+                                <button type="submit" className="btn btn-circle bg-green-400" onClick={() => setSubmitBtn(true)}>
                                     <AddToCartIcon />
                                 </button>
 
-                                <button className="btn btn-circle bg-red-400" onClick={() => handleDelete} >
+                                <button type='submit' className="btn btn-circle bg-red-400" onClick={() => setDeleteBtn(true)}>
                                     <RemoveFromCartIcon />
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
-            )}
-            {!burgerData && (
+            ) : (
                 <div className="flex flex-col items-center gap-5">
                     <h1>Loading...</h1>
                 </div>
