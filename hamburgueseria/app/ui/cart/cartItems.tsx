@@ -24,6 +24,14 @@ const CartItems: React.FC<CartItemsProps> = ({ item }) => {
         };
     }, []);
 
+    const calculateTotal = () => {
+        let total = item.price * item.quantity;
+        item.extras.forEach(extra => {
+            total += extra.extra.price * extra.quantity;
+        });
+        return total;
+    }
+
     return (
         <div className="flex flex-col md:flex-row items-center border border-gray-300 rounded-lg shadow-lg mb-4 p-4 dark:bg-gray-900 dark:text-white">
             {!isMobile && (
@@ -53,7 +61,7 @@ const CartItems: React.FC<CartItemsProps> = ({ item }) => {
                             ))}
                         </ul>
                     </div>
-                    <p className="text-sm md:text-base lg:text-lg">Total: ${item.price * item.quantity}</p>
+                    <p className="text-sm md:text-base lg:text-lg">Total: ${calculateTotal()}</p>
                 </div>
                 <div className={`flex flex-row items-center ${isMobile ? 'justify-center' : 'justify-start'} mt-5`}>
                     <button className="btn bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center">
