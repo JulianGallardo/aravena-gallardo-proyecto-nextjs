@@ -44,7 +44,6 @@ const BurgerManagementPage = () => {
                 setValue("category", data.category);
                 setValue("price", data.price);
                 setValue("stock", data.stock);
-                setValue("imageUrl", data.imageUrl);
             })
             .catch((error) => {
                 console.error(error);
