@@ -1,6 +1,6 @@
 
 import { ProductRepository } from '../repositories/productRepository';
-import { ExtraRpository } from '../repositories/extraRepository';
+import { ExtraRepository } from '../repositories/extraRepository';
 import { Prisma, Burger, Promo, Extra, PromoBurger } from '@/prisma/generated/client';
 import { BurgerDataForm, PromoExtendida } from '@/lib/definitions';
 
