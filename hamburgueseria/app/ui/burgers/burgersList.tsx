@@ -76,6 +76,7 @@ const BurgerList: React.FC = () => {
                       photoSrc={burger.imageUrl} // Obtener la URL de la imagen correspondiente
                       price={burger.price}
                       burgerId={burger.burgerId}
+                      category={burger.category}
                     />
                   )
               )}
@@ -88,6 +89,7 @@ const BurgerList: React.FC = () => {
                     photoSrc={promo.imageUrl} // Obtener la URL de la imagen correspondiente
                     price={promo.price}
                     burgerId={promo.promoId} // Usar promoId en lugar de burgerId
+                    category={Category.PROMO}
                   />
               )
               }
