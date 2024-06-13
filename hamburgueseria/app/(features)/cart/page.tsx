@@ -11,7 +11,7 @@ const Page: React.FC = () => {
 
 
     return (
-        <div className="flex flex-col  mt-20 mx-24 h-fit gap-5 p-4 text-dark">
+        <div className="flex flex-col  mt-20 md:mx-24 h-fit gap-5 p-4 text-dark">
             <h1 className="text-2xl font-bold mb-4 ">Carrito</h1>
             <div className="flex flex-col flex-grow gap-4 min-h-screen h-fit text-white w-full ">
                 {(items !== 0) &&
