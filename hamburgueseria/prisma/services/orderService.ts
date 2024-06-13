@@ -1,6 +1,7 @@
 import { PrismaClient, PaymentMethod, Order } from '@/prisma/generated/client';
-
+import { OrderRepository } from '@/prisma/repositories/orderRepository';
 const prisma = new PrismaClient();
+const orderRepository = new OrderRepository()
 
 export class OrderService {
   async createOrder(data: { clientId: number; products: { productId: number, quantity: number }[], paymentMethod: PaymentMethod }): Promise<Order> {
@@ -26,21 +27,14 @@ export class OrderService {
         totalAmount += productDetail.promo.price * product.quantity;
       }
     });
+    return orderRepository.createOrder({ clientId, products, paymentMethod, totalAmount });
+  }
 
-    const order = await prisma.order.create({
-      data: {
-        clientId,
-        totalAmount,
-        paymentMethod,
-        products: {
-          create: products.map((product) => ({
-            productId: product.productId,
-            quantity: product.quantity,
-          })),
-        },
-      },
-    });
+  async getAllOrders(): Promise<Order[]> {
+    return orderRepository.getAllOrders();
+  }
 
-    return order;
+  async getOrderById(orderId: number): Promise<Order | null> {
+    return orderRepository.getOrderById(orderId);
   }
 }

@@ -1,17 +1,22 @@
+
 import { ProductRepository } from '../repositories/productRepository';
 import { ExtraRpository } from '../repositories/extraRepository';
 import { Prisma, Burger, Promo, Extra, PromoBurger } from '@/prisma/generated/client';
 import { BurgerDataForm, PromoExtendida } from '@/lib/definitions';
 
+
 const productRepository = new ProductRepository();
-const extraRepository = new ExtraRpository();
+const extraRepository = new ExtraRepository();
 
 export class ProductService {
   async createBurger(data:BurgerDataForm ): Promise<Burger> {
     return productRepository.createBurger(data);
   }
 
-  async createPromo(data: Prisma.PromoCreateInput, burgers: { burgerId: number, quantity: number, newPrice: number }[]): Promise<Promo> {
+  async createPromo(
+    data: Prisma.PromoCreateInput,
+    burgers: { burgerId: number; quantity: number; newPrice: number }[]
+  ): Promise<Promo> {
     return productRepository.createPromo(data, burgers);
   }
 
@@ -31,11 +36,16 @@ export class ProductService {
     return productRepository.findPromoById(promoId);
   }
 
+
   async updateBurger(burgerId: number, data: BurgerDataForm): Promise<Burger> {
     return productRepository.updateBurger(burgerId, data);
   }
 
-  async updatePromo(promoId: number, data: Prisma.PromoUpdateInput, burgers: { burgerId: number, quantity: number, newPrice: number }[]): Promise<Promo> {
+  async updatePromo(
+    promoId: number,
+    data: Prisma.PromoUpdateInput,
+    burgers: { burgerId: number; quantity: number; newPrice: number }[]
+  ): Promise<Promo> {
     return productRepository.updatePromo(promoId, data, burgers);
   }
 
@@ -60,7 +70,14 @@ export class ProductService {
     return extraRepository.findExtraById(extraId);
   }
 
-  async updateExtra(extraId: number, data: Prisma.ExtraUpdateInput): Promise<Extra> {
+  async getExtraByBurgerId(burgerId: number): Promise<Extra[]> {
+    return extraRepository.getExtrasByBurgerId(burgerId);
+  }
+
+  async updateExtra(
+    extraId: number,
+    data: Prisma.ExtraUpdateInput
+  ): Promise<Extra> {
     return extraRepository.updateExtra(extraId, data);
   }
 

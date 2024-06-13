@@ -78,12 +78,11 @@ model Burger{
   productId   Int       @unique
   name        String
   category    Category 
-  imageUrl    String    @default("https://s7d1.scene7.com/is/image/mcdonalds/Header_BigMacCombo_v1_832x472:nutrition-calculator-tile?wid=472&hei=472&dpr=off")  
   description String    @default("")
   extras      ExtraOnBurger[]
   stock       Int       @default(0)
   price       Float
-  promos      PromoBurger[]
+  promos      BurgerOnPromo[]
   product     Product   @relation(fields: [productId], references: [productId])
 }
 
@@ -95,7 +94,7 @@ model Promo{
   description String    @default("")
   category    Category  @default(PROMO)
   product     Product   @relation(fields: [productId], references: [productId])
-  burgers     PromoBurger[]
+  burgers     BurgerOnPromo[]
   price       Float     @default(0) //debe calcularse en base a los productos que contiene
 }
 
@@ -111,10 +110,10 @@ model Extra {
   name        String
   price       Float     
   maxQuantity Int       @default(1)
-  burgers    ExtraOnBurger[]
+  burgers     ExtraOnBurger[]
 }
 
-model PromoBurger {
+model BurgerOnPromo {
   id          Int       @id @default(autoincrement())
   promoId     Int
   burgerId    Int

@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -263,7 +264,9 @@ const BurgerPage: React.FC = () => {
                 </div>
             )}
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default BurgerPage;
