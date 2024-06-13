@@ -79,6 +79,7 @@ model Burger{
   name        String
   category    Category 
   description String    @default("")
+  imageUrl    String    @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
   extras      ExtraOnBurger[]
   stock       Int       @default(0)
   price       Float
