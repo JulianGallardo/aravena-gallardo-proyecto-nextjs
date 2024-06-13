@@ -264,9 +264,6 @@ const BurgerPage: React.FC = () => {
                 </div>
             )}
         </div>
-      )}
-    </div>
-  );
-};
+      )};
 
 export default BurgerPage;
