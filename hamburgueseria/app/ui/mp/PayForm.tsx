@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CardForm: React.FC = () => {
+const PayForm: React.FC = () => {
   const [formData, setFormData] = useState({
     cardNumber: '',
     expirationDate: '',
@@ -104,4 +104,4 @@ const CardForm: React.FC = () => {
   );
 };
 
-export default CardForm;
+export default PayForm;
