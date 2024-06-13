@@ -1,6 +1,7 @@
 import prisma from '@/lib/db';
-import { Category, Product } from './generated/client';
+import { Burger, Category, Product } from './generated/client';
 import bcrypt from 'bcryptjs';
+import { connect } from 'http2';
 
 const burgers = [
   {
@@ -127,7 +128,7 @@ const seed = async () => {
       user: {
         create: {
           email: 'admin@admin.com',
-          password: bcryptPassword , // admin
+          password: bcryptPassword, // admin
           role: 'ADMIN',
           fullName: 'Admin',
         },
@@ -143,7 +144,8 @@ const seed = async () => {
   }
 
   // Create Products, Burgers, Promos
-  const products = [];
+  const products: Product[] = [];
+  const burgerIds:number[] = [];
   let productCount = 0;
 
   for (const burger of burgers) {
@@ -162,12 +164,17 @@ const seed = async () => {
         price: burger.price,
       },
     });
-
+    prisma.burger.findUnique({
+      where: { productId: product.productId },
+    }).then((burger) => {
+      burgerIds.push(Number(burger?.burgerId)); //saco el burgerId
+    }
+    );
     productCount++;
   }
 
   for (const promo of promos) {
-    const product = await prisma.product.create({
+    const product: Product = await prisma.product.create({
       data: {},
     });
     products.push(product);
@@ -179,8 +186,31 @@ const seed = async () => {
         name: promo.name,
         description: promo.description,
         price: promo.price,
+        burgers: {
+          create: [
+            {
+              burger: {
+                connect: { burgerId: burgerIds[Math.floor(Math.random()*burgerIds.length)]}  // ID de la hamburguesa existente
+              },
+              quantity: 2,
+              newPrice: 12.99
+            },
+            {
+              burger: {
+                connect: { burgerId: burgerIds[Math.floor(Math.random()*burgerIds.length)] } // ID de otra hamburguesa existente
+              },
+              quantity: 1,
+              newPrice: 10.99
+            }
+          ]
+        }
       },
+      include: {
+        burgers: true // Incluye las relaciones PromoBurger creadas
+      }
     });
+
+
 
     productCount++;
   }
@@ -205,7 +235,7 @@ const seed = async () => {
     let totalAmount = 0;
 
     for (let j = 0; j < 5; j++) {
-      let product:Product, productExists;
+      let product: Product, productExists;
       do {
         product = products[Math.floor(Math.random() * productCount)];
         productExists = orderProducts.some(op => op.productId === product.productId);

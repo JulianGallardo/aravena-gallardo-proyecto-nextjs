@@ -8,20 +8,15 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    colors: {
-      darkmodebg: '#252525',
-      lightgrey: '#ECF0F1',
-      darkblue: '#2C3E50',
-      white: '#FFFFFF',
-      dark: '#000000',
-      black: '#000000',
-      red: '#FF0000',
-      yellow: '#FABC51',
-      hoveredButton: '#BDC3C7',
-      green: '#2ECC71',
-
-    },
     extend: {
+      colors: {
+        darkmodebg: '#252525',
+        lightgrey: '#ECF0F1',
+        darkblue: '#2C3E50',
+        dark: '#000000',
+        hoveredButton: '#BDC3C7',
+  
+      },
       keyframes: {
         'slide-down': {
           '0%': { transform: 'translateY(-100%)',opacity: "0"},
@@ -47,7 +42,16 @@ const config: Config = {
     },
   },
   plugins: [
-    require('daisyui')
+    require('daisyui'),
   ],
+
+  daisyui: {
+    styled: true,
+    themes: false,
+    base: true,
+    utils: true,
+    logs: true,
+    rtl: false,
+  },
 };
 export default config;

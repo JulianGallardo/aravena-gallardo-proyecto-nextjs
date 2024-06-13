@@ -1,10 +1,24 @@
-import { PrismaClient, Prisma, Burger, Promo } from '@/prisma/generated/client';
+import {  Prisma, Burger, Promo, Category } from '@/prisma/generated/client';
 
-const prisma = new PrismaClient();
+import prisma from '@/lib/db';
+import { BurgerDataForm, PromoExtendida } from '@/lib/definitions';
 
 export class ProductRepository {
-  async createBurger(data: Prisma.BurgerCreateInput): Promise<Burger> {
-    return prisma.burger.create({ data });
+  async createBurger(data:BurgerDataForm): Promise<Burger> {
+    const product = await prisma.product.create({
+      data: {},
+    });
+
+    return await prisma.burger.create({
+      data: {
+        productId: product.productId,
+        name: data.name,
+        category: data.category as Category,
+        description: data.description,
+        stock: data.stock,
+        price: data.price,
+      },
+    });
   }
 
   async createPromo(data: Prisma.PromoCreateInput, burgers: { burgerId: number, quantity: number, newPrice: number }[]): Promise<Promo> {
@@ -29,14 +43,16 @@ export class ProductRepository {
     return prisma.burger.findMany();
   }
 
-  async findAllPromos(): Promise<Promo[]> {
+  async findAllPromos(): Promise<PromoExtendida[]> {
     return prisma.promo.findMany({
       include: {
-        burgers: {
-          include: {
-            burger: true,
-          },
-        },
+        burgers:{
+          select:{
+            burger:true,
+            quantity:true,
+            newPrice:true
+          }
+        }
       },
     });
   }
@@ -45,23 +61,31 @@ export class ProductRepository {
     return prisma.burger.findUnique({ where: { burgerId } });
   }
 
-  async findPromoById(promoId: number): Promise<Promo | null> {
+  async findPromoById(promoId: number): Promise<PromoExtendida | null> {
     return prisma.promo.findUnique({
       where: { promoId },
       include: {
         burgers: {
-          include: {
+          select: {
             burger: true,
-          },
+            quantity: true,
+            newPrice: true,
+          }
         },
       },
     });
   }
 
-  async updateBurger(burgerId: number, data: Prisma.BurgerUpdateInput): Promise<Burger> {
+  async updateBurger(burgerId: number, data: BurgerDataForm): Promise<Burger> {
     return prisma.burger.update({
       where: { burgerId },
-      data,
+      data: {
+        name: data.name,
+        category: data.category as Category,
+        description: data.description,
+        stock: data.stock,
+        price: data.price,
+      },
     });
   }
 

@@ -14,7 +14,8 @@ export const config = {
      * - favicon.ico (favicon file)
      */
     "/perfil",
-    "/admin",
+    "/admin/:path*",
+    
     "/auth/login",
     "/auth/register",
   ],

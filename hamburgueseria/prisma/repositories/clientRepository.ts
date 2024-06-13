@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma, User, Guest } from '@/prisma/generated/client';
+import prisma from '@/lib/db';
 
-const prisma = new PrismaClient();
 
 export class ClientRepository {  
   async createUser(data: Prisma.UserCreateInput): Promise<User> {

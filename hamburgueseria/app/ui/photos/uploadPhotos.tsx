@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 
-const   UploadPhotos: React.FC = () => {
+const UploadPhotos: React.FC = () => {
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -33,28 +33,44 @@ const   UploadPhotos: React.FC = () => {
   };
 
   return (
-    <div className="max-w-screen flex flex-col">
-      <input
-        type="text"
-        value={productId}
-        onChange={(e) => setProductId(e.target.value)}
-        placeholder="Product ID"
-      />
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-      />
-
-      <input type="file" onChange={handleChange} />
-      <button onClick={handleUpload} disabled={loading}>
-        {loading ? "Uploading..." : "Upload"}
-      </button>
+    <div className="max-w-md mx-auto mt-10 p-6  rounded-lg shadow-md border ">
+      <h2 className="text-2xl font-bold mb-6 text-center">Upload Image</h2>
+      <div className="space-y-4">
+        <input
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          type="text"
+          value={productId}
+          onChange={(e) => setProductId(e.target.value)}
+          placeholder="Product ID"
+        />
+        <input
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Name"
+        />
+        <label className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer flex items-center justify-center bg-gray-100 hover:bg-gray-200">
+          <span className="text-gray-600">{image ? "File Selected" : "Select a file"}</span>
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleChange}
+          />
+        </label>
+        <button
+          className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"} text-white font-bold`}
+          onClick={handleUpload}
+          disabled={loading}
+        >
+          {loading ? "Uploading..." : "Upload"}
+        </button>
+      </div>
       {imageUrl && (
-        <div>
-          <p>Uploaded Image: {imageUrl}</p>
-          <img src={imageUrl} alt="Uploaded" width="300" />
+        <div className="mt-6 text-center">
+          <p className="mb-4">Uploaded Image:</p>
+          <img src={imageUrl} alt="Uploaded" className="w-full max-w-xs mx-auto rounded" />
         </div>
       )}
     </div>

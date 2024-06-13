@@ -1,26 +1,26 @@
-import { createContext, use, useEffect, useState } from "react";
-import { CartItem } from "@/lib/types";
+import { createContext, useEffect, useState } from "react";
+import { CartItem, CartItemBurger, CartItemPromo, ExtraInCart } from "@/lib/types";
 
 interface CartContextType {
     cart: CartItem[];
     total: number;
     items: number;
-    addToCart: (product: CartItem) => void;
-    removeFromCart: (product: CartItem) => void;
+    addToCartBurger: (product: CartItemBurger) => void;
+    removeFromCartBurger: (product: CartItemBurger) => void;
+    addToCartPromo: (product: CartItemPromo) => void;
+    removeFromCartPromo: (product: CartItemPromo) => void;
     clearCart: () => void;
-    addWithQuantity: (product: CartItem, quantity: number) => void;
-    removeWithQuantity: (product: CartItem, quantity: number) => void;
 }
 
 export const CartContext = createContext<CartContextType>({
     cart: [],
     total: 0,
     items: 0,
-    addToCart: (product: CartItem) => { },
-    removeFromCart: (product: CartItem) => { },
-    clearCart: () => { },
-    addWithQuantity: (product: CartItem, quantity: number) => { },
-    removeWithQuantity: (product: CartItem, quantity: number) => { },
+    addToCartBurger: () => {},
+    removeFromCartBurger: () => {},
+    addToCartPromo: () => {},
+    removeFromCartPromo: () => {},
+    clearCart: () => {},
 });
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -29,61 +29,92 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const [total, setTotal] = useState(0);
     const [load, setLoad] = useState(false);
 
-
     const updateLocalStorage = (cart: CartItem[]) => {
         window.localStorage.setItem("cart", JSON.stringify(cart));
-    }
-
-    
+    };
 
     useEffect(() => {   
-        if (load === false) { //si es la primera carga, lo busco en local storage
+        if (load === false) {
             const data = window.localStorage.getItem("cart");
-            console.log("data", data);
             if (data) {
-                console.log("data, entro", data);
                 const cartInitialState = JSON.parse(data) as CartItem[];
-                console.log("cartInitialState", cartInitialState);
                 setCart(cartInitialState);
-                setItems(cartInitialState.reduce((acc, item) => acc + item.quantity, 0));
-                setTotal(cartInitialState.reduce((acc, item) => acc + item.price * item.quantity, 0));
+                setItems(cartInitialState.reduce((acc, item) => acc + (item.cartItemBurger?.quantity || 0) + (item.cartItemPromo?.quantity || 0), 0));
+                setTotal(cartInitialState.reduce((acc, item) => 
+                    acc + (item.cartItemBurger?.price || 0) * (item.cartItemBurger?.quantity || 0) + (item.cartItemPromo?.price || 0) * (item.cartItemPromo?.quantity || 0), 0)
+                );
             }
             setLoad(true);
-        }
-        else { //sino lo voy actualizando
+        } else {
             updateLocalStorage(cart);
         }
+        console.log(cart);
     }, [cart]);
 
+    const areExtrasEqual = (extras1: ExtraInCart[], extras2: ExtraInCart[]) => {
+        if (extras1.length !== extras2.length) return false;
+        return extras1.every(extra1 => 
+            extras2.some(extra2 => extra1.extra.extraId === extra2.extra.extraId && extra1.quantity === extra2.quantity)
+        );
+    };
 
-    const addToCart = (product: CartItem) => {
+    const addToCartBurger = (product: CartItemBurger) => {
         setCart((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.productId === product.productId);
+            const existingProduct = prevCart.find((item) => 
+                item.cartItemBurger?.productId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
+            );
+            
             if (existingProduct) {
+                console.log("product",existingProduct);
                 return prevCart.map((item) =>
-                    item.productId === product.productId
-                        ? { ...item, quantity: item.quantity + 1 }
+                    item.cartItemBurger?.productId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
+                        ? { ...item, cartItemBurger: { ...item.cartItemBurger, quantity: item.cartItemBurger.quantity + 1 } }
                         : item
                 );
             }
-            return [...prevCart, { ...product, quantity: 1 }];
+            return [...prevCart, { cartItemBurger: { ...product, quantity: 1 }, cartItemPromo: null }];
         });
         setItems((prevItems) => prevItems + 1);
-        setTotal((prevTotal) => prevTotal + product.price);
+        setTotal((prevTotal) => prevTotal + product.price + product.extras.reduce((acc, extra) => acc + extra.extra.price * extra.quantity, 0));
     };
 
-    const removeFromCart = (product: CartItem) => {
+
+    const addToCartPromo = (product: CartItemPromo) => {
         setCart((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.productId === product.productId);
+            const existingProduct = prevCart.find((item) => 
+                item.cartItemPromo?.productId === product.productId
+            );
             if (existingProduct) {
-                if (existingProduct.quantity > 1) {
+                return prevCart.map((item) =>
+                    item.cartItemPromo?.promoId === product.promoId
+                        ? { ...item, cartItemPromo: { ...item.cartItemPromo, quantity: item.cartItemPromo.quantity + 1 } }
+                        : item
+                );
+            }
+            return [...prevCart, { cartItemPromo: { ...product, quantity: 1 }, cartItemBurger: null }];
+        });
+        setItems((prevItems) => prevItems + 1);
+        setTotal((prevTotal) => prevTotal + product.price );
+    }
+
+
+
+    const removeFromCartBurger = (product: CartItemBurger) => {
+        setCart((prevCart) => {
+            const existingProduct = prevCart.find((item) => 
+                item.cartItemBurger?.productId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
+            );
+            if (existingProduct && existingProduct.cartItemBurger !=undefined) {
+                if (existingProduct.cartItemBurger?.quantity > 1) {
                     return prevCart.map((item) =>
-                        item.productId === product.productId
-                            ? { ...item, quantity: item.quantity - 1 }
+                        item.cartItemBurger?.productId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
+                            ? { ...item, cartItemBurger: { ...item.cartItemBurger, quantity: item.cartItemBurger.quantity - 1 } }
                             : item
                     );
                 } else {
-                    return prevCart.filter((item) => item.productId !== product.productId);
+                    return prevCart.filter((item) => 
+                        !(item.cartItemBurger?.productId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras))
+                    );
                 }
             }
             return prevCart;
@@ -92,50 +123,41 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         setTotal((prevTotal) => prevTotal - product.price);
     };
 
+
+    const removeFromCartPromo = (product: CartItemPromo) => {
+        setCart((prevCart) => {
+            const existingProduct = prevCart.find((item) => 
+                item.cartItemPromo?.promoId === product.promoId
+            );
+            if (existingProduct && existingProduct.cartItemPromo !=undefined) {
+                if (existingProduct.cartItemPromo?.quantity > 1) {
+                    return prevCart.map((item) =>
+                        item.cartItemPromo?.promoId === product.promoId
+                            ? { ...item, cartItemPromo: { ...item.cartItemPromo, quantity: item.cartItemPromo.quantity - 1 }}
+                            : item
+                    );
+                } else {
+                    return prevCart.filter((item) => 
+                        !(item.cartItemPromo?.promoId === product.promoId)
+                    );
+                }
+            }
+            return prevCart;
+        });
+        setItems((prevItems) => prevItems - 1);
+        setTotal((prevTotal) => prevTotal - product.price);
+    };
+
+
     const clearCart = () => {
         setCart([]);
         setItems(0);
         setTotal(0);
     };
 
-    const addWithQuantity = (product: CartItem, quantity: number) => {
-        setCart((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.productId === product.productId);
-            if (existingProduct) {
-                return prevCart.map((item) =>
-                    item.productId === product.productId
-                        ? { ...item, quantity: item.quantity + quantity }
-                        : item
-                );
-            }
-            return [...prevCart, { ...product, quantity }];
-        });
-        setItems((prevItems) => prevItems + quantity);
-        setTotal((prevTotal) => prevTotal + product.price * quantity);
-    };
-
-    const removeWithQuantity = (product: CartItem, quantity: number) => {
-        setCart((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.productId === product.productId);
-            if (existingProduct) {
-                if (existingProduct.quantity > quantity) {
-                    return prevCart.map((item) =>
-                        item.productId === product.productId
-                            ? { ...item, quantity: item.quantity - quantity }
-                            : item
-                    );
-                } else {
-                    return prevCart.filter((item) => item.productId !== product.productId);
-                }
-            }
-            return prevCart;
-        });
-        setItems((prevItems) => prevItems - quantity);
-        setTotal((prevTotal) => prevTotal - product.price * quantity);
-    };
 
     return (
-        <CartContext.Provider value={{ cart, total, items, addToCart, removeFromCart, clearCart, addWithQuantity, removeWithQuantity }}>
+        <CartContext.Provider value={{ cart, total, items, addToCartBurger, removeFromCartBurger, addToCartPromo, removeFromCartPromo, clearCart }}>
             {children}
         </CartContext.Provider>
     );

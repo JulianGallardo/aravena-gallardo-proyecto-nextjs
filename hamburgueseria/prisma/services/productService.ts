@@ -1,12 +1,15 @@
-import { ProductRepository } from "../repositories/productRepository";
-import { ExtraRepository } from "../repositories/extraRepository";
-import { Prisma, Burger, Promo, Extra } from "@/prisma/generated/client";
+
+import { ProductRepository } from '../repositories/productRepository';
+import { ExtraRpository } from '../repositories/extraRepository';
+import { Prisma, Burger, Promo, Extra, PromoBurger } from '@/prisma/generated/client';
+import { BurgerDataForm, PromoExtendida } from '@/lib/definitions';
+
 
 const productRepository = new ProductRepository();
 const extraRepository = new ExtraRepository();
 
 export class ProductService {
-  async createBurger(data: Prisma.BurgerCreateInput): Promise<Burger> {
+  async createBurger(data:BurgerDataForm ): Promise<Burger> {
     return productRepository.createBurger(data);
   }
 
@@ -21,7 +24,7 @@ export class ProductService {
     return productRepository.findAllBurgers();
   }
 
-  async getAllPromos(): Promise<Promo[]> {
+  async getAllPromos(): Promise<PromoExtendida[]> {
     return productRepository.findAllPromos();
   }
 
@@ -29,14 +32,12 @@ export class ProductService {
     return productRepository.findBurgerById(burgerId);
   }
 
-  async getPromoById(promoId: number): Promise<Promo | null> {
+  async getPromoById(promoId: number): Promise<PromoExtendida | null> {
     return productRepository.findPromoById(promoId);
   }
 
-  async updateBurger(
-    burgerId: number,
-    data: Prisma.BurgerUpdateInput
-  ): Promise<Burger> {
+
+  async updateBurger(burgerId: number, data: BurgerDataForm): Promise<Burger> {
     return productRepository.updateBurger(burgerId, data);
   }
 
@@ -83,4 +84,5 @@ export class ProductService {
   async deleteExtra(extraId: number): Promise<void> {
     return extraRepository.deleteExtra(extraId);
   }
+
 }
