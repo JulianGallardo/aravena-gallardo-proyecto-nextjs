@@ -1,4 +1,4 @@
-import { Burger, Extra, Promo, PromoBurger } from "@/prisma/generated/client";
+import {  Extra } from "@/prisma/generated/client";
 import React from "react";
 
 

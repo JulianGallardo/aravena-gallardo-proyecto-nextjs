@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { CartItem, CartItemBurger, CartItemPromo } from "@/lib/types";
+import {  CartItemPromo } from "@/lib/types";
 import { useCart } from "@/app/hooks/useCart";
 import { AddToCartIcon, RemoveFromCartIcon } from "../shared/cartIcons";
 import Image from "next/image";
-import { Burger } from "@/prisma/generated/client";
 
 interface PromoCartItemsProps {
     item: CartItemPromo;

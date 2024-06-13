@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link";
-import { Burger, Promo } from "@/prisma/generated/client";
 import { usePathname, useSearchParams } from 'next/navigation';
 import { fetchPaginatedPromosByName } from "@/lib/pagination";
 import { useEffect, useState } from "react";

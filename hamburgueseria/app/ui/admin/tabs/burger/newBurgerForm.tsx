@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Category } from '@/prisma/generated/client';
 import {createBurger} from '@/lib/crud';
 import UploadPhotos from '@/app/ui/photos/uploadPhotos';

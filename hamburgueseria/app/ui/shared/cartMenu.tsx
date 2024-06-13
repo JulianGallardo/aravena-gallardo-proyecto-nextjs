@@ -13,7 +13,7 @@ interface CartMenuProps {
 
 
 const CartMenu: React.FC<CartMenuProps> = ({ handleCartClose, handleCartToggle, CartMenuShow }) => {
-    const { cart, items, total, addToCart, removeFromCart } = useCart();
+    const { cart, items, total} = useCart();
 
 
     return (

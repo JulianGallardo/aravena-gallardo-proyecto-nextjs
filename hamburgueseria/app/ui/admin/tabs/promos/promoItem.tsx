@@ -1,4 +1,3 @@
-import { Burger, Promo, PromoBurger } from "@/prisma/generated/client";
 import React from "react";
 import Image from "next/image";
 import { PromoExtendida } from "@/lib/definitions";
