@@ -1,8 +1,8 @@
 "use client"
 import React, { useEffect } from "react";
 import { useCart } from "@/app/hooks/useCart";
-import CartItems from "@/app/ui/cart/cartItems";
 import { CartItem } from "@/lib/types";
+import CartItemComponent from "@/app/ui/cart/CartItem";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -20,7 +20,7 @@ const Page: React.FC = () => {
                             <h1 className=" text-2xl text-start mb-5 ">Productos</h1>
                             {
                                 cart.map((item: CartItem) => (
-                                    <CartItems key={item.productId} item={item} />
+                                    <CartItemComponent key={item.cartItemBurger?.burgerId || item.cartItemPromo?.promoId} item={item} />
                                 ))
                             }
                             <div className="flex flex-col gap-4 items-center justify-center w-full ">

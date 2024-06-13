@@ -1,4 +1,5 @@
 import { Burger,Extra, Promo } from "@/prisma/generated/client";
+import { PromoExtendida } from "./definitions";
 
 
 
@@ -7,7 +8,7 @@ export interface CartItem {
     cartItemBurger: CartItemBurger|null;
 }
 
-export interface CartItemPromo extends Promo{
+export interface CartItemPromo extends PromoExtendida{
     quantity: number;
 }
 export interface CartItemBurger extends Burger {

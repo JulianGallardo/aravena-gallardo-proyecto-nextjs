@@ -16,7 +16,7 @@ export default function NotFound() {
             </div>
             <Link href="/" className='text-2xl font-semibold text-yellow-400 hover:text-darkblue'>
                     Volver al Inicio
-                </Link>
+            </Link>
         </div>
     );
 }

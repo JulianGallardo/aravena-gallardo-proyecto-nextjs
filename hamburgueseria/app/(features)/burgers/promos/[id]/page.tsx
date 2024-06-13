@@ -20,7 +20,7 @@ interface FormValues {
 }
 
 const BurgerPage: React.FC = () => {
-    const { addToCartBurger, removeFromCart } = useCart();
+    const { addToCartBurger, removeFromCartBurger } = useCart();
     const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
     const pathname = usePathname();
 
@@ -180,13 +180,13 @@ const BurgerPage: React.FC = () => {
             };
         }).filter((extra) => extra !== null) as ExtraInCart[];
 
-        const newBurger: CartItem = {
+        const newBurger: CartItemBurger = {
             ...burgerData,
             extras: parsedExtrasByName,
             quantity: 1
         };
 
-        removeFromCart(newBurger);
+        removeFromCartBurger(newBurger);
     };
 
     return (
