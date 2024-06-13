@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import TablaPedidos from "@/app/ui/perfil/tablaPedidos";
-import Search from "@/app/ui/perfil/search";
 import { fetchPaginationOrders } from "@/lib/pagination";
 
 export default async function PedidosPaginacion({

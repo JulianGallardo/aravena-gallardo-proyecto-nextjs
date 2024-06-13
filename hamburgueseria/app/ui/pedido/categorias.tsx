@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import { Category } from '@/prisma/generated/client';
 
 interface categoriesProps {
     categories: string[];
