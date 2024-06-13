@@ -65,7 +65,7 @@ const BurgerManagementPage = () => {
             <div>
                 <p className="font-semibold">Estas seguro de que deseas eliminar?</p>
                 <button
-                    className="bg-red text-white p-2 px-4 rounded-lg mt-2"
+                    className="btn bg-red-500 text-white p-2 px-4 rounded-lg mt-2"
                     onClick={async () => {
                         await deleteBurger(Number(burgerId));
                         toast.dismiss();
@@ -76,7 +76,7 @@ const BurgerManagementPage = () => {
                     Yes, delete it
                 </button>
                 <button
-                    className="bg-green text-white p-2 px-4 rounded-lg mt-2 ml-2"
+                    className="btn bg-green-500 text-white p-2 px-4 rounded-lg mt-2 ml-2"
                     onClick={() => toast.dismiss()}
                 >
                     Cancel
@@ -173,8 +173,8 @@ const BurgerManagementPage = () => {
                                     {errors.stock && <span className="text-red">This field is required</span>}
                                 </div>
                                 <div className="flex justify-center items-center gap-4 p-6">
-                                    <button className="bg-green text-white p-2 px-4 rounded-lg" type="submit">Save</button>
-                                    <button className="bg-red text-white p-2 px-4 rounded-lg" type="button" onClick={handleCancel}>Cancel</button>
+                                    <button className="bg-green-400 text-white p-2 px-4 rounded-lg" type="submit">Save</button>
+                                    <button className="bg-red-400 text-white p-2 px-4 rounded-lg" type="button" onClick={handleCancel}>Cancel</button>
                                 </div>
                             </form>
                         ) : (
@@ -196,13 +196,13 @@ const BurgerManagementPage = () => {
                                     <p className="text-lg">{burgerData.stock}</p>
                                 </div>
                                 <div className="flex justify-center items-center gap-4 p-6">
-                                    <button className="bg-green text-white p-2 px-4 rounded-lg" onClick={handleEdit}>Edit</button>
-                                    <button className="bg-red text-white p-2 px-4 rounded-lg" onClick={handleDeleteWithToast}>Delete</button>
+                                    <button className="btn bg-green-400 hover:bg-green-600 text-white p-2 px-4 rounded-lg" onClick={handleEdit}>Edit</button>
+                                    <button className="btn bg-red-400 hover:bg-red-600 text-white p-2 px-4 rounded-lg" onClick={handleDeleteWithToast}>Delete</button>
                                 </div>
                             </div>
                         )}
                     </div>
-                    <Link href="/admin/burgers" className='btn bg-yellow text-white'>
+                    <Link href="/admin/burgers" className='btn bg-yellow-400  text-white'>
                         Back to Burgers
                     </Link>
                 </div>

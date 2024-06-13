@@ -31,6 +31,7 @@ const BurgerPage: React.FC = () => {
     const [submitBtn, setSubmitBtn] = useState(false);
     const [deleteBtn, setDeleteBtn] = useState(false);
 
+    
     useEffect(() => {
         fetchAllExtras().then((data) => {
             setExtras(data);
@@ -38,6 +39,8 @@ const BurgerPage: React.FC = () => {
             console.error('Error fetching extras:', error);
         });
     }, []);
+     
+    
 
     const parseData = (data: Burger) => {
         setBurgerData({
@@ -61,11 +64,24 @@ const BurgerPage: React.FC = () => {
                         'Content-Type': 'application/json',
                     },
                 });
-                const data = await res.json();
+                var data = await res.json();
+                if (!data.body) {
+                    console.log('No data found');
+                    const newUrl = `/api/products/promos${query}`;
+                    const res = await fetch(newUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    var data = await res.json();
+                }
                 parseData(data.body);
             } catch (error) {
                 console.error('Error fetching burger:', error);
             }
+
+        
         };
         getBurger();
     }, [pathname]);
@@ -172,10 +188,10 @@ const BurgerPage: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-full my-28 items-center  dark:text-white transition duration-500 w-screen">
+        <div className="flex flex-col h-full my-28 items-center transition duration-500 w-screen text-dark">
             {burgerData && burgerData.name ? (
-                <div className="flex flex-col md:grid md:grid-cols-2 gap-5 p-4">
-                    <div className="flex justify-center items-start">
+                <div className="flex justify-stretch flex-col md:grid md:grid-cols-2 gap-5 p-4  ">
+                    <div className="flex justify-center items-start w-full">
                         <div className="w-full h-auto max-w-lg">
                             <Image
                                 src={burgerData.imageUrl}
@@ -186,59 +202,59 @@ const BurgerPage: React.FC = () => {
                             />
                         </div>
                     </div>
-                    <div className='flex flex-col gap-2'>
+                    <div className='flex flex-col gap-2 w-full'>
                         <h1 className='text-lg md:text-2xl lg:text-3xl font-bold'>{burgerData.name}</h1>
-                        <label className="font-semibold md:text-lg lg:text-xl">Description:</label>
-                        <p className="md:text-lg lg:text-xl">{burgerData.description}</p>
-                        <label className="font-semibold md:text-lg lg:text-xl">Category:</label>
-                        <p className="md:text-lg lg:text-xl">{burgerData.category}</p>
-                        <label className="font-semibold md:text-lg lg:text-xl">Price:</label>
-                        <p className="md:text-lg lg:text-xl">${burgerData.price}</p>
-                        <label className="font-semibold md:text-lg lg:text-xl">Add Extra:</label>
+                        <label className="font-semibold md:text-lg lg:text-xl">Informacion del producto:</label>
+                        <p className="md:text-lg lg:text-xl text-darkblue">{burgerData.description}</p>
+                        <label className="font-semibold md:text-lg lg:text-xl">Categoria:</label>
+                        <p className="md:text-lg lg:text-xl text-darkblue">{burgerData.category}</p>
+                        <label className="font-semibold md:text-lg lg:text-xl">Precio:</label>
+                        <p className="md:text-lg lg:text-xl text-darkblue">${burgerData.price}</p>
+                        <label className="font-semibold md:text-lg lg:text-xl">Añadi algun extra a tu byte:</label>
                         <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit(handleFormSubmit)}>
                             {extrasInBurger.map((extra, index) => (
-                                <div key={index} className="flex flex-col md:flex-row gap-5 items-center border p-5 rounded-lg border-yellow-200">
-                                    <select
-                                        className="text-sm md:text-lg p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600"
-                                        {...register(`extras.${index}.extra`, { required: true })}
-                                        onChange={(e) => {
-                                            const newExtras = [...extrasInBurger];
-                                            newExtras[index].extra = e.target.value;
-                                            setExtrasInBurger(newExtras);
-                                            console.log(extrasInBurger);
-                                        }}
-                                    >
-                                        <option value="">Select an extra</option>
-                                        {extras.map((extra) => (
-                                            
-                                            <option key={extra.extraId} value={extra.extraId}>{extra.name}</option>
-                                        ))}
-                                    </select>
-                                    <input
-                                        className="p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600"
-                                        type="number"
-                                        placeholder="Quantity"
-                                        {...register(`extras.${index}.quantity`, { required: true })}
-                                        onChange={(e) => {
-                                            const newExtras = [...extrasInBurger];
-                                            newExtras[index].quantity = parseInt(e.target.value);
-                                            setExtrasInBurger(newExtras);
-                                            console.log(extrasInBurger);
-                                        }}
-                                    />
-                                    <button type="button" className='btn bg-red-500 hover:bg-red-800 text-white' onClick={() => removeExtra(index)}>Remove</button>
+                                <div key={index}>
+                                    <div className="flex flex-col md:flex-row gap-5 items-center p-5 rounded-lg">
+                                        <select
+                                            className="text-sm md:text-lg p-2 border border-gray-300 rounded bg-darkblue text-white"
+                                            {...register(`extras.${index}.extra`, { required: true })}
+                                            onChange={(e) => {
+                                                const newExtras = [...extrasInBurger];
+                                                newExtras[index].extra = e.target.value;
+                                                setExtrasInBurger(newExtras);
+                                            }}
+                                        >
+                                            <option value="">Selecciona un extra</option>
+                                            {extras.map((extra) => (
+                                                <option key={extra.extraId} value={extra.extraId}>{extra.name}</option>
+                                            ))}
+                                        </select>
+                                        <input
+                                            className="p-2 border border-gray-300 rounded bg-darkblue text-white"
+                                            type="number"
+                                            placeholder="Cantidad"
+                                            {...register(`extras.${index}.quantity`, { required: true })}
+                                            onChange={(e) => {
+                                                const newExtras = [...extrasInBurger];
+                                                newExtras[index].quantity = parseInt(e.target.value);
+                                                setExtrasInBurger(newExtras);
+                                            }}
+                                        />
+                                        <button type="button" className='btn bg-red-500 hover:bg-red-800 text-white' onClick={() => removeExtra(index)}>Eliminar</button>
+                                    </div>
+                                    <div className="divider"></div>
                                 </div>
                             ))}
-                            <button type="button" className='btn bg-gray-600 text-white dark:bg-gray-700' onClick={addExtra}>Add Extra</button>
+                            <button type="button" className='btn bg-darkblue text-white' onClick={addExtra}>Añadir nuevo extra</button>
                             {extrasInBurger.length > 0 && (
-                                <p className="text-red-500">Nuevo precio con extras: ${calculateTotalPrice()}</p>
+                                <p className="text-red-500 font-semibold md:text-lg">Nuevo precio con extras: ${calculateTotalPrice()}</p>
                             )}
                             <div className="flex gap-5">
-                                <button type="submit" className="btn btn-circle bg-green-400 hover:bg-green-600 text-white" onClick={() => setSubmitBtn(true)}>
+                                <button type="submit" className="btn btn-circle bg-green-500 hover:bg-green-700 text-white" onClick={() => setSubmitBtn(true)}>
                                     <AddToCartIcon />
                                 </button>
 
-                                <button type='submit' className="btn btn-circle bg-red-400 hover:bg-red-600 text-white" onClick={() => setDeleteBtn(true)}>
+                                <button type='submit' className="btn btn-circle bg-red-500 hover:bg-red-700 text-white" onClick={() => setDeleteBtn(true)}>
                                     <RemoveFromCartIcon />
                                 </button>
                             </div>
@@ -246,8 +262,15 @@ const BurgerPage: React.FC = () => {
                     </div>
                 </div>
             ) : (
-                <div className="flex flex-col items-center gap-5">
-                    <h1>Loading...</h1>
+                <div className="flex flex-col md:flex-row items-center gap-5 p-4 w-2/3 mx-24">
+                    <div className="skeleton h-96 w-96 rounded-lg bg-gray-300"></div>
+                    <div className="flex flex-col gap-4 w-2/3">
+                        <div className="skeleton h-4 w-full bg-gray-300 rounded "></div>
+                        <div className="skeleton h-4 w-full bg-gray-300 rounded"></div>
+                        <div className="skeleton h-4 w-full bg-gray-300 rounded"></div>
+                        <div className="skeleton h-4 w-full bg-gray-300 rounded"></div>
+                        <div className="skeleton h-4 w-full bg-gray-300 rounded"></div>
+                    </div>
                 </div>
             )}
         </div>
