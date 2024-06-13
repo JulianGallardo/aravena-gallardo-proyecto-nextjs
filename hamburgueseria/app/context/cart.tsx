@@ -61,12 +61,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const addToCartBurger = (product: CartItemBurger) => {
         setCart((prevCart) => {
             const existingProduct = prevCart.find((item) => 
-                item.cartItemBurger?.burgerId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
+                item.cartItemBurger?.productId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
             );
+            
             if (existingProduct) {
+                console.log("product",existingProduct);
                 return prevCart.map((item) =>
-                    item.cartItemBurger?.burgerId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
-                        ? { ...item, quantity: item.cartItemBurger.quantity + 1 }
+                    item.cartItemBurger?.productId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
+                        ? { ...item, cartItemBurger: { ...item.cartItemBurger, quantity: item.cartItemBurger.quantity + 1 } }
                         : item
                 );
             }
@@ -80,12 +82,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const addToCartPromo = (product: CartItemPromo) => {
         setCart((prevCart) => {
             const existingProduct = prevCart.find((item) => 
-                item.cartItemPromo?.promoId === product.promoId
+                item.cartItemPromo?.productId === product.productId
             );
             if (existingProduct) {
                 return prevCart.map((item) =>
                     item.cartItemPromo?.promoId === product.promoId
-                        ? { ...item, quantity: item.cartItemPromo.quantity + 1 }
+                        ? { ...item, cartItemPromo: { ...item.cartItemPromo, quantity: item.cartItemPromo.quantity + 1 } }
                         : item
                 );
             }
@@ -106,7 +108,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 if (existingProduct.cartItemBurger?.quantity > 1) {
                     return prevCart.map((item) =>
                         item.cartItemBurger?.productId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
-                            ? { ...item, quantity: item.cartItemBurger.quantity - 1 }
+                            ? { ...item, cartItemBurger: { ...item.cartItemBurger, quantity: item.cartItemBurger.quantity - 1 } }
                             : item
                     );
                 } else {
@@ -131,7 +133,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 if (existingProduct.cartItemPromo?.quantity > 1) {
                     return prevCart.map((item) =>
                         item.cartItemPromo?.promoId === product.promoId
-                            ? { ...item, quantity: item.cartItemPromo.quantity - 1 }
+                            ? { ...item, cartItemPromo: { ...item.cartItemPromo, quantity: item.cartItemPromo.quantity - 1 }}
                             : item
                     );
                 } else {

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '@/app/hooks/useCart';
 import { AddToCartIcon, RemoveFromCartIcon } from '@/app/ui/shared/cartIcons';
 import { usePathname } from 'next/navigation';
-import { CartItem, ExtraInCart } from '@/lib/types';
+import { CartItem, CartItemBurger, ExtraInCart } from '@/lib/types';
 import { fetchAllExtras } from '@/lib/crud';
 import { Burger, Extra } from '@/prisma/generated/client';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -20,11 +20,11 @@ interface FormValues {
 }
 
 const BurgerPage: React.FC = () => {
-    const { addToCart, removeFromCart } = useCart();
+    const { addToCartBurger, removeFromCartBurger } = useCart();
     const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
     const pathname = usePathname();
 
-    const [burgerData, setBurgerData] = useState<CartItem | null>(null);
+    const [burgerData, setBurgerData] = useState<CartItemBurger | null>(null);
     const [extras, setExtras] = useState<Extra[]>([]);
     const [extrasInBurger, setExtrasInBurger] = useState<SelectedExtra[]>([]);
 
@@ -64,18 +64,7 @@ const BurgerPage: React.FC = () => {
                         'Content-Type': 'application/json',
                     },
                 });
-                var data = await res.json();
-                if (!data.body) {
-                    console.log('No data found');
-                    const newUrl = `/api/products/promos${query}`;
-                    const res = await fetch(newUrl, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    var data = await res.json();
-                }
+                const data = await res.json();
                 parseData(data.body);
             } catch (error) {
                 console.error('Error fetching burger:', error);
@@ -143,13 +132,13 @@ const BurgerPage: React.FC = () => {
             };
         }).filter((extra) => extra !== null) as ExtraInCart[];
 
-        const newBurger: CartItem = {
+        const newBurger: CartItemBurger = {
             ...burgerData,
             extras: parsedExtrasByName,
             quantity: 1
         };
 
-        addToCart(newBurger);
+        addToCartBurger(newBurger);
     };
 
     const handleDelete = (data: FormValues) => {
@@ -178,13 +167,13 @@ const BurgerPage: React.FC = () => {
             };
         }).filter((extra) => extra !== null) as ExtraInCart[];
 
-        const newBurger: CartItem = {
+        const newBurger: CartItemBurger = {
             ...burgerData,
             extras: parsedExtrasByName,
             quantity: 1
         };
 
-        removeFromCart(newBurger);
+        removeFromCartBurger(newBurger);
     };
 
     return (

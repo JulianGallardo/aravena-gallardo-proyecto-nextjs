@@ -64,7 +64,7 @@ const BurgerCartItems: React.FC<BurgerCartItemsProps> = ({ item }) => {
                     <p className="text-sm md:text-base lg:text-lg">Total: ${calculateTotal()}</p>
                 </div>
                 <div className={`flex flex-row items-center ${isMobile ? 'justify-center' : 'justify-start'} mt-5`}>
-                    <button className="btn bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center">
+                    <button className="btn bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center" onClick={() => addToCartBurger(item)}>
                         <AddToCartIcon/>
                         Añadir
                     </button>
