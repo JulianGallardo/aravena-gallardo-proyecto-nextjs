@@ -29,7 +29,7 @@ const BurgerManagementPage = () => {
 
     const [burgerData, setBurgerData] = useState<Burger | null>(null);
     const [isEditing, setIsEditing] = useState(false);
-    
+
     const router = useRouter();
 
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormValues>();
@@ -37,7 +37,7 @@ const BurgerManagementPage = () => {
     useEffect(() => {
         fetchBurgerById(Number(burgerId))
             .then((data) => {
-                if(!data) throw new Error("Burger not found");
+                if (!data) throw new Error("Burger not found");
                 setBurgerData(data as Burger);
                 setValue("name", data.name);
                 setValue("description", data.description);
@@ -62,25 +62,29 @@ const BurgerManagementPage = () => {
 
     const handleDeleteWithToast = () => {
         toast(
-            <div>
+            <div className=" h-full w-full">
                 <p className="font-semibold">Estas seguro de que deseas eliminar?</p>
-                <button
-                    className="btn bg-red-500 text-white p-2 px-4 rounded-lg mt-2"
-                    onClick={async () => {
-                        await deleteBurger(Number(burgerId));
-                        toast.dismiss();
-                        console.log("Burger deleted successfully");
-                        router.push("/admin/burgers");
-                    }}
-                >
-                    Yes, delete it
-                </button>
-                <button
-                    className="btn bg-green-500 text-white p-2 px-4 rounded-lg mt-2 ml-2"
-                    onClick={() => toast.dismiss()}
-                >
-                    Cancel
-                </button>
+                <p className="text-sm">Esta accion no se puede deshacer</p>
+                <div className="flex justify-center w-fit items-center gap-4 ">
+                    <button
+                        className="btn bg-red-500 text-white p-2 px-4 rounded-lg mt-2"
+                        onClick={async () => {
+                            await deleteBurger(Number(burgerId));
+                            toast.dismiss();
+                            console.log("Burger deleted successfully");
+                            router.push("/admin/burgers");
+                        }}
+                    >
+                        Si, quiero eliminar
+                    </button>
+                    <button
+                        className="btn bg-green-500 text-white p-2 px-4 rounded-lg mt-2 ml-2"
+                        onClick={() => toast.dismiss()}
+                    >
+                        Cancelar
+                    </button>
+                </div>
+
             </div>,
             {
                 autoClose: false,
@@ -124,11 +128,11 @@ const BurgerManagementPage = () => {
                             />
                         </div>
                         {isEditing ? (
-                            <form className="p-6" onSubmit={handleSubmit(onSubmit)}>
+                            <form className="p-6 text-black" onSubmit={handleSubmit(onSubmit)}>
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Name:</label>
                                     <input
-                                        className="p-2 border border-gray-300 rounded w-full"
+                                        className="p-2 border border-gray-300 rounded w-full bg-gray-200 placeholder:text-gray-500"
                                         type="text"
                                         {...register("name", { required: true })}
                                     />
@@ -137,7 +141,7 @@ const BurgerManagementPage = () => {
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Description:</label>
                                     <textarea
-                                        className="p-2 border border-gray-300 rounded w-full"
+                                        className="p-2 border border-gray-300 rounded w-full bg-gray-200 placeholder:text-gray-500"
                                         {...register("description", { required: true })}
                                     />
                                     {errors.description && <span className="text-red">This field is required</span>}
@@ -145,7 +149,7 @@ const BurgerManagementPage = () => {
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Category:</label>
                                     <select
-                                        className="p-2 border border-gray-300 rounded w-full"
+                                        className="p-2 border border-gray-300 rounded w-full bg-gray-200 placeholder:text-gray-500"
                                         {...register("category", { required: true })}
                                     >
                                         {Object.values(Category).map((category) => (
@@ -157,24 +161,24 @@ const BurgerManagementPage = () => {
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Price:</label>
                                     <input
-                                        className="p-2 border border-gray-300 rounded w-full"
+                                        className="p-2 border border-gray-300 rounded w-full bg-gray-200 placeholder:text-gray-500"
                                         type="float"
-                                        {...register("price", { valueAsNumber: true, required: true})}
+                                        {...register("price", { valueAsNumber: true, required: true , validate: value => value > 0})}
                                     />
                                     {errors.price && <span className="text-red">This field is required</span>}
                                 </div>
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Stock:</label>
                                     <input
-                                        className="p-2 border border-gray-300 rounded w-full"
+                                        className="p-2 border border-gray-300 rounded w-full bg-gray-200 placeholder:text-gray-500"
                                         type="number"
-                                        {...register("stock", { valueAsNumber: true, required: true })}
+                                        {...register("stock", { valueAsNumber: true, required: true, validate: value => value > 0})}
                                     />
                                     {errors.stock && <span className="text-red">This field is required</span>}
                                 </div>
                                 <div className="flex justify-center items-center gap-4 p-6">
-                                    <button className="bg-green-400 text-white p-2 px-4 rounded-lg" type="submit">Save</button>
-                                    <button className="bg-red-400 text-white p-2 px-4 rounded-lg" type="button" onClick={handleCancel}>Cancel</button>
+                                    <button className="btn bg-green-500 hover:bg-green-700 text-white p-2 px-4 rounded-lg" type="submit">Save</button>
+                                    <button className="btn bg-red-500 hover:bg-red-700 text-white p-2 px-4 rounded-lg" type="button" onClick={handleCancel}>Cancel</button>
                                 </div>
                             </form>
                         ) : (
