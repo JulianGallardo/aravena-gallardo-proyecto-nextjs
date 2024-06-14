@@ -48,9 +48,9 @@ export class ProductRepository {
       include: {
         burgers:{
           select:{
-            burger:true,
-            quantity:true,
-            newPrice:true
+            burger: true,
+            quantity: true,
+            newPrice: true,
           }
         }
       },

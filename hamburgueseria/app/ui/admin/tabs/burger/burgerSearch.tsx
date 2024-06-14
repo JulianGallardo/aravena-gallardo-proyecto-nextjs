@@ -37,7 +37,7 @@ export default function BurgerSearch({ placeholder }: { placeholder: string }) {
                 Search
             </label>
             <input
-                className="w-full h-10 px-3 py-2 text-base placeholder-gray-400 border rounded-lg focus:shadow-outline"
+                className="w-full h-10 px-3 py-2 text-base text-black placeholder-gray-400 border-2 border-gray-500  rounded-lg focus:shadow-outline bg-gray-200 "
                 placeholder={placeholder}
                 onChange={(e) => {
                     handleSearchByName(e.target.value);
@@ -45,7 +45,7 @@ export default function BurgerSearch({ placeholder }: { placeholder: string }) {
                 defaultValue={searchParams.get('query')?.toString()}
             />
             <select
-                className="w-full h-10 px-3 py-2 text-base placeholder-gray-400 border rounded-lg focus:shadow-outline"
+                className="w-full h-10 px-3 py-2 text-base text-black placeholder-gray-400 border-2 border-gray-500  rounded-lg focus:shadow-outline bg-gray-200 "
                 onChange={(e) => {
                     handleSearchByCategory(e.target.value);
                 }}

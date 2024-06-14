@@ -17,7 +17,7 @@ export default async function BurgerPagination({
     const { paginatedOrders, totalPages } = await fetchPaginationBurgers(currentPage);
 
     return (
-        <div className="flex flex-col gap-5 my-24 mx-10 h-full">
+        <div className="flex flex-col gap-5 my-24 mx-10 h-full text-black">
             <div className="flex flex-col justify-center items-center">
                 <h1 className="text-4xl font-bold">Admin</h1>
                 <div className="flex flex-col  gap-5 w-full">

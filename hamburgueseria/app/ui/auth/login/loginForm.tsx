@@ -14,22 +14,20 @@ export default function LoginForm() {
   return (
     <div className="flex flex-col items-center justify-center h-screen ">
     <form action={(formData) => {
-      signIn('credentials', { redirect: false, email: formData.get('email') as string, password: formData.get('password') as string }).then(
+      signIn('credentials', { redirect: true, email: formData.get('email') as string, password: formData.get('password') as string }).then(
         (response) => {
           if (response?.error) {
             setError("Email o contraseña invalidos");
-          } else {
-            // Redirect to the home page
-            window.location.href = '/';
-          }
+          } 
         }
       ).catch((error) => {
         setError(error.message);
       });
+    
     }
 
-    } className="space-y-3">
-      <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8 text-black dark:text-lightgrey">
+    } className="space-y-3 my-5">
+      <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 py-8 text-black ">
         <h1 className={`mb-3 text-2xl`}>
           Login
         </h1>
@@ -43,7 +41,7 @@ export default function LoginForm() {
             </label>
             <div className="relative">
               <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
+                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500 bg-gray-200 "
                 id="email"
                 type="email"
                 name="email"
@@ -61,7 +59,7 @@ export default function LoginForm() {
             </label>
             <div className="relative">
               <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
+                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500 bg-gray-200 text-black  "
                 id="password"
                 type="password"
                 name="password"
@@ -83,7 +81,7 @@ export default function LoginForm() {
         
       </div>
     </form>
-    <Link href="/auth/register" className=' text-sm hover:text-yellow'> No sos parte de la familia byte? Unete </Link>
+    <Link href="/auth/register" className=' text-sm hover:text-yellow-500'> No sos parte de la familia byte? Unete </Link>
   </div>
   );
 }

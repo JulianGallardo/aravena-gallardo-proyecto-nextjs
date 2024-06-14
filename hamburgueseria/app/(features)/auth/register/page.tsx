@@ -6,9 +6,9 @@ import { Footer } from '@/app/ui';
 
 export default function RegisterPage() {
     return (
-        <div className=' bg-lightgrey dark:bg-darkmodebg'>
+        <div className=' bg-lightgrey '>
           
-            <div className="flex flex-col items-center justify-center h-screen">
+            <div className="flex flex-col items-center justify-center">
                 <RegisterForm />
             </div>
             
