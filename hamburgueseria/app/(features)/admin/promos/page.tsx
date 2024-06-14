@@ -22,10 +22,10 @@ export default async function PromosPagination({
                 <h1 className="text-4xl font-bold">Admin</h1>
                 <div className="flex flex-col  gap-5 w-full">
                     <div className="flex flex-row-reverse items-center gap-4">
-                        <Link href="/admin/burgers" className="btn rounded-md bg-yellow text-white">
+                        <Link href="/admin/burgers" className="btn rounded-md bg-yellow-400 text-white">
                             Burgers
                         </Link>
-                        <Link href="/admin/extras" className="btn rounded-md bg-yellow text-white">
+                        <Link href="/admin/extras" className="btn rounded-md bg-yellow-400 text-white">
                             Extras
                         </Link>
                     </div>
@@ -37,7 +37,7 @@ export default async function PromosPagination({
                     <BurgerSearch placeholder="Search for a promo by name" />
                 </div>
                 <Link href="/admin/promos/new">
-                    <button className="bg-green text-white p-2 rounded-lg">Add New</button>
+                    <button className="btn bg-green-400 text-white p-2 rounded-lg">Agregar nueva</button>
                 </Link>
             </div>
             <div className="flex flex-col justify-center gap-5 items-center ">

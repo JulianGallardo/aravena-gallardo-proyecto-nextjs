@@ -2,7 +2,7 @@
 import { ProductRepository } from '../repositories/productRepository';
 import { ExtraRepository } from '../repositories/extraRepository';
 import { Prisma, Burger, Promo, Extra } from '@/prisma/generated/client';
-import { BurgerDataForm, PromoExtendida } from '@/lib/definitions';
+import { BurgerDataForm, PromoDataForm, PromoExtendida } from '@/lib/definitions';
 
 
 const productRepository = new ProductRepository();
@@ -14,10 +14,9 @@ export class ProductService {
   }
 
   async createPromo(
-    data: Prisma.PromoCreateInput,
-    burgers: { burgerId: number; quantity: number; newPrice: number }[]
+    data:PromoDataForm
   ): Promise<Promo> {
-    return productRepository.createPromo(data, burgers);
+    return productRepository.createPromo(data);
   }
 
   async getAllBurgers(): Promise<Burger[]> {

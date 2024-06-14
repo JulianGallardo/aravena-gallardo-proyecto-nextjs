@@ -37,7 +37,7 @@ export default async function BurgerPagination({
                     <BurgerSearch placeholder="Search for a burger" />
                 </div>
                 <Link href="/admin/burgers/new">
-                    <button className="btn bg-green-400 text-white p-2 rounded-md font-bold">Add New</button>
+                    <button className="btn bg-green-400 text-white p-2 rounded-md font-bold">Agregar nueva</button>
                 </Link>
             </div>
             <div className="flex flex-col justify-center gap-5 items-center ">

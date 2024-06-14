@@ -71,8 +71,8 @@ const PromoManagmentPage = () => {
                                 </div>
                             </div>
                             <div className="flex justify-center items-center gap-4 p-6">
-                                <button className="bg-green text-white p-2 px-4 rounded-lg">Edit</button>
-                                <button className="bg-red text-white p-2  rounded-lg">Delete</button>
+                                <button className="btn bg-green-500 text-white p-2 px-4 rounded-lg">Edit</button>
+                                <button className="btn bg-red-500 text-white p-2  rounded-lg">Delete</button>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
 import { Burger, Category } from '@/prisma/generated/client';
 import { Prisma } from '@/prisma/generated/client';
 import { ProductService } from '@/prisma/services/productService';
-import { BurgerDataForm } from './definitions';
+import { BurgerDataForm, PromoDataForm } from './definitions';
 
 
 
@@ -55,15 +55,22 @@ export async function deleteBurger(id:number) {
 }
 
 export async function createPromo(form: FormData) {
-  const promo = {
+
+  console.log(form.get('burgers'));
+
+  const promo:PromoDataForm = {
     name: form.get('name') as string,
     description: form.get('description') as string,
-    imageUrl: form.get('imageUrl') as string,
     price: Number(form.get('price')),
-    category: form.get('category') as Category,
-    burgers: JSON.parse(form.get('burgers') as string),
+    category: Category.PROMO,
+    burgers: JSON.parse(form.get('burgers') as string).map((b:any) => ({
+      burger: Number(b.burger),
+      quantity: Number(b.quantity),
+      newPrice: Number(b.newPrice)
+    }))
   };
-  return null; //modificar despues
+  
+  return await productService.createPromo(promo);
 }
 
 

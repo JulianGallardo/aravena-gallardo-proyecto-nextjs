@@ -1,10 +1,11 @@
-import {  Prisma, Burger, Promo, Category } from '@/prisma/generated/client';
+import { Prisma, Burger, Promo, Category } from '@/prisma/generated/client';
 
 import prisma from '@/lib/db';
-import { BurgerDataForm, PromoExtendida } from '@/lib/definitions';
+import { BurgerDataForm, PromoDataForm, PromoExtendida } from '@/lib/definitions';
+import { connect } from 'http2';
 
 export class ProductRepository {
-  async createBurger(data:BurgerDataForm): Promise<Burger> {
+  async createBurger(data: BurgerDataForm): Promise<Burger> {
     const product = await prisma.product.create({
       data: {},
     });
@@ -21,20 +22,27 @@ export class ProductRepository {
     });
   }
 
-  async createPromo(data: Prisma.PromoCreateInput, burgers: { burgerId: number, quantity: number, newPrice: number }[]): Promise<Promo> {
+  async createPromo(
+    data: PromoDataForm
+  ): Promise<Promo> {
+    const product = await prisma.product.create({
+      data: {},
+    });
+
+
     return prisma.promo.create({
       data: {
-        ...data,
+        productId: product.productId,
+        name: data.name,
+        description: data.description,
+        price: data.price,
         burgers: {
-          create: burgers.map(b => ({
-            burger: { connect: { burgerId: b.burgerId } },
+          create: data.burgers.map(b => ({
+            burger: { connect: { productId: b.burger } },
             quantity: b.quantity,
             newPrice: b.newPrice,
           })),
         },
-      },
-      include: {
-        burgers: true,
       },
     });
   }
@@ -46,8 +54,8 @@ export class ProductRepository {
   async findAllPromos(): Promise<PromoExtendida[]> {
     return prisma.promo.findMany({
       include: {
-        burgers:{
-          select:{
+        burgers: {
+          select: {
             burger: true,
             quantity: true,
             newPrice: true,
