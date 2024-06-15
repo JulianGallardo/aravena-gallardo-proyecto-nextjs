@@ -6,10 +6,11 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '@/app/hooks/useCart';
 import { AddToCartIcon, RemoveFromCartIcon } from '@/app/ui/shared/cartIcons';
 import { usePathname } from 'next/navigation';
-import { CartItem, CartItemBurger, ExtraInCart } from '@/lib/types';
+import { CartItemBurger, ExtraInCart } from '@/lib/types';
 import { fetchAllExtras } from '@/lib/crud';
 import { Burger, Extra } from '@/prisma/generated/client';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { getImageUrl } from '@/utils/cloudinaryUtils';
 
 interface SelectedExtra {
     extra: string;
@@ -28,11 +29,12 @@ const BurgerPage: React.FC = () => {
     const [burgerData, setBurgerData] = useState<CartItemBurger | null>(null);
     const [extras, setExtras] = useState<Extra[]>([]);
     const [extrasInBurger, setExtrasInBurger] = useState<SelectedExtra[]>([]);
+    const [cloudinaryImageUrl, setCloudinaryImageUrl] = useState<string>('');
 
     const [submitBtn, setSubmitBtn] = useState(false);
     const [deleteBtn, setDeleteBtn] = useState(false);
 
-    
+
     useEffect(() => {
         fetchAllExtras().then((data) => {
             setExtras(data);
@@ -40,8 +42,8 @@ const BurgerPage: React.FC = () => {
             console.error('Error fetching extras:', error);
         });
     }, []);
-     
-    
+
+
 
     const parseData = (data: Burger) => {
         setBurgerData({
@@ -70,11 +72,22 @@ const BurgerPage: React.FC = () => {
             } catch (error) {
                 console.error('Error fetching burger:', error);
             }
-
-        
+            
+            
         };
         getBurger();
     }, [pathname]);
+
+
+    useEffect(() => {
+        if (burgerData) {
+            const src = getImageUrl(burgerData.name).then((url) => {
+                setCloudinaryImageUrl(url);
+            }).catch((error) => {
+                console.error('Error fetching image:', error);
+            });
+        }
+    }, [burgerData]);
 
     const addExtra = () => {
         setExtrasInBurger([...extrasInBurger, { extra: '', quantity: 0 }]);
@@ -183,13 +196,15 @@ const BurgerPage: React.FC = () => {
                 <div className="flex justify-stretch flex-col md:grid md:grid-cols-2 gap-5 p-4  ">
                     <div className="flex justify-center items-start w-full">
                         <div className="w-full h-auto max-w-lg">
-                            <Image
-                                src={burgerData.imageUrl}
-                                alt={burgerData.name}
-                                width={400}
-                                height={400}
-                                className="rounded-lg"
-                            />
+                            { cloudinaryImageUrl!=="" &&
+                                <Image
+                                    src={cloudinaryImageUrl}
+                                    alt={burgerData.name}
+                                    width={400}
+                                    height={400}
+                                    className="rounded-lg"
+                                />
+                            }
                         </div>
                     </div>
                     <div className='flex flex-col gap-2 w-full'>
@@ -264,6 +279,7 @@ const BurgerPage: React.FC = () => {
                 </div>
             )}
         </div>
-      )};
+    )
+};
 
 export default BurgerPage;

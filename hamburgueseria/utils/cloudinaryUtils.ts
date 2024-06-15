@@ -1,6 +1,7 @@
 "use server";
 
-export const getImageUrl = async (publicId: string): Promise<string> => {
+export const getImageUrl = async (name: string): Promise<string> => {
+  const publicId = name.toLowerCase().replace(/\s/g, "");
   return new Promise<string>((resolve, reject) => {
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
     if (!cloudName) {
@@ -8,7 +9,7 @@ export const getImageUrl = async (publicId: string): Promise<string> => {
       return;
     }
 
-    const imageUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${publicId}`;
+    const imageUrl = `https://res.cloudinary.com/${cloudName}/image/upload/byteburgers/${publicId}`;
     resolve(imageUrl);
   });
 };
