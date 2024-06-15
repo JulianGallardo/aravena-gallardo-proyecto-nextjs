@@ -1,10 +1,9 @@
-"use client"
-
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Category, Burger } from '@/prisma/generated/client';
-import { createPromo, fetchAllBurgers } from '@/lib/crud';
+import { updatePromo, fetchAllBurgers } from '@/lib/crud';
 import { useRouter } from 'next/navigation';
+import { PromoExtendida } from '@/lib/definitions';
 
 type FormValues = {
     name: string;
@@ -15,40 +14,62 @@ type FormValues = {
     burgers: { burger: Burger; quantity: number; newPrice: number }[];
 };
 
+interface PromoForm {
+    promo: PromoExtendida;
+    handleUpdate: () => void;
+}
 
-const NewPromoForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
+const UpdatePromoForm = ({ promo,handleUpdate }: PromoForm) => {
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormValues>({
+        defaultValues: {
+            name: promo?.name || '',
+            imageUrl: promo?.imageUrl || '',
+            description: promo?.description || '',
+            category: promo?.category || '',
+            burgers: promo?.burgers || [],
+        },
+    });
     const router = useRouter();
     const [burgers, setBurgers] = useState<Burger[]>([]);
-    const [burgersInPromo, setBurgersInPromo] = useState<{ burger: Burger; quantity: number; newPrice: number }[]>([]);
+    const [burgersInPromo, setBurgersInPromo] = useState<{ burger: Burger; quantity: number; newPrice: number }[]>(promo?.burgers || []);
 
     useEffect(() => {
         const fetchBurgers = async () => {
-            const burgers = await fetchAllBurgers()
+            const burgers = await fetchAllBurgers();
             setBurgers(burgers);
         };
         fetchBurgers();
+        burgersInPromo.forEach((burger, index) => {
+            const burgerInPromo = burgers.find(b => b.productId === burger.burger.productId);
+            if (!burgerInPromo) return;
+            setValue(`burgers.${index}.burger`, burgerInPromo);
+            setValue(`burgers.${index}.quantity`, burger.quantity);
+            setValue(`burgers.${index}.newPrice`, burger.newPrice);
+        });
     }, []);
 
     const onSubmit = async (data: FormValues) => {
         const prices = data.burgers.map(burger => burger.newPrice * burger.quantity);
-        const price = prices.reduce((acc, curr) => acc + curr , 0);
+        const price = prices.reduce((acc, curr) => acc + curr, 0);
         data.price = Number(price.toFixed(2));
-        
+
+
+
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
             if (key === 'burgers') {
-                const burgers = value as { burger: Burger; quantity: number; newPrice: number }[];
-                formData.append('burgers', JSON.stringify(burgers));
+                formData.append(key, JSON.stringify(burgersInPromo));
             } else {
                 formData.append(key, String(value));
             }
         });
 
-        const promo = await createPromo(formData);
-        
 
+        const updatedPromo = await updatePromo(promo.promoId,formData);
 
+        if (updatedPromo) {
+            handleUpdate();
+        }
     };
 
     const addBurger = () => {
@@ -57,10 +78,10 @@ const NewPromoForm = () => {
 
     const removeBurger = (index: number) => {
         setBurgersInPromo(burgersInPromo.filter((_, i) => i !== index));
-    }
+    };
 
     function calculatePromoPrice(): React.ReactNode {
-        const prices = burgersInPromo.map(burger =>(burger.newPrice>0)? burger.newPrice * burger.quantity : 0);
+        const prices = burgersInPromo.map(burger => (burger.newPrice > 0) ? burger.newPrice * burger.quantity : 0);
         const price = prices.reduce((acc, curr) => acc + curr, 0);
         return price.toFixed(2);
     }
@@ -74,7 +95,6 @@ const NewPromoForm = () => {
                 className="p-2 border border-gray-300 rounded bg-gray-200 placeholder:text-gray-500"
                 id="name"
                 type="text"
-                placeholder="Name"
                 {...register('name', { required: true })}
             />
             {errors.name && <span className="text-red-500">Falta completar este campo</span>}
@@ -83,12 +103,9 @@ const NewPromoForm = () => {
             <textarea
                 className="p-2 border border-gray-300 rounded bg-gray-200 placeholder:text-gray-500"
                 id="description"
-                placeholder="Description"
                 {...register('description', { required: true })}
             />
             {errors.description && <span className="text-red-500">Falta completar este campo</span>}
-
-
 
             <div className='flex flex-col gap-2'>
                 <label htmlFor="category">Burgers incluidas</label>
@@ -97,7 +114,8 @@ const NewPromoForm = () => {
                         <div key={index} className="flex flex-col md:flex-row  gap-5 items-center ">
                             <select
                                 className="p-2 border border-gray-300 rounded bg-gray-200 w-full "
-                                {...register(`burgers.${index}.burger`, { required: true})}
+                                {...register(`burgers.${index}.burger`, { required: true })}
+                                value={burger.burger.productId}
                                 onChange={
                                     (e) => {
                                         const productId = e.target.value;
@@ -111,7 +129,6 @@ const NewPromoForm = () => {
                                             return burger;
                                         });
                                         setBurgersInPromo(newBurgersInPromo);
-
                                     }
                                 }
                             >
@@ -125,6 +142,7 @@ const NewPromoForm = () => {
                                 type="number"
                                 placeholder="Cantidad"
                                 {...register(`burgers.${index}.quantity`, { valueAsNumber: true, required: true, validate: (value) => value > 0 })}
+                                value={burger.quantity}
                                 onChange={(e) => {
                                     const quantity = e.target.value;
                                     const newBurgersInPromo = burgersInPromo.map((burger, i) => {
@@ -140,7 +158,8 @@ const NewPromoForm = () => {
                                 className="p-2 border border-gray-300 rounded bg-gray-200 placeholder:text-gray-500 "
                                 type="float"
                                 placeholder="Nuevo precio individual"
-                                {...register(`burgers.${index}.newPrice`, {valueAsNumber:true, required: true, validate: (value) => value > 0 })}
+                                {...register(`burgers.${index}.newPrice`, { valueAsNumber: true, required: true, validate: (value) => value > 0 })}
+                                value={burger.newPrice}
                                 onChange={
                                     (e) => {
                                         const quantity = e.target.value;
@@ -161,29 +180,25 @@ const NewPromoForm = () => {
                                 <span className="text-red-500">Falta completar este campo</span>
                             )}
                         </div>
-                        <div className=' divider'></div>
+                        <div className='divider'></div>
                     </div>
-
                 ))}
                 <button type="button" className='btn bg-gray-600 text-white' onClick={addBurger}>Añadir burger</button>
-
             </div>
             <div className="flex flex-col gap-5  col-span-2">
                 <label htmlFor="price">Precio: ${calculatePromoPrice()}</label>
-
             </div>
-
 
             <div className="flex flex-col gap-5 items-center justify-center col-span-2">
                 <button
                     className="btn bg-green-400 text-white px-4 py-2 rounded hover:bg-green-600"
                     type="submit"
                 >
-                    Crear nueva promo
+                    Actualizar Promo
                 </button>
             </div>
         </form>
     );
 }
 
-export default NewPromoForm;
+export default UpdatePromoForm;

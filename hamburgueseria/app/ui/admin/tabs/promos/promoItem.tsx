@@ -11,9 +11,7 @@ interface PromoItemProps {
 
 const PromoItem = ({ promo }: PromoItemProps) => {
 
-    useEffect(() => {
-        console.log(promo);
-    }, [])
+  
 
     return (
         <Link href={`/admin/promos/${promo.promoId}`}>

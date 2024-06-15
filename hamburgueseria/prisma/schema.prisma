@@ -120,8 +120,8 @@ model BurgerOnPromo {
   burgerId    Int
   quantity    Int       @default(1)
   newPrice    Float     
-  promo       Promo     @relation(fields: [promoId], references: [promoId])
-  burger      Burger    @relation(fields: [burgerId], references: [burgerId])
+  promo       Promo     @relation(fields: [promoId], references: [promoId], onDelete: Cascade)
+  burger      Burger    @relation(fields: [burgerId], references: [burgerId],onDelete: Cascade)
   @@unique([promoId, burgerId]) // Garantiza que no haya duplicados de la misma combinación
 }
 

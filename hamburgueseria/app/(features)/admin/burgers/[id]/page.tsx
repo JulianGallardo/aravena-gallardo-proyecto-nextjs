@@ -71,7 +71,6 @@ const BurgerManagementPage = () => {
                         onClick={async () => {
                             await deleteBurger(Number(burgerId));
                             toast.dismiss();
-                            console.log("Burger deleted successfully");
                             router.push("/admin/burgers");
                         }}
                     >

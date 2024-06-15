@@ -126,6 +126,17 @@ export class ProductRepository {
   }
 
   async deletePromo(promoId: number): Promise<void> {
-    await prisma.promo.delete({ where: { promoId } });
+    await prisma.promo.delete({ 
+      where: { promoId }, 
+      include: {
+        burgers: {
+          select: {
+            burger: true,
+            quantity: true,
+            newPrice: true,
+          }
+        }
+      },
+    });
   }
 }

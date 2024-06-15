@@ -43,7 +43,6 @@ const BurgerList: React.FC = () => {
           )
         );
         setImageUrls(urls);
-        console.log('promos', dataPromos)
       } catch (error) {
         console.error('Error fetching products:', error);
       }

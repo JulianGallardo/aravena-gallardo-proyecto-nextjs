@@ -21,7 +21,6 @@ function PromoPage() {
     
    
      const parseData = (data: PromoExtendida) => {
-        console.log(data);
         const parsedData: CartItemPromo = {
             ...data,
             quantity: 1,

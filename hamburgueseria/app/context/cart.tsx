@@ -48,7 +48,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
             updateLocalStorage(cart);
         }
-        console.log(cart);
     }, [cart]);
 
     const areExtrasEqual = (extras1: ExtraInCart[], extras2: ExtraInCart[]) => {
@@ -65,7 +64,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
             );
             
             if (existingProduct) {
-                console.log("product",existingProduct);
                 return prevCart.map((item) =>
                     item.cartItemBurger?.productId === product.productId && areExtrasEqual(item.cartItemBurger.extras, product.extras)
                         ? { ...item, cartItemBurger: { ...item.cartItemBurger, quantity: item.cartItemBurger.quantity + 1 } }

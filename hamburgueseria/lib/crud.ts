@@ -27,7 +27,7 @@ export async function fetchAllPromos() {
 }
 
 export async function createBurger(form: FormData) {
-  const burger:BurgerDataForm = {
+  const burger: BurgerDataForm = {
     name: form.get('name') as string,
     description: form.get('description') as string,
     category: form.get('category') as Category,
@@ -38,19 +38,19 @@ export async function createBurger(form: FormData) {
 }
 
 
-export async function updateBurger(id:number,data:FormData) {
-  const burger:BurgerDataForm = {
+export async function updateBurger(id: number, data: FormData) {
+  const burger: BurgerDataForm = {
     name: data.get('name') as string,
     description: data.get('description') as string,
     category: data.get('category') as Category,
     stock: Number(data.get('stock')),
     price: Number(data.get('price')),
   };
-  return await productService.updateBurger(id,burger);
+  return await productService.updateBurger(id, burger);
 }
 
 
-export async function deleteBurger(id:number) {
+export async function deleteBurger(id: number) {
   return await productService.deleteBurger(id);
 }
 
@@ -58,21 +58,43 @@ export async function createPromo(form: FormData) {
 
   console.log(form.get('burgers'));
 
-  const promo:PromoDataForm = {
+  const promo: PromoDataForm = {
     name: form.get('name') as string,
     description: form.get('description') as string,
     price: Number(form.get('price')),
     category: Category.PROMO,
-    burgers: JSON.parse(form.get('burgers') as string).map((b:any) => ({
+    burgers: JSON.parse(form.get('burgers') as string).map((b: any) => ({
       burger: Number(b.burger),
       quantity: Number(b.quantity),
       newPrice: Number(b.newPrice)
     }))
   };
-  
+
   return await productService.createPromo(promo);
 }
 
+
+
+export async function updatePromo(id: number, data: FormData) {
+  const promo: Prisma.PromoUpdateInput = {
+    name: data.get('name') as string,
+    description: data.get('description') as string,
+    price: Number(data.get('price')),
+  };
+  const burgers = JSON.parse(data.get('burgers') as string).map((b: any) => ({
+    burgerId: Number(b.burger.burgerId),
+    quantity: Number(b.quantity),
+    newPrice: Number(b.newPrice)
+  })
+  );
+
+  return await productService.updatePromo(id, promo, burgers);
+}
+
+
+export async function deletePromo(id: number) {
+  return await productService.deletePromo(id);
+}
 
 
 export async function fetchAllExtras() {

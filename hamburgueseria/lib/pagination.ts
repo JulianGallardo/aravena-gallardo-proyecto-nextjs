@@ -125,14 +125,12 @@ export async function fetchPaginationOrders(page: number) {
 
 export async function fetchFilteredOrderById(query: string, currentPage: number) {
   if (query) {
-    console.log(ordenes.map((order) => console.log(order.id === query)));
-    const filteredOrders = ordenes.filter((order) => console.log(order.id === query));
+    const filteredOrders = ordenes.filter((order) => order.id === query);
     const totalItems = filteredOrders.length;
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
     const paginatedOrders = filteredOrders.slice(start, end);
-    console.log(paginatedOrders);
     return { paginatedOrders, totalPages };
   } else {
     return await fetchPaginationOrders(currentPage);
@@ -160,7 +158,6 @@ export async function fetchPaginationBurgersByName(query: String, page: number) 
     return { paginatedOrders: [], totalPages: 0 };
   }
   if (query !== "" || query !== null) { // query is not empty
-    console.log('entro');
 
     let queryName = "";
     let queryCategory = "";
@@ -201,7 +198,6 @@ export async function fetchPaginatedPromos(page: number) {
 export async function fetchPaginatedPromosByName(query: String, page: number):Promise<{paginatedOrders:PromoExtendida[],totalPages:number}> {
   const splittedQuery = query.split("&").map((item) => item.split("="));
   const promos:PromoExtendida[] = await productService.getAllPromos();
-  console.log('promos',JSON.stringify(promos,null,2));
   
   if (!promos) {
     return { paginatedOrders: [], totalPages: 0 };
