@@ -11,6 +11,7 @@ import { fetchAllExtras } from '@/lib/crud';
 import { Burger, Extra } from '@/prisma/generated/client';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { getImageUrl } from '@/utils/cloudinaryUtils';
+import { setTimeout } from 'timers/promises';
 
 interface SelectedExtra {
     extra: string;
@@ -113,8 +114,10 @@ const BurgerPage: React.FC = () => {
 
     const handleFormSubmit: SubmitHandler<FormValues> = (data) => {
         if (submitBtn) {
+            
             setSubmitBtn(false);
             handleAddToCart(data);
+
         } else if (deleteBtn) {
             setDeleteBtn(false);
             handleDelete(data);
@@ -153,6 +156,7 @@ const BurgerPage: React.FC = () => {
         };
 
         addToCartBurger(newBurger);
+
     };
 
     const handleDelete = (data: FormValues) => {
@@ -190,8 +194,12 @@ const BurgerPage: React.FC = () => {
         removeFromCartBurger(newBurger);
     };
 
+
+
+
+
     return (
-        <div className="flex flex-col h-full my-28 items-center transition duration-500 w-screen text-dark">
+        <div className="flex flex-col h-full my-28  items-center transition duration-500 w-full text-dark md:px-10">
             {burgerData && burgerData.name ? (
                 <div className="flex justify-stretch flex-col md:grid md:grid-cols-2 gap-5 p-4  ">
                     <div className="flex justify-center items-start w-full">
@@ -255,7 +263,7 @@ const BurgerPage: React.FC = () => {
                                 <p className="text-red-500 font-semibold md:text-lg">Nuevo precio con extras: ${calculateTotalPrice()}</p>
                             )}
                             <div className="flex gap-5">
-                                <button type="submit" className="btn btn-circle bg-green-500 hover:bg-green-700 text-white" onClick={() => setSubmitBtn(true)}>
+                                <button type="submit" className="btn btn-circle bg-green-500 hover:bg-green-700 text-white" onClick={() => {setSubmitBtn(true)}}  >
                                     <AddToCartIcon />
                                 </button>
 

@@ -7,6 +7,7 @@ import { AddToCartIcon, RemoveFromCartIcon } from '@/app/ui/shared/cartIcons';
 import { usePathname } from 'next/navigation';
 import {  CartItemPromo } from '@/lib/types';
 import { PromoExtendida } from '@/lib/definitions';
+import { getImageUrl } from '@/utils/cloudinaryUtils';
 
 
 
@@ -16,7 +17,7 @@ function PromoPage() {
     const pathname = usePathname();
 
     const [promoData, setPromoData] = useState<CartItemPromo | null>(null);
-
+    const [cloudinaryImageUrl, setCloudinaryImageUrl] = useState<string>('');
 
     
    
@@ -25,6 +26,7 @@ function PromoPage() {
             ...data,
             quantity: 1,
         };
+
         setPromoData(parsedData);
     }
 
@@ -57,14 +59,26 @@ function PromoPage() {
     }, []);
 
 
+    useEffect(() => {
+        if (promoData) {
+            const src = getImageUrl(promoData.name).then((url) => {
+                setCloudinaryImageUrl(url);
+            }).catch((error) => {
+                console.error('Error fetching image:', error);
+            });
+        }
+    }, [promoData]);
+
+
+
     return (
-        <div className="flex flex-col h-full my-28 items-center transition duration-500 w-screen text-dark">
-            {promoData && promoData.name ? (
+        <div className="flex flex-col h-full my-28 items-center transition duration-500 w-screen text-dark md: px-10">
+            {promoData && cloudinaryImageUrl!="" ? (
                 <div className="flex justify-stretch flex-col md:grid md:grid-cols-2 gap-5 p-4 ">
                     <div className="flex justify-center items-start w-full">
                         <div className="w-full h-auto max-w-lg">
                             <Image
-                                src={promoData.imageUrl}
+                                src={cloudinaryImageUrl}
                                 alt={promoData.name}
                                 width={400}
                                 height={400}
