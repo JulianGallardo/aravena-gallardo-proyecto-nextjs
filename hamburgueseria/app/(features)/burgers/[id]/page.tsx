@@ -13,6 +13,11 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { getImageUrl } from '@/utils/cloudinaryUtils';
 import { setTimeout } from 'timers/promises';
 import Link from 'next/link';
+import { fetchAllBurgers,fetchAllPromos,fetchBurgerById } from '@/lib/crud';
+import { inter } from '@/app/ui/fonts';
+import Carousel from '@/app/ui/burgers/carrouselRecomendedBurgers';
+import { PromoExtendida } from '@/lib/definitions';
+import { set } from 'zod';
 
 interface SelectedExtra {
     extra: string;
@@ -23,6 +28,16 @@ interface FormValues {
     extras: SelectedExtra[];
 }
 
+interface RecommendedBurgers {
+    burger: Burger;
+    cloudinaryImageUrl: string;
+}
+interface recommendedPromos {
+    promo: PromoExtendida;
+    cloudinaryImageUrl: string;
+}
+
+
 const BurgerPage: React.FC = () => {
     const { addToCartBurger, removeFromCartBurger } = useCart();
     const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
@@ -32,6 +47,8 @@ const BurgerPage: React.FC = () => {
     const [extras, setExtras] = useState<Extra[]>([]);
     const [extrasInBurger, setExtrasInBurger] = useState<SelectedExtra[]>([]);
     const [cloudinaryImageUrl, setCloudinaryImageUrl] = useState<string>('');
+    const [recommendedBurgers, setRecommendedBurgers] = useState<RecommendedBurgers[]>([]);
+    const [recommendedPromos, setRecommendedPromos] = useState<recommendedPromos[]>([]);
 
     const [submitBtn, setSubmitBtn] = useState(false);
     const [deleteBtn, setDeleteBtn] = useState(false);
@@ -44,6 +61,37 @@ const BurgerPage: React.FC = () => {
             console.error('Error fetching extras:', error);
         });
     }, []);
+
+    useEffect(() => {
+        if (recommendedBurgers.length === 0) {
+            const getRecommendedBurgers = async () => {
+                const burgers = await fetchAllBurgers().then((data) =>
+                    data.sort(() => Math.random() - 0.5).slice(0, 5)
+
+                );
+                const recommendedBurgers = await Promise.all(burgers.map(async (burger) => {
+                    const url = await getImageUrl(burger.name);
+                    return { burger, cloudinaryImageUrl: url };
+                }));
+                setRecommendedBurgers(recommendedBurgers);
+                
+            };
+            const getRecommendedPromos = async () => {
+                const promos = await fetchAllPromos().then((data) =>
+                    data.sort(() => Math.random() - 0.5).slice(0, 5)
+
+                );
+                const recommendedPromos = await Promise.all(promos.map(async (promo) => {
+                    const url = await getImageUrl(promo.name);
+                    return { promo, cloudinaryImageUrl: url };
+                }));
+                setRecommendedPromos(recommendedPromos);
+            };
+            getRecommendedBurgers();
+            getRecommendedPromos();
+        }
+    }, []);
+
 
 
 
@@ -59,23 +107,13 @@ const BurgerPage: React.FC = () => {
         const getBurger = async () => {
             const pathnameArray = pathname.split('/');
             const burgerId = pathnameArray[pathnameArray.length - 1];
-            const query = burgerId ? `?productId=${burgerId}` : '';
-            const url = `/api/products/burgers${query}`;
-
-            try {
-                const res = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-                const data = await res.json();
-                parseData(data.body);
-            } catch (error) {
+            const burger = fetchBurgerById(Number(burgerId)).then((data) => {
+                if (data) {
+                    parseData(data);
+                }
+            }).catch((error) => {
                 console.error('Error fetching burger:', error);
-            }
-
-
+            });
         };
         getBurger();
     }, [pathname]);
@@ -215,80 +253,82 @@ const BurgerPage: React.FC = () => {
                     <li className="text-gray-400">{burgerData ? burgerData.name : 'Cargando...'}</li>
                 </ol>
             </nav>
-            {burgerData && burgerData.name ? (
+            {burgerData && burgerData.name && recommendedBurgers && recommendedPromos && cloudinaryImageUrl!=="" ? (
+                <div className="w-full flex flex-col  gap-5 p-4  ">
+                    <div className="flex justify-stretch flex-col md:grid md:grid-cols-2 gap-5 p-4  ">
+                        <div className="flex justify-center items-start w-full">
+                            <div className="w-full h-auto max-w-lg">
+                                {cloudinaryImageUrl !== "" &&
+                                    <Image
+                                        src={cloudinaryImageUrl}
+                                        alt={burgerData.name}
+                                        width={400}
+                                        height={400}
+                                        className="rounded-lg"
+                                    />
+                                }
+                            </div>
+                        </div>
+                        <div className='flex flex-col gap-2 w-full'>
+                            <h1 className='text-lg md:text-2xl lg:text-3xl font-bold'>{burgerData.name}</h1>
+                            <label className="font-semibold md:text-lg lg:text-xl">Informacion del producto:</label>
+                            <p className="md:text-lg lg:text-xl text-darkblue">{burgerData.description}</p>
+                            <label className="font-semibold md:text-lg lg:text-xl">Categoria:</label>
+                            <p className="md:text-lg lg:text-xl text-darkblue">{burgerData.category}</p>
+                            <label className="font-semibold md:text-lg lg:text-xl">Precio:</label>
+                            <p className="md:text-lg lg:text-xl text-darkblue">${burgerData.price}</p>
+                            <label className="font-semibold md:text-lg lg:text-xl">Añadi algun extra a tu byte:</label>
+                            <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit(handleFormSubmit)}>
+                                {extrasInBurger.map((extra, index) => (
+                                    <div key={index}>
+                                        <div className="flex flex-col md:flex-row gap-5 items-center p-5 rounded-lg">
+                                            <select
+                                                className="text-sm md:text-lg p-2 border border-gray-300 rounded bg-darkblue text-white"
+                                                {...register(`extras.${index}.extra`, { required: true })}
+                                                onChange={(e) => {
+                                                    const newExtras = [...extrasInBurger];
+                                                    newExtras[index].extra = e.target.value;
+                                                    setExtrasInBurger(newExtras);
+                                                }}
+                                            >
+                                                <option value="">Selecciona un extra</option>
+                                                {extras.map((extra) => (
+                                                    <option key={extra.extraId} value={extra.extraId}>{extra.name}</option>
+                                                ))}
+                                            </select>
+                                            <input
+                                                className="p-2 border border-gray-300 rounded bg-darkblue text-white"
+                                                type="number"
+                                                placeholder="Cantidad"
+                                                {...register(`extras.${index}.quantity`, { required: true })}
+                                                onChange={(e) => {
+                                                    const newExtras = [...extrasInBurger];
+                                                    newExtras[index].quantity = parseInt(e.target.value);
+                                                    setExtrasInBurger(newExtras);
+                                                }}
+                                            />
+                                            <button type="button" className='btn bg-red-500 hover:bg-red-800 text-white' onClick={() => removeExtra(index)}>Eliminar</button>
+                                        </div>
+                                        <div className="divider"></div>
+                                    </div>
+                                ))}
+                                <button type="button" className='btn bg-darkblue text-white' onClick={addExtra}>Añadir nuevo extra</button>
+                                {extrasInBurger.length > 0 && (
+                                    <p className="text-red-500 font-semibold md:text-lg">Nuevo precio con extras: ${calculateTotalPrice()}</p>
+                                )}
+                                <div className="flex gap-5">
+                                    <button type="submit" className="btn btn-circle bg-green-500 hover:bg-green-700 text-white" onClick={() => { setSubmitBtn(true) }}  >
+                                        <AddToCartIcon />
+                                    </button>
 
-                <div className="flex justify-stretch flex-col md:grid md:grid-cols-2 gap-5 p-4  ">
-                    <div className="flex justify-center items-start w-full">
-                        <div className="w-full h-auto max-w-lg">
-                            {cloudinaryImageUrl !== "" &&
-                                <Image
-                                    src={cloudinaryImageUrl}
-                                    alt={burgerData.name}
-                                    width={400}
-                                    height={400}
-                                    className="rounded-lg"
-                                />
-                            }
+                                    <button type='submit' className="btn btn-circle bg-red-500 hover:bg-red-700 text-white" onClick={() => setDeleteBtn(true)}>
+                                        <RemoveFromCartIcon />
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div className='flex flex-col gap-2 w-full'>
-                        <h1 className='text-lg md:text-2xl lg:text-3xl font-bold'>{burgerData.name}</h1>
-                        <label className="font-semibold md:text-lg lg:text-xl">Informacion del producto:</label>
-                        <p className="md:text-lg lg:text-xl text-darkblue">{burgerData.description}</p>
-                        <label className="font-semibold md:text-lg lg:text-xl">Categoria:</label>
-                        <p className="md:text-lg lg:text-xl text-darkblue">{burgerData.category}</p>
-                        <label className="font-semibold md:text-lg lg:text-xl">Precio:</label>
-                        <p className="md:text-lg lg:text-xl text-darkblue">${burgerData.price}</p>
-                        <label className="font-semibold md:text-lg lg:text-xl">Añadi algun extra a tu byte:</label>
-                        <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit(handleFormSubmit)}>
-                            {extrasInBurger.map((extra, index) => (
-                                <div key={index}>
-                                    <div className="flex flex-col md:flex-row gap-5 items-center p-5 rounded-lg">
-                                        <select
-                                            className="text-sm md:text-lg p-2 border border-gray-300 rounded bg-darkblue text-white"
-                                            {...register(`extras.${index}.extra`, { required: true })}
-                                            onChange={(e) => {
-                                                const newExtras = [...extrasInBurger];
-                                                newExtras[index].extra = e.target.value;
-                                                setExtrasInBurger(newExtras);
-                                            }}
-                                        >
-                                            <option value="">Selecciona un extra</option>
-                                            {extras.map((extra) => (
-                                                <option key={extra.extraId} value={extra.extraId}>{extra.name}</option>
-                                            ))}
-                                        </select>
-                                        <input
-                                            className="p-2 border border-gray-300 rounded bg-darkblue text-white"
-                                            type="number"
-                                            placeholder="Cantidad"
-                                            {...register(`extras.${index}.quantity`, { required: true })}
-                                            onChange={(e) => {
-                                                const newExtras = [...extrasInBurger];
-                                                newExtras[index].quantity = parseInt(e.target.value);
-                                                setExtrasInBurger(newExtras);
-                                            }}
-                                        />
-                                        <button type="button" className='btn bg-red-500 hover:bg-red-800 text-white' onClick={() => removeExtra(index)}>Eliminar</button>
-                                    </div>
-                                    <div className="divider"></div>
-                                </div>
-                            ))}
-                            <button type="button" className='btn bg-darkblue text-white' onClick={addExtra}>Añadir nuevo extra</button>
-                            {extrasInBurger.length > 0 && (
-                                <p className="text-red-500 font-semibold md:text-lg">Nuevo precio con extras: ${calculateTotalPrice()}</p>
-                            )}
-                            <div className="flex gap-5">
-                                <button type="submit" className="btn btn-circle bg-green-500 hover:bg-green-700 text-white" onClick={() => { setSubmitBtn(true) }}  >
-                                    <AddToCartIcon />
-                                </button>
-
-                                <button type='submit' className="btn btn-circle bg-red-500 hover:bg-red-700 text-white" onClick={() => setDeleteBtn(true)}>
-                                    <RemoveFromCartIcon />
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                    <Carousel recommendedBurgers={recommendedBurgers} recommendedPromos={recommendedPromos} />
                 </div>
             ) : (
                 <div className="flex flex-col md:flex-row items-center gap-5 p-4 w-2/3 mx-24">

@@ -30,9 +30,11 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.5",
     "react-markdown": "^9.0.1",
+    "react-slick": "^0.30.2",
     "react-tabs": "^6.0.2",
     "react-toastify": "^10.0.5",
     "remark-gfm": "^4.0.0",
+    "slick-carousel": "^1.8.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -41,6 +43,7 @@
     "@types/node": "^20.13.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-slick": "^0.23.13",
     "daisyui": "^4.11.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
