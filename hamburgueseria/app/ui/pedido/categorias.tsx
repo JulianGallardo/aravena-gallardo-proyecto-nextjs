@@ -1,11 +1,23 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface categoriesProps {
     categories: string[];
 }
 
 const Categorias: React.FC<categoriesProps> = ({ categories }) => {
+
+    useEffect(() => {
+        
+        if(window != undefined && window.location.hash){
+            const category = window.location.hash.replace('#', '');
+            scrollToCategory(category);
+        }
+    }, []);
+
+
+    
+
 
     function scrollToCategory(category: string): void {
         const categoryElement = document.getElementById(category);

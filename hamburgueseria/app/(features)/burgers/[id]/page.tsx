@@ -12,6 +12,7 @@ import { Burger, Extra } from '@/prisma/generated/client';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { getImageUrl } from '@/utils/cloudinaryUtils';
 import { setTimeout } from 'timers/promises';
+import Link from 'next/link';
 
 interface SelectedExtra {
     extra: string;
@@ -73,8 +74,8 @@ const BurgerPage: React.FC = () => {
             } catch (error) {
                 console.error('Error fetching burger:', error);
             }
-            
-            
+
+
         };
         getBurger();
     }, [pathname]);
@@ -114,7 +115,7 @@ const BurgerPage: React.FC = () => {
 
     const handleFormSubmit: SubmitHandler<FormValues> = (data) => {
         if (submitBtn) {
-            
+
             setSubmitBtn(false);
             handleAddToCart(data);
 
@@ -195,16 +196,31 @@ const BurgerPage: React.FC = () => {
     };
 
 
-
-
-
     return (
         <div className="flex flex-col h-full my-28  items-center transition duration-500 w-full text-dark md:px-10">
+            <nav className="text-gray-700 text-lg mb-8 self-start w-full px-4">
+                <ol className="list-reset flex">
+                    <li>
+                        <Link href="/burgers">
+                            Menu
+                        </Link>
+                    </li>
+                    <li><span className="mx-2">/</span></li>
+                    <li>
+                        <Link href={`/burgers/#${burgerData?.category}`}  >
+                            {burgerData ? burgerData.category : 'Cargando...'}
+                        </Link>
+                    </li>
+                    <li><span className="mx-2">/</span></li>
+                    <li className="text-gray-400">{burgerData ? burgerData.name : 'Cargando...'}</li>
+                </ol>
+            </nav>
             {burgerData && burgerData.name ? (
+
                 <div className="flex justify-stretch flex-col md:grid md:grid-cols-2 gap-5 p-4  ">
                     <div className="flex justify-center items-start w-full">
                         <div className="w-full h-auto max-w-lg">
-                            { cloudinaryImageUrl!=="" &&
+                            {cloudinaryImageUrl !== "" &&
                                 <Image
                                     src={cloudinaryImageUrl}
                                     alt={burgerData.name}
@@ -263,7 +279,7 @@ const BurgerPage: React.FC = () => {
                                 <p className="text-red-500 font-semibold md:text-lg">Nuevo precio con extras: ${calculateTotalPrice()}</p>
                             )}
                             <div className="flex gap-5">
-                                <button type="submit" className="btn btn-circle bg-green-500 hover:bg-green-700 text-white" onClick={() => {setSubmitBtn(true)}}  >
+                                <button type="submit" className="btn btn-circle bg-green-500 hover:bg-green-700 text-white" onClick={() => { setSubmitBtn(true) }}  >
                                     <AddToCartIcon />
                                 </button>
 
