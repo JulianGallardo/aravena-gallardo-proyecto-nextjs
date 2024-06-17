@@ -114,6 +114,9 @@ const BurgerInfoPage: React.FC = () => {
             }
             return total;
         }, 0);
+        if (Number.isNaN(extrasTotal)) {
+            return burgerData.price;
+        }
         return burgerData.price + extrasTotal;
     };
 
@@ -264,12 +267,23 @@ const BurgerInfoPage: React.FC = () => {
                                             <input
                                                 className="p-2 border border-gray-300 rounded bg-darkblue text-white"
                                                 type="number"
-                                                placeholder="Cantidad"
+                                                placeholder={`Cantidad maxima ${extras.find(e => e.extraId === parseInt(extra.extra))?.maxQuantity || 0}`}
                                                 {...register(`extras.${index}.quantity`, { required: true })}
                                                 onChange={(e) => {
                                                     const newExtras = [...extrasInBurger];
-                                                    newExtras[index].quantity = parseInt(e.target.value);
+                                                    const maxQuantity = extras.find(e => e.extraId === parseInt(extra.extra))?.maxQuantity || 0;
+                                                    if (parseInt(e.target.value) < 0) {
+                                                        newExtras[index].quantity = 0;
+                                                        e.target.value = '0';
+                                                    } else
+                                                    if (parseInt(e.target.value) >  maxQuantity  ) {
+                                                        newExtras[index].quantity = extras.find(e => e.extraId === parseInt(extra.extra))?.maxQuantity || 0;
+                                                        e.target.value = maxQuantity.toString();
+                                                    } else {
+                                                        newExtras[index].quantity = parseInt(e.target.value);
+                                                    }
                                                     setExtrasInBurger(newExtras);
+                                                    
                                                 }}
                                             />
                                             <button type="button" className='btn bg-red-500 hover:bg-red-800 text-white' onClick={() => removeExtra(index)}>Eliminar</button>

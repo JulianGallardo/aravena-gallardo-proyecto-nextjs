@@ -34,6 +34,16 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
 
+    const sumBurgerPriceWithExtras = (burger: CartItemBurger|null) => {
+        if(burger == null) return 0;
+        let price = burger.price;
+        for (let i = 0; i < burger.extras.length; i++) {
+            price += burger.extras[i].extra.price * burger.extras[i].quantity;
+        }
+        return price * burger.quantity;
+    };
+
+
     useEffect(() => {
         if (load === false) {
             const data = window.localStorage.getItem("cart");
@@ -52,7 +62,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
         setItems(cart.reduce((acc, item) => acc + (item.cartItemBurger?.quantity || 0) + (item.cartItemPromo?.quantity || 0), 0));
         setTotal(cart.reduce((acc, item) =>
-            acc + (item.cartItemBurger?.price || 0) * (item.cartItemBurger?.quantity || 0) + (item.cartItemPromo?.price || 0) * (item.cartItemPromo?.quantity || 0), 0)
+            acc + sumBurgerPriceWithExtras(item.cartItemBurger)  + (item.cartItemPromo?.price || 0) * (item.cartItemPromo?.quantity || 0), 0)
         );
 
 
