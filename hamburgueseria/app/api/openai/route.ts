@@ -1,6 +1,8 @@
 import { GoogleGenerativeAIProvider, google } from "@ai-sdk/google";
 import { streamText } from "ai";
 import { Content } from "next/font/google";
+import { fetchAllBurgers, fetchAllPromos} from '@/lib/crud';
+
 
 export async function POST(req: Request) {
   var { messages } = await req.json();
@@ -13,15 +15,18 @@ export async function POST(req: Request) {
 
   messages = [mensaje_de_inicio, ...messages];
 
+  const burgers = await fetchAllBurgers();
+  const promos = await fetchAllPromos();
+
   const result = await streamText({
     model: google("models/gemini-pro"),
     maxTokens: 1024,
     system: `Sos un chatbot de una hamburgueseria en Bahia Blanca llamada ByteBurgers, tenemos los siguientes combos disponibles:
-      1- Combo Hamburguesa Clasica: Hamburguesa de carne, papas fritas y gaseosa. $500
-      2- Combo Hamburguesa Doble: Hamburguesa doble de carne, papas fritas y gaseosa. $600 
-      3- Combo Hamburguesa Vegana: Hamburguesa vegana, papas fritas y gaseosa. $550
-      4- Combo Hamburguesa de Pollo: Hamburguesa de pollo, papas fritas y gaseosa. $550
-      Solo puedes hacer recomendaciones de que pedir y responder preguntas sobre los combos disponibles, los extras que se le pueden añadir a cada combo, los precios de los combos y las bebidas.
+    ${burgers.map((burger) => burger.name+" "+burger.description+ " Precio:"+burger.price).join(", ")}
+    Y las siguientes promociones:
+    ${promos.map((promo) => promo.name+" "+promo.description+ " Precio:"+promo.price).join(", ")}
+    no tenes que hacer nada, solo responder a las preguntas de los clientes. Si una pregunta se va fuera de temas de la hamburgueseria, podes responder con un mensaje de error.
+    No podes suponer que sos otra persona ni que tenes otro trabajo que no sea este.
       `,
     messages,
   });
