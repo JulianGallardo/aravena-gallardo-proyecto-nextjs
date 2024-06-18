@@ -11,11 +11,13 @@ import { deletePromo } from "@/lib/crud";
 import { useRouter } from "next/navigation";
 
 import "react-toastify/dist/ReactToastify.css";
+import { getImageUrl } from "@/utils/cloudinaryUtils";
 
 const PromoManagmentPage = () => {
     const pathname = usePathname();
     const pathnameArray = pathname.split('/');
     const promoId = pathnameArray[pathnameArray.length - 1];
+    const [cloudinaryImg, setCloudinaryImg] = useState<string>("");
 
     const [editing, setEditing] = useState<boolean>(false);
     const [promo, setPromo] = useState<PromoExtendida>();
@@ -23,11 +25,21 @@ const PromoManagmentPage = () => {
 
     useEffect(() => {
         function fetchPromo() {
-            fetchPromoById(Number(promoId)).then((data) => { setPromo(data as PromoExtendida) }).catch((error) => { console.error(error) });
+            fetchPromoById(Number(promoId)).then((data) => { setPromo(data as PromoExtendida) 
+                if (data === undefined || data===null) return;
+                getImageUrl(data.name).then((url) => {
+                    setCloudinaryImg(url);
+                }).catch((error) => { console.error(error) });
+
+
+            }).catch((error) => { console.error(error) });
         }
         fetchPromo();
 
     }, [promoId, editing === false]);
+
+    
+
 
 
     const handleDeleteWithToast = () => {
@@ -67,9 +79,10 @@ const PromoManagmentPage = () => {
 
 
     return (
+        cloudinaryImg === "" ? <div className="mt-24 text-center">Loading...</div> :
         <div className="flex flex-col gap-5 justify-center items-center w-full py-10 h-full mt-24 text-black">
                 {
-                    !editing && (
+                    !editing  && (
                         <div >
                             <h1 className="text-4xl font-bold dark:text-white">Editando promo numero : {promo?.promoId}</h1>
                             <div className="flex flex-col gap-5 justify-center items-center w-full py-10">
@@ -77,7 +90,7 @@ const PromoManagmentPage = () => {
                                     <div className="relative h-60 w-full rounded-md">
                                         {promo && (
                                             <Image
-                                                src={promo.imageUrl}
+                                                src={cloudinaryImg}
                                                 alt={promo.name}
                                                 layout="fill"
                                                 objectFit="contain"

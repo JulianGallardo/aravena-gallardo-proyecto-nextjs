@@ -10,6 +10,7 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
+import { getImageUrl } from "@/utils/cloudinaryUtils";
 
 type FormValues = {
     name: string;
@@ -29,6 +30,9 @@ const BurgerManagementPage = () => {
 
     const [burgerData, setBurgerData] = useState<Burger | null>(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [cloudinaryImg, setCloudinaryImg] = useState<string>("");
+
+    
 
     const router = useRouter();
 
@@ -45,6 +49,9 @@ const BurgerManagementPage = () => {
                 setValue("price", data.price);
                 setValue("stock", data.stock);
                 setValue("imageUrl", data.imageUrl);
+                getImageUrl(data.name).then((url) => {
+                    setCloudinaryImg(url);
+                });
             })
             .catch((error) => {
                 console.error(error);
@@ -115,15 +122,16 @@ const BurgerManagementPage = () => {
 
     return (
         <div className="flex flex-col gap-5 justify-center items-center w-full py-10 h-full mt-24">
-            {burgerData ? (
+            {burgerData && cloudinaryImg!="" ? (
                 <div className="flex flex-col gap-5 justify-center items-center w-full py-10">
                     <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
                         <div className="relative h-60 w-full rounded-md">
                             <Image
-                                src={burgerData.imageUrl}
+                                src={cloudinaryImg}
                                 alt={burgerData.name}
                                 layout="fill"
                                 objectFit="contain"
+                                className="rounded p-2"
                             />
                         </div>
                         {isEditing ? (
