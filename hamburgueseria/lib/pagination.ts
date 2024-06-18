@@ -241,7 +241,7 @@ export async function fetchPaginationExtras(page: number) {
   return { paginatedOrders, totalPages };
 }
 
-export async function fetchPaginationExtrasByName(query: String, page: number) {
+export async function fetchPaginationExtrasByName(query: String, page: number, items_per_page:number) {
   const splittedQuery = query.split("&").map((item) => item.split("="));
   const extras = await productService.getAllExtras();
   if (!extras) {
@@ -257,9 +257,9 @@ export async function fetchPaginationExtrasByName(query: String, page: number) {
     }
     const filteredExtras = extras.filter((extra) => extra.name.toLowerCase().includes(queryName.toLowerCase()));
     const totalItems = filteredExtras.length;
-    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-    const start = (page - 1) * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
+    const totalPages = Math.ceil(totalItems / items_per_page);
+    const start = (page - 1) * items_per_page;
+    const end = start + items_per_page;
     const paginatedOrders = filteredExtras.slice(start, end);
     return { paginatedOrders, totalPages };
   }

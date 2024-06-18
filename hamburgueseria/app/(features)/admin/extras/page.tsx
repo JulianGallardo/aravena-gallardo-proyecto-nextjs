@@ -3,6 +3,8 @@ import { fetchPaginationBurgers } from "@/lib/pagination";
 import BurgerSearch from "@/app/ui/admin/tabs/burger/burgerSearch";
 import Link from "next/link";
 import ExtrasTable from "@/app/ui/admin/tabs/extras/extrasTable";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default async function ExtrasPagination({
     searchParams,
@@ -21,11 +23,11 @@ export default async function ExtrasPagination({
             <div className="flex flex-col justify-center items-center">
                 <h1 className="text-4xl font-bold">Admin</h1>
                 <div className="flex flex-col  gap-5 w-full">
-                    <div className="flex flex-row-reverse items-center gap-4">
-                        <Link href="/admin/promos" className="btn rounded-md bg-yellow text-white">
+                    <div className="flex flex-row-reverse items-center gap-4 justify-center md:justify-normal">
+                        <Link href="/admin/promos" className="btn rounded-md bg-yellow-400 text-white">
                             Promos
                         </Link>
-                        <Link href="/admin/burgers" className="btn rounded-md bg-yellow text-white">
+                        <Link href="/admin/burgers" className="btn rounded-md bg-yellow-400 text-white">
                             Burgers
                         </Link>
                     </div>
@@ -37,7 +39,7 @@ export default async function ExtrasPagination({
                     <BurgerSearch placeholder="Search for an extra" />
                 </div>
                 <Link href="/admin/extras/new">
-                    <button className="bg-green text-white p-2 rounded-lg">Add New</button>
+                    <button className="btn bg-green-400 text-white p-2 rounded-lg">Add New</button>
                 </Link>
             </div>
             <div className="flex flex-col justify-center gap-5 items-center ">
@@ -45,6 +47,8 @@ export default async function ExtrasPagination({
                     <ExtrasTable totalPages={totalPages} />
                 </Suspense>
             </div>
+            
+            <ToastContainer />
         </div>
     );
 

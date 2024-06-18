@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import {  Extra } from "@/prisma/generated/client";
+import { Extra } from "@/prisma/generated/client";
 import { usePathname, useSearchParams } from 'next/navigation';
 import { fetchPaginationExtrasByName } from "@/lib/pagination";
 import { useEffect, useState } from "react";
@@ -13,10 +13,10 @@ interface FetchExtra {
 }
 
 
-export default function ExtrasTable(
+export default async function ExtrasTable(
   {
     totalPages
-  }:{
+  }: {
     totalPages: number,
   }) {
 
@@ -25,16 +25,17 @@ export default function ExtrasTable(
   const currentPage = Number(searchParams.get('page')) || 1;
   const [extras, setExtras] = useState<FetchExtra>({ paginatedOrders: [], totalPages: 0 });
   const query = searchParams.toString();
+  const itemsPerPage = 8;
 
 
   useEffect(() => {
-    const fetchExtras =  () => {
-        fetchPaginationExtrasByName(query,currentPage).then((data) => {setExtras(data)  }).catch((error) => { console.error(error) });
+    const fetchExtras = () => {
+      fetchPaginationExtrasByName(query, currentPage,itemsPerPage).then((data) => { setExtras(data) }).catch((error) => { console.error(error) });
     };
 
     fetchExtras();
 
-  }, [currentPage,query]);
+  }, [currentPage, query]);
 
 
   const createPageURL = (pageNumber: number | string) => {
@@ -45,11 +46,11 @@ export default function ExtrasTable(
 
   return (
     <div className="flex flex-col gap-5 justify-center items-center w-full">
-      <div className="flex flex-col gap-5 md:grid grid-cols-2">
+      <div className="flex flex-col gap-5 md:grid md:grid-cols-2 lg:grid-cols-4">
         {
-            extras.paginatedOrders.map((extra) => (
-                <ExtraItem key={extra.extraId} extra={extra} />
-            ))
+          extras.paginatedOrders.map((extra) => (
+            <ExtraItem key={extra.extraId} extra={extra} />
+          ))
         }
       </div>
       <div className="flex flex-row gap-3 justify-center items-center">
@@ -60,7 +61,7 @@ export default function ExtrasTable(
             </Link>
           ))
         }
+      </div>
     </div>
-  </div>
   );
 }

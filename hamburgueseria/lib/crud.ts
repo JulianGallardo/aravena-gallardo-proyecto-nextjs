@@ -100,3 +100,11 @@ export async function deletePromo(id: number) {
 export async function fetchAllExtras() {
   return await productService.getAllExtras();
 } 
+
+export async function updateExtra(id:number,data:Prisma.ExtraUpdateInput) {
+  return await productService.updateExtra(id,data);
+}
+
+export async function deleteExtra(id:number) {
+  return await productService.deleteExtra(id);
+}
