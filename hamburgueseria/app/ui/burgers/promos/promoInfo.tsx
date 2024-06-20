@@ -18,6 +18,7 @@ function PromoComponent() {
 
     const [promoData, setPromoData] = useState<CartItemPromo | null>(null);
     const [cloudinaryImageUrl, setCloudinaryImageUrl] = useState<string>('');
+    const [promoNotFound, setPromoNotFound] = useState<boolean>(false);
 
     const parseData = (data: PromoExtendida) => {
         const parsedData: CartItemPromo = {
@@ -28,21 +29,23 @@ function PromoComponent() {
         setPromoData(parsedData);
     }
 
-
     useEffect(() => {
         const getPromo = async () => {
             const pathnameArray = pathname.split('/');
             const promoId = pathnameArray[pathnameArray.length - 1];
-            const promo = fetchPromoById(Number(promoId)).then((data) => {
-                if (data)
+            fetchPromoById(Number(promoId)).then((data) => {
+                if (data) {
                     parseData(data);
+                } else {
+                    setPromoNotFound(true);
+                }
             }).catch((error) => {
-                console.error('Error fetching burger:', error);
-            }
-            );
+                console.error('Error fetching promo:', error);
+                setPromoNotFound(true);
+            });
         };
         getPromo();
-    }, []);
+    }, [pathname]);
 
     useEffect(() => {
         if (promoData) {
@@ -55,25 +58,33 @@ function PromoComponent() {
     }, [promoData]);
 
     return (
-        <div className="flex flex-col h-full mt-28 items-center transition duration-500 w-full  text-dark md:px-10">
-            <nav className="text-gray-700 text-lg mb-8 self-start w-full px-4">
-                <ol className="list-reset flex">
-                    <li>
-                        <Link href="/burgers">
-                            Menu
-                        </Link>
-                    </li>
-                    <li><span className="mx-2">/</span></li>
-                    <li>
-                        <Link href="/burgers/#PROMO"  >
-                            Promos
-                        </Link>
-                    </li>
-                    <li><span className="mx-2">/</span></li>
-                    <li className="text-gray-400">{promoData ? promoData.name : 'Cargando...'}</li>
-                </ol>
-            </nav>
-            {promoData && promoData.name && cloudinaryImageUrl !== "" ? (
+        <div className="flex flex-col h-full mt-28 items-center transition duration-500 w-full text-dark md:px-10">
+
+            { !promoNotFound &&
+                <nav className="text-gray-700 text-lg mb-8 self-start w-full px-4">
+                    <ol className="list-reset flex">
+                        <li>
+                            <Link href="/burgers">
+                                Menu
+                            </Link>
+                        </li>
+                        <li><span className="mx-2">/</span></li>
+                        <li>
+                            <Link href="/burgers/#PROMO">
+                                Promos
+                            </Link>
+                        </li>
+                        <li><span className="mx-2">/</span></li>
+                        <li className="text-gray-400">{promoData ? promoData.name : 'Cargando...'}</li>
+                    </ol>
+                </nav>
+            }
+            {promoNotFound ? (
+                <div className="flex flex-col items-center gap-5 p-4 w-full">
+                    <h2 className="text-2xl font-bold">Promoción no encontrada</h2>
+                    <p className="text-lg">Lo sentimos, la promoción que estás buscando no existe.</p>
+                </div>
+            ) : promoData && promoData.name && cloudinaryImageUrl !== "" ? (
                 <div className="flex justify-stretch flex-col md:grid md:grid-cols-2 gap-5 p-4">
                     <div className="flex justify-center items-start w-full">
                         <div className="w-full h-auto max-w-lg">
@@ -126,6 +137,6 @@ function PromoComponent() {
             )}
         </div>
     );
-};
+}
 
 export default PromoComponent;
