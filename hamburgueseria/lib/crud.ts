@@ -108,3 +108,7 @@ export async function updateExtra(id:number,data:Prisma.ExtraUpdateInput) {
 export async function deleteExtra(id:number) {
   return await productService.deleteExtra(id);
 }
+
+export async function createExtra(data:Prisma.ExtraCreateInput) {
+  return await productService.createExtra(data);
+}
