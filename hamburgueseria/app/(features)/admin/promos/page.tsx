@@ -1,9 +1,7 @@
 import React, { Suspense } from "react";
 import { fetchPaginatedPromos } from "@/lib/pagination";
-import BurgerSearch from "@/app/ui/admin/tabs/burger/burgerSearch";
 import Link from "next/link";
 import PromoTable from "@/app/ui/admin/tabs/promos/promoTable";
-import Search from "@/app/ui/perfil/search";
 import SearchByName from "@/app/ui/admin/search";
 
 export default async function PromosPagination({

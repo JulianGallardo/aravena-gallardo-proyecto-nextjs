@@ -1,10 +1,7 @@
 import React, { Suspense } from "react";
 import { fetchPaginationBurgers } from "@/lib/pagination";
-import BurgerSearch from "@/app/ui/admin/tabs/burger/burgerSearch";
 import Link from "next/link";
 import ExtrasTable from "@/app/ui/admin/tabs/extras/extrasTable";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import SearchByName from "@/app/ui/admin/search";
 
 export default async function ExtrasPagination({
@@ -48,8 +45,6 @@ export default async function ExtrasPagination({
                     <ExtrasTable totalPages={totalPages} />
                 </Suspense>
             </div>
-            
-            <ToastContainer />
         </div>
     );
 

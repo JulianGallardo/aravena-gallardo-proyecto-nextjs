@@ -3,8 +3,10 @@ import { inter } from "@/app/ui/fonts";
 import React from "react";
 import "@/app/ui/global.css";
 import SessionWrapper from "@/app/ui/shared/sessionWrapper";
+import "react-toastify/dist/ReactToastify.css";
 import { Header } from "@/app/ui";
 import { Footer } from "@/app/ui";
+import { ToastContainer } from "react-toastify";
 
 const title = "ByteBurgers";
 
@@ -28,6 +30,7 @@ export default async function RootLayout({
             {children}
           </main>
           <Footer />
+          <ToastContainer />
         </SessionWrapper>
       </body>
     </html>
