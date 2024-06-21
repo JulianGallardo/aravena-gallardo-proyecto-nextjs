@@ -4,6 +4,7 @@ import { Burger, Category } from '@/prisma/generated/client';
 import { Prisma } from '@/prisma/generated/client';
 import { ProductService } from '@/prisma/services/productService';
 import { BurgerDataForm, PromoDataForm } from './definitions';
+import { revalidatePath } from 'next/cache';
 
 
 
@@ -93,6 +94,7 @@ export async function updatePromo(id: number, data: FormData) {
 
 
 export async function deletePromo(id: number) {
+  revalidatePath('/admin/promos');
   return await productService.deletePromo(id);
 }
 
@@ -102,13 +104,22 @@ export async function fetchAllExtras() {
 } 
 
 export async function updateExtra(id:number,data:Prisma.ExtraUpdateInput) {
-  return await productService.updateExtra(id,data);
+  const extra= await productService.updateExtra(id,data);
+  revalidatePath('/admin/extras');
+  return extra;
 }
 
 export async function deleteExtra(id:number) {
-  return await productService.deleteExtra(id);
+  await productService.deleteExtra(id);
+  revalidatePath('/admin/extras');
 }
 
 export async function createExtra(data:Prisma.ExtraCreateInput) {
-  return await productService.createExtra(data);
+  const extra = await productService.createExtra(data);
+  revalidatePath('/admin/extras');
+  return extra;
+}
+
+export async function fetchExtraById(id:number) {
+  return await productService.getExtraById(id);
 }

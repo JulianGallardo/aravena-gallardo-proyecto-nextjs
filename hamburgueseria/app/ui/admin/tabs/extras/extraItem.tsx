@@ -1,15 +1,14 @@
 import { Extra } from "@/prisma/generated/client";
 import React, { useState } from "react";
 import { updateExtra, deleteExtra } from "@/lib/crud";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface PromoItemProps {
     extra: Extra
+    refresh: () => void
 }
 
-const ExtraItem = ({ extra }: PromoItemProps) => {
-    const [extraItem, setExtraItem] = useState<Extra>(extra);
-
+const ExtraItem = ({ extra, refresh }: PromoItemProps) => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         name: extra.name,
@@ -28,6 +27,7 @@ const ExtraItem = ({ extra }: PromoItemProps) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleUpdate(formData);
+        refresh();
         setIsEditing(false);
     };
 
@@ -36,6 +36,11 @@ const ExtraItem = ({ extra }: PromoItemProps) => {
             name: data.name,
             maxQuantity: Number(data.maxQuantity),
             price: Number(data.price)
+        }).then(() => {
+            toast.success('Extra actualizado correctamente');
+        }).catch((error) => {
+            console.error(error);
+            toast.error('Error al actualizar el extra');
         });
     };
 
@@ -48,8 +53,16 @@ const ExtraItem = ({ extra }: PromoItemProps) => {
                     <button
                         className="btn bg-red-500 text-white p-2 px-4 rounded-lg mt-2"
                         onClick={async () => {
-                            await deleteExtra(Number(extra.extraId));
-                            toast.dismiss();
+                            await deleteExtra(Number(extra.extraId)).then(() => {
+
+                                refresh();
+
+                                toast.dismiss();
+                                toast.success('Extra eliminado correctamente');
+                            }).catch((error) => {
+                                console.error(error);
+                                toast.error('Error al eliminar el extra');
+                            });
                         }}
                     >
                         Si, quiero eliminar
@@ -90,7 +103,7 @@ const ExtraItem = ({ extra }: PromoItemProps) => {
                     </div>
                     <div className="flex flex-row gap-5 w-full">
                         <button className="btn bg-green-400 text-white p-2 px-4 rounded-lg" onClick={() => setIsEditing(true)}>Edit</button>
-                        <button className="btn bg-red-400 text-white p-2 rounded-lg" onClick={()=>handleDeleteWithToast()}>Delete</button>
+                        <button className="btn bg-red-400 text-white p-2 rounded-lg" onClick={() => handleDeleteWithToast()}>Delete</button>
                     </div>
                 </div>
             ) : (

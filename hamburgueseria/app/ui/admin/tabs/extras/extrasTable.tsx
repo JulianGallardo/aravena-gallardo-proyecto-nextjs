@@ -6,6 +6,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { fetchPaginationExtrasByName } from "@/lib/pagination";
 import { useEffect, useState } from "react";
 import ExtraItem from "./extraItem";
+import { fetchExtraById } from "@/lib/crud";
 
 interface FetchExtra {
   paginatedOrders: Extra[]
@@ -37,6 +38,10 @@ export default async function ExtrasTable(
 
   }, [currentPage, query]);
 
+  const refresh = () => {
+    fetchPaginationExtrasByName(query, currentPage,itemsPerPage).then((data) => { setExtras(data) }).catch((error) => { console.error(error) });
+   
+  }
 
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
@@ -49,7 +54,7 @@ export default async function ExtrasTable(
       <div className="flex flex-col gap-5 md:grid md:grid-cols-2 lg:grid-cols-4">
         {
           extras.paginatedOrders.map((extra) => (
-            <ExtraItem key={extra.extraId} extra={extra} />
+            <ExtraItem key={extra.extraId} extra={extra} refresh={refresh} />
           ))
         }
       </div>
