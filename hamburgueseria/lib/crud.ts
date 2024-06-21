@@ -5,6 +5,7 @@ import { Prisma } from '@/prisma/generated/client';
 import { ProductService } from '@/prisma/services/productService';
 import { BurgerDataForm, PromoDataForm } from './definitions';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 
 
@@ -35,24 +36,28 @@ export async function createBurger(form: FormData) {
     stock: Number(form.get('stock')),
     price: Number(form.get('price')),
   };
+  revalidatePath('/admin/burgers');
   return await productService.createBurger(burger);
 }
 
 
 export async function updateBurger(id: number, data: FormData) {
-  const burger: BurgerDataForm = {
+  const burger: Prisma.BurgerUpdateInput = {
     name: data.get('name') as string,
     description: data.get('description') as string,
     category: data.get('category') as Category,
     stock: Number(data.get('stock')),
     price: Number(data.get('price')),
   };
+  revalidatePath('/admin/burgers');
   return await productService.updateBurger(id, burger);
 }
 
 
 export async function deleteBurger(id: number) {
-  return await productService.deleteBurger(id);
+  await productService.deleteBurger(id);
+  revalidatePath('/admin/burgers');
+  redirect('/admin/burgers');
 }
 
 export async function createPromo(form: FormData) {
@@ -94,8 +99,9 @@ export async function updatePromo(id: number, data: FormData) {
 
 
 export async function deletePromo(id: number) {
+  await productService.deletePromo(id);
   revalidatePath('/admin/promos');
-  return await productService.deletePromo(id);
+  redirect('/admin/promos');
 }
 
 

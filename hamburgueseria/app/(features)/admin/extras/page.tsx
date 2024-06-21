@@ -5,6 +5,7 @@ import Link from "next/link";
 import ExtrasTable from "@/app/ui/admin/tabs/extras/extrasTable";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SearchByName from "@/app/ui/admin/search";
 
 export default async function ExtrasPagination({
     searchParams,
@@ -36,10 +37,10 @@ export default async function ExtrasPagination({
             <div className="flex flex-col md:flex-row justify-between items-center gap-5 mb-5">
                 <h2 className="text-2xl font-bold mb-4">Extras</h2>
                 <div className="flex items-center gap-4">
-                    <BurgerSearch placeholder="Search for an extra" />
+                    <SearchByName placeholder="Buscar un extra" />
                 </div>
                 <Link href="/admin/extras/new">
-                    <button className="btn bg-green-400 text-white p-2 rounded-lg">Add New</button>
+                    <button className="btn bg-green-400 text-white p-2 rounded-lg">Agregar Nuevo</button>
                 </Link>
             </div>
             <div className="flex flex-col justify-center gap-5 items-center ">

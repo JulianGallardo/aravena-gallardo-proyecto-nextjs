@@ -3,6 +3,8 @@ import { fetchPaginatedPromos } from "@/lib/pagination";
 import BurgerSearch from "@/app/ui/admin/tabs/burger/burgerSearch";
 import Link from "next/link";
 import PromoTable from "@/app/ui/admin/tabs/promos/promoTable";
+import Search from "@/app/ui/perfil/search";
+import SearchByName from "@/app/ui/admin/search";
 
 export default async function PromosPagination({
     searchParams,
@@ -34,7 +36,7 @@ export default async function PromosPagination({
             <div className="flex flex-col md:flex-row justify-between items-center gap-5 mb-5">
                 <h2 className="text-2xl font-bold mb-4">Promos</h2>
                 <div className="flex items-center gap-4">
-                    <BurgerSearch placeholder="Search for a promo by name" />
+                    <SearchByName placeholder="Buscar promoción" />
                 </div>
                 <Link href="/admin/promos/new">
                     <button className="btn bg-green-400 text-white p-2 rounded-lg">Agregar nueva</button>
