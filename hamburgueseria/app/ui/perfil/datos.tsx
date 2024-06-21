@@ -53,9 +53,9 @@ const Datos = () => {
             {status === "authenticated" && (
                 editar ? (
                     <div>
-                        <h1 className="text-2xl font-bold text-black dark:text-white ">Datos Personales</h1>
+                        <h1 className="text-2xl font-bold text-black  ">Datos Personales</h1>
                         <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center gap-5">
-                            <div className="flex flex-col text-sm text-black dark:text-white gap-2 md:grid grid-cols-2">
+                            <div className="flex flex-col text-sm text-black  gap-2 md:grid grid-cols-2">
                                 <div>
                                     <label className="mb-3 mt-5 block text-xs font-medium">Nombre:</label>
                                     <input
@@ -106,9 +106,9 @@ const Datos = () => {
                     </div>
 
                 ) : (
-                    <div className="flex flex-col text-sm text-black dark:text-white gap-3">
-                        <h1 className="text-2xl font-bold text-black dark:text-white">Datos Personales</h1>
-                        <div className="flex flex-col text-sm text-black dark:text-white gap-3 md:grid grid-cols-2">
+                    <div className="flex flex-col text-sm text-black  gap-3">
+                        <h1 className="text-2xl font-bold text-black ">Datos Personales</h1>
+                        <div className="flex flex-col text-sm text-black  gap-3 md:grid grid-cols-2">
                             <p className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2">Nombre: {session.user?.fullName}</p>
                             <p className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2">Email: {session.user?.email}</p>
                             <p className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2">Telefono: {session.user?.cellphone}</p>

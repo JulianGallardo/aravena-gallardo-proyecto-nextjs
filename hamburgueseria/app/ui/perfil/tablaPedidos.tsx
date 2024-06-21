@@ -2,21 +2,24 @@
 
 import PedidosCard from "@/app/ui/perfil/pedidosCard";
 import { fetchPaginationOrders } from "@/lib/pagination";
+import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname, useSearchParams } from 'next/navigation';
 
 
 export default async function TablePedidos(
   {
-    totalPages
+    totalPages,
+    session
   }:{
-    totalPages: number
+    totalPages: number,
+    session: Session
   }) {
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
-  const orders = await fetchPaginationOrders(currentPage);
+  const orders = await fetchPaginationOrders(currentPage, session.user.clientId);
 
 
   const createPageURL = (pageNumber: number | string) => {
@@ -30,14 +33,7 @@ export default async function TablePedidos(
       <div className="flex flex-col gap-5 md:grid grid-cols-2">
         {
           orders.paginatedOrders.map((order) => (
-            <PedidosCard
-              key={order.id}
-              id={Number(order.id)}
-              date={order.date}
-              nombre={order.nombre}
-              precio={order.precio}
-              cantidad={order.cantidad}
-            />
+            <PedidosCard products={[]} key={order.orderId} {...order} />
           ))
         }
       </div>

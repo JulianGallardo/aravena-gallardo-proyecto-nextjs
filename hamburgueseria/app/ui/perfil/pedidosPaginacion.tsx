@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import TablaPedidos from "@/app/ui/perfil/tablaPedidos";
 import { fetchPaginationOrders } from "@/lib/pagination";
+import { auth } from "@/auth";
 
 export default async function PedidosPaginacion({
   searchParams,
@@ -12,17 +13,25 @@ export default async function PedidosPaginacion({
 }) {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  const { paginatedOrders, totalPages } = await fetchPaginationOrders(currentPage);
+  const session = await auth();
+  if (!session) {
+    return null;
+  }
+  else {
 
 
-  return (
-    <div className="flex flex-col gap-5 ">
-      <h1 className="text-2xl font-bold text-dark dark:text-lightgrey">Pedidos</h1>
-      <div className="flex flex-col justify-center gap-5 items-center ">
-        <Suspense key={query+currentPage} fallback={<div>Cargando...</div>}>
-          <TablaPedidos totalPages={totalPages} />
-        </Suspense>
+    const { paginatedOrders, totalPages } = await fetchPaginationOrders(currentPage, session.user.clientId);
+
+
+    return (
+      <div className="flex flex-col gap-5 ">
+        <h1 className="text-2xl font-bold text-dark dark:text-lightgrey">Pedidos</h1>
+        <div className="flex flex-col justify-center gap-5 items-center ">
+          <Suspense key={query + currentPage} fallback={<div>Cargando...</div>}>
+            <TablaPedidos totalPages={totalPages} session={session} />
+          </Suspense>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };

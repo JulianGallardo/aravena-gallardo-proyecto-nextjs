@@ -6,7 +6,7 @@ import Image from "next/image";
 import { PromoExtendida } from "@/lib/definitions";
 import { fetchPromoById } from "@/lib/crud";
 import UpdatePromoForm from "@/app/ui/admin/tabs/promos/updatePromoForm";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { deletePromo } from "@/lib/crud";
 import { useRouter } from "next/navigation";
 
@@ -149,7 +149,6 @@ const PromoManagmentPage = () => {
 
                     )
                 }
-                <ToastContainer />
         </div>
     );
 }

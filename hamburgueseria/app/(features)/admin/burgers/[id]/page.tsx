@@ -7,7 +7,7 @@ import { Burger, Category } from "@/prisma/generated/client";
 import { fetchBurgerById, updateBurger, deleteBurger } from "@/lib/crud";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import { getImageUrl } from "@/utils/cloudinaryUtils";
@@ -220,7 +220,6 @@ const BurgerManagementPage = () => {
             ) : (
                 <div>Loading...</div>
             )}
-            <ToastContainer />
         </div>
     );
 }
