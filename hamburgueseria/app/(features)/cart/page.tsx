@@ -1,14 +1,31 @@
 "use client"
-import React, { useEffect } from "react";
+import React from "react";
 import { useCart } from "@/app/hooks/useCart";
 import { CartItem } from "@/lib/types";
 import CartItemComponent from "@/app/ui/cart/CartItem";
 import Link from "next/link";
-import { useState } from "react";
+import { payment } from "@/utils/paymentUtils";
 
 const Page: React.FC = () => {
     const { cart, items, total, clearCart } = useCart();
+    
+    const handleCheckout = async () => {
+        console.log('Checkout');
+        const response = await fetch('/api/payments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cart }),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Error confirmando la orden');
+        }
 
+        const data = await response.json();
+        console.log('Orden confirmada:', data);
+    };
 
     return (
         <div className="flex flex-col  mt-20 md:mx-24 h-fit gap-5 p-4 text-dark">
@@ -42,9 +59,9 @@ const Page: React.FC = () => {
                                     <span className="text-lg">Items: {items}</span>
                                 </div>
 
-                                <Link href="/checkout" className="btn bg-yellow-500 text-darkblue w-fit ">
+                                <button onClick={() => payment(cart)} className="btn bg-yellow-500 text-darkblue w-fit ">
                                     <p className="text-white">Checkout</p>
-                                </Link>
+                                </button>
 
 
 
