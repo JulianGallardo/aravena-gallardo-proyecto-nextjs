@@ -11,8 +11,11 @@ export class ExtraRepository {
     return prisma.extra.findMany();
   }
 
+
   async findExtraById(extraId: number): Promise<Extra | null> {
-    return prisma.extra.findUnique({ where: { extraId } });
+    return prisma.extra.findUnique({ where: { 
+      extraId
+     } });
   }
 
   async findAllExtrasActive(): Promise<Extra[]> {

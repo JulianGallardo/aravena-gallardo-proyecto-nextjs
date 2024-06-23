@@ -42,6 +42,7 @@ export async function createBurger(form: FormData) {
     price: Number(form.get("price")),
   };
   revalidatePath("/admin/burgers");
+  revalidatePath("/burgers");
   return await productService.createBurger(burger);
 }
 
@@ -54,12 +55,14 @@ export async function updateBurger(id: number, data: FormData) {
     price: Number(data.get("price")),
   };
   revalidatePath("/admin/burgers");
+  revalidatePath("/burgers");
   return await productService.updateBurger(id, burger);
 }
 
 export async function deleteBurger(id: number) {
   await productService.updateBurger(id, { active: false });
   revalidatePath("/admin/burgers");
+  revalidatePath("/burgers");
   redirect("/admin/burgers");
 }
 
@@ -90,6 +93,8 @@ export async function updatePromo(id: number, data: FormData) {
     quantity: Number(b.quantity),
     newPrice: Number(b.newPrice),
   }));
+  revalidatePath("/admin/promos");
+  revalidatePath("/burgers");
 
   return await productService.updatePromo(id, promo, burgers);
 }
@@ -107,6 +112,7 @@ export async function deletePromo(id: number) {
         }))
       : []
   );
+  revalidatePath("/burgers");
   revalidatePath("/admin/promos");
   redirect("/admin/promos");
 }
