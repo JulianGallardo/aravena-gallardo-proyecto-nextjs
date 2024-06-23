@@ -182,44 +182,7 @@ export class OrderRepository {
                             },
                         },
                         quantity: item.cartItemBurger?.quantity ?? item.cartItemPromo?.quantity ?? 0,
-                        burger: item.cartItemBurger ? {
-                            create: {
-                                name: item.cartItemBurger.name,
-                                description: item.cartItemBurger.description,
-                                category: item.cartItemBurger.category,
-                                stock: item.cartItemBurger.stock,
-                                price: item.cartItemBurger.price,
-                                extras: {
-                                    create: item.cartItemBurger.extras.map(extra => ({
-                                        extra: {
-                                            connect: {
-                                                extraId: extra.extra.extraId,
-                                            },
-                                        },
-                                        quantity: extra.quantity,
-                                    })),
-                                },
-                            },
-                        } : undefined,
-                        promo: item.cartItemPromo ? {
-                            create: {
-                                name: item.cartItemPromo.name,
-                                description: item.cartItemPromo.description,
-                                category: item.cartItemPromo.category,
-                                price: item.cartItemPromo.price,
-                                burgers: {
-                                    create: item.cartItemPromo.burgers.map(burger => ({
-                                        burger: {
-                                            connect: {
-                                                burgerId: burger.burger.burgerId,
-                                            },
-                                        },
-                                        quantity: burger.quantity,
-                                        newPrice: burger.newPrice,
-                                    })),
-                                },
-                            },
-                        } : undefined,
+                        
                     })),
 
                 },
