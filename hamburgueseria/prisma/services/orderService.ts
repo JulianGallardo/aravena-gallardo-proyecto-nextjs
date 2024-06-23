@@ -31,7 +31,7 @@ export class OrderService {
     return orderRepository.createOrder({ clientId, products, paymentMethod, totalAmount });
   }
 
-  async getAllOrders(): Promise<Order[]> {
+  async getAllOrders(): Promise<OrdenExtendida[]> {
     return orderRepository.getAllOrders();
   }
 

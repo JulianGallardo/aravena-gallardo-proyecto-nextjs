@@ -2,7 +2,7 @@
 
 import { ProductService } from '@/prisma/services/productService';
 import { OrderService } from '@/prisma/services/orderService';
-import { OrdenExtendida, PromoExtendida } from './definitions';
+import {  PromoExtendida } from './definitions';
 const productService = new ProductService();
 const orderService = new OrderService();
 
@@ -167,3 +167,38 @@ export async function fetchPaginationExtrasByName(query: String, page: number, i
 }
 
 
+
+
+
+export async function fetchPaginationAdminOrders(page: number) {
+
+  const orders = await orderService.getAllOrders();
+  console.log(orders);
+  const totalItems = orders.length;
+  console.log(totalItems);
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  console.log(totalPages);
+  const start = (page - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const paginatedOrders = orders.slice(start, end);
+  return { paginatedOrders, totalPages };
+}
+
+export async function fetchPaginationAdminOrdersById(query: string, currentPage: number) {
+  if (query) {
+    const ordenes = await orderService.getAllOrders();
+    const filteredOrders = ordenes.filter((order) => numberIncludes(order.orderId, query));
+    const totalItems = filteredOrders.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    const paginatedOrders = filteredOrders.slice(start, end);
+    return { paginatedOrders, totalPages };
+  } else {
+    return await fetchPaginationAdminOrders(currentPage);
+  }
+}
+
+function numberIncludes(number: number, query: string) {
+  return number.toString().includes(query);
+}

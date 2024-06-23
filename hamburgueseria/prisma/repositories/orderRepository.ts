@@ -4,8 +4,48 @@ import { PrismaClient, Order } from '@/prisma/generated/client';
 const prisma = new PrismaClient();
 
 export class OrderRepository {
-    async getAllOrders(): Promise<Order[]> {
-        return prisma.order.findMany();
+    async getAllOrders(): Promise<OrdenExtendida[]> {
+        return prisma.order.findMany({
+            include: {
+                products: {
+                    include: {
+                        product: {
+                            include: {
+                                burger: {
+                                    select: {
+                                        name: true,
+                                        description: true,
+                                        category: true,
+                                        stock: true,
+                                        price: true,
+                                        extras: {
+                                            select: {
+                                                quantity: true,
+                                                extra: {
+                                                    select: {
+                                                        name: true,
+                                                        price: true,
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                promo: {
+                                    select: {
+                                        name: true,
+                                        description: true,
+                                        category: true,
+                                        price: true,
+                                    },
+                                },
+
+                            },
+                        }
+                    },
+                },
+            },
+        });
     }
 
     async getOrdersByUserId(userId: number): Promise<OrdenExtendida[]> {
