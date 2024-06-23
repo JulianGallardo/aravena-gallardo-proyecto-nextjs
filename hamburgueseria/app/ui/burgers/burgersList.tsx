@@ -1,13 +1,13 @@
 import { Card } from '@/app/ui';
 import { Category } from '@/prisma/generated/client';
 import { Categorias } from '@/app/ui';
-import {  fetchAllBurgersActive, fetchAllPromos } from '@/lib/crud';
+import {  fetchAllBurgersActive, fetchAllPromosActive } from '@/lib/crud';
 
 async function BurgerList() {
 
   const categories = Object.values(Category);
   const burgers = await fetchAllBurgersActive();
-  const promos = await fetchAllPromos();
+  const promos = await fetchAllPromosActive();
 
 
   return (

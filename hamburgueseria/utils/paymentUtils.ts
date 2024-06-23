@@ -42,7 +42,7 @@ export async function payment(cart: CartItem[], totalAmount: number) {
 
     });
     console.log(preference);
-    redirect(preference.sandbox_init_point!);
+    redirect(preference.init_point!);
   }
   else {
     const preference = await new Preference(client).create({
@@ -68,6 +68,6 @@ export async function payment(cart: CartItem[], totalAmount: number) {
     });
 
     console.log(preference);
-    redirect(preference.sandbox_init_point!);
+    redirect(preference.init_point!);
   }
   }

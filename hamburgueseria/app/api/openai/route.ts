@@ -1,7 +1,7 @@
 import { GoogleGenerativeAIProvider, google } from "@ai-sdk/google";
 import { streamText } from "ai";
 import { Content } from "next/font/google";
-import { fetchAllBurgers, fetchAllPromos} from '@/lib/crud';
+import { fetchAllBurgersActive, fetchAllPromosActive} from '@/lib/crud';
 
 
 export async function POST(req: Request) {
@@ -15,8 +15,8 @@ export async function POST(req: Request) {
 
   messages = [mensaje_de_inicio, ...messages];
 
-  const burgers = await fetchAllBurgers();
-  const promos = await fetchAllPromos();
+  const burgers = await fetchAllBurgersActive();
+  const promos = await fetchAllPromosActive();
 
   const result = await streamText({
     model: google("models/gemini-pro"),
