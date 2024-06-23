@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CartItemBurger } from "@/lib/types";
+import { CartItemBurger } from "@/lib/CartTypes";
 import { useCart } from "@/app/hooks/useCart";
 import { AddToCartIcon, RemoveFromCartIcon } from "../shared/cartIcons";
 import Image from "next/image";
