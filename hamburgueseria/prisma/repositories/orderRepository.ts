@@ -171,7 +171,7 @@ export class OrderRepository {
                                 extraId: item.cartItemBurger?.extras[0].extra.extraId ?? 0,
                             },
                         },
-                        quantity: item.cartItemBurger?.extras[0].quantity ?? 0,
+                        quantity: Number(item.cartItemBurger?.extras[0].quantity) ?? 0,
                     })),
                 },
                 products: {
