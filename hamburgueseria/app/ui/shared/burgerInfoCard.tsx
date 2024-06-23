@@ -29,10 +29,10 @@ async function Card({ title, description, photoSrc, price, burgerId,category }:C
                 <Image className=" w-full object-cover object-center" src={imageUrl} alt="Card" width={500} height={200} />
                 <div className="px-6 py-4 h-1/3 flex-grow">
                     <h2 className="text-xl md:text-2xl font-bold mb-2">{title}</h2>
-                    <p className="text-gray-500 dark:text-gray-300 text-base  line-clamp-3 md:line-clamp-5 md:text-lg">{description}</p>
+                    <p className="text-gray-500  text-base  line-clamp-3 md:line-clamp-5 md:text-lg">{description}</p>
                 </div>
                 <div className="px-6 py-4">
-                    <p className="text-black dark:text-yellow-400 text-xl font-semibold">${price}</p>
+                    <p className="text-black  text-xl font-semibold">${price}</p>
                 </div>
             </div>
         </Link>

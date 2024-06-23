@@ -95,7 +95,7 @@ const PromoManagmentPage = () => {
                 <>
                     {!editing && (
                         <div>
-                            <h1 className="text-4xl font-bold dark:text-white">Editando promo número: {promo.promoId}</h1>
+                            <h1 className="text-4xl font-bold ">Editando promo número: {promo.promoId}</h1>
                             <div className="flex flex-col gap-5 justify-center items-center w-full py-10">
                                 <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
                                     <div className="relative h-60 w-full rounded-md">
