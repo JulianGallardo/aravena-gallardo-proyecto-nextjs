@@ -166,7 +166,6 @@ export class OrderRepository {
                                 burgerId: item.cartItemBurger?.burgerId ?? 0,
                             },
                         },
-                        burgerId: item.cartItemBurger?.burgerId ?? 0,
                         extra: {
                             connect: {
                                 extraId: item.cartItemBurger?.extras[0].extra.extraId ?? 0,
