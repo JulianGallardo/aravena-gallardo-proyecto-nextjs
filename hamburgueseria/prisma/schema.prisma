@@ -152,8 +152,7 @@ model ExtraOnOrder {
   extraId  Int
   quantity Int    @default(1)
   extra    Extra  @relation(fields: [extraId], references: [extraId], onDelete: Cascade)
-  product  ProductsOnOrder? @relation(fields: [orderId, extraId], references: [orderId, productId], onDelete: Cascade)
-
+  product  ProductsOnOrder? @relation(fields: [orderId, id], references: [orderId, productId], onDelete: Cascade)
 
   @@unique([orderId, extraId]) // Garantiza que no haya duplicados de la misma combinación
 }
@@ -163,7 +162,7 @@ model ProductsOnOrder {
   orderId   Int
   productId Int
   quantity  Int     @default(1)
-  extra    ExtraOnOrder[]
+  extra     ExtraOnOrder[]
   order     Order   @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
 

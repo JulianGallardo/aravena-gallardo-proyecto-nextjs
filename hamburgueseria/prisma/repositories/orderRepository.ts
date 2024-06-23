@@ -145,8 +145,10 @@ export class OrderRepository {
                             extra: {
                                 connect: {
                                     extraId: extra.extra.extraId,
+                                    
                                 },
                             },
+                        
                             quantity:Number( extra.quantity),
                         })) ?? [],
                     }
