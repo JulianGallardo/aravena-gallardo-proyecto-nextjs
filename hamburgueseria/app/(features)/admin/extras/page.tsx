@@ -44,7 +44,7 @@ export default async function ExtrasPagination({
                 </Link>
             </div>
             <div className="flex flex-col justify-center gap-5 items-center ">
-                <Suspense key={query + currentPage} fallback={<div>Cargando...</div>}>
+                <Suspense key={query + currentPage} fallback={<Skeleton/>}>
                     <ExtrasTable totalPages={totalPages} />
                 </Suspense>
             </div>
@@ -52,3 +52,21 @@ export default async function ExtrasPagination({
     );
 
 };
+
+
+function Skeleton() {
+    return (
+        <div className="flex flex-col gap-5  w-full">
+            <div className="flex flex-col gap-5 md:grid grid-cols-4">
+                <div className="skeleton h-44 w-full bg-gray-300"></div>
+                <div className="skeleton h-44 w-full bg-gray-300"></div>
+                <div className="skeleton h-44 w-full bg-gray-300"></div>
+                <div className="skeleton h-44 w-full bg-gray-300"></div>
+                <div className="skeleton h-44 w-full bg-gray-300"></div>
+                <div className="skeleton h-44 w-full bg-gray-300"></div>
+                <div className="skeleton h-44 w-full bg-gray-300"></div>
+                <div className="skeleton h-44 w-full bg-gray-300"></div>
+            </div>
+        </div>
+    );
+}
