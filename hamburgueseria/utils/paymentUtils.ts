@@ -13,14 +13,9 @@ const client = new MercadoPagoConfig({
 const orderService = new OrderService();
 
 
-export async function payment(cart: CartItem[], totalAmount: number,session:Session | null) {
+export async function payment(cart: CartItem[], totalAmount: number,clientId:number) {
   const title = "Hamburgueseria ByteBurger";
-  var clientId = 1; //Id del admin, si no esta logeado se registra con su id
-  if(session){
-    clientId = session.user.clientId;
-  }
   
-
   const order = await orderService.createOrder(cart, totalAmount,clientId);
 
   if (process.env.NODE_ENV === "development") {

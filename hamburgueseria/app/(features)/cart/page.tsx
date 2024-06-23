@@ -1,5 +1,5 @@
 "use client"
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useCart } from "@/app/hooks/useCart";
 import { CartItem } from "@/lib/CartTypes";
 import CartItemComponent from "@/app/ui/cart/CartItem";
@@ -10,6 +10,14 @@ import { useSession } from "next-auth/react";
 const Page: React.FC = () => {
     const { cart, items, total, clearCart } = useCart();
     const {data:session} = useSession();
+    const [clientId,setClientId] = useState<number>(1);
+
+    useEffect(() => {
+        if(session){
+            setClientId(session.user.clientId);
+        }
+    }, [session])
+
 
     return (
         <div className="flex flex-col  mt-20 md:mx-24 h-fit gap-5 p-4 text-dark">
@@ -43,7 +51,7 @@ const Page: React.FC = () => {
                                     <span className="text-lg">Items: {items}</span>
                                 </div>
 
-                                <button onClick={() => payment(cart,total,session)} className="btn bg-yellow-500 text-darkblue w-fit ">
+                                <button onClick={() => payment(cart,total,clientId)} className="btn bg-yellow-500 text-darkblue w-fit ">
                                     <p className="text-white">Checkout</p>
                                 </button>
 
