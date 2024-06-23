@@ -86,7 +86,7 @@ const BurgerForm = () => {
             <input
                 className="p-2 border border-gray-300 rounded bg-gray-200 placeholder:text-gray-500"
                 id="price"
-                type="number"
+                type="float"
                 placeholder="Price"
                 {...register('price', { valueAsNumber: true, required: true, validate: (value) => value >= 0})}
             />

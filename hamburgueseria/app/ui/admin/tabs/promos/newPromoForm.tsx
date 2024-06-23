@@ -46,7 +46,7 @@ const NewPromoForm = () => {
 
         const promo = await createPromo(formData);
         if (promo) {
-            router.push('/promotions'); // Redireccionar a la lista de promociones después de crear la nueva promo
+            router.push('/admin/promos'); // Redireccionar a la lista de promociones después de crear la nueva promo
         }
     };
 
@@ -122,7 +122,7 @@ const NewPromoForm = () => {
                                 type="number"
                                 placeholder="Cantidad"
                                 {...register(`burgers.${index}.quantity`, { valueAsNumber: true, required: true, validate: value => value > 0 })}
-                                value={burger.quantity}
+                                defaultValue={burger.quantity}
                                 onChange={(e) => {
                                     const quantity = Number(e.target.value);
                                     const newBurgersInPromo = burgersInPromo.map((burger, i) => {
@@ -138,10 +138,11 @@ const NewPromoForm = () => {
                                 className="p-2 border border-gray-300 rounded bg-gray-200 placeholder:text-gray-500"
                                 type="number"
                                 placeholder="Nuevo precio individual"
-                                {...register(`burgers.${index}.newPrice`, { valueAsNumber: true, required: true, validate: value => value > 0 })}
-                                value={burger.newPrice}
+                                {...register(`burgers.${index}.newPrice`, { valueAsNumber: true, required: true, validate: value => value > 0})}
+                                defaultValue={burger.newPrice}
                                 onChange={(e) => {
                                     const newPrice = Number(e.target.value);
+                                    if(newPrice < 0) return;
                                     const newBurgersInPromo = burgersInPromo.map((burger, i) => {
                                         if (i === index) {
                                             return { ...burger, newPrice };

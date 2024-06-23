@@ -55,7 +55,7 @@ const PromoManagmentPage = () => {
                         onClick={async () => {
                             await deletePromo(promo?.promoId as number);
                             toast.dismiss();
-                            router.push("/admin/burgers");
+                            router.push("/admin/promos");
                         }}
                     >
                         Sí, quiero eliminar

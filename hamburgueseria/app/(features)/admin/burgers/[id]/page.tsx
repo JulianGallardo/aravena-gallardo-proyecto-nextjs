@@ -79,6 +79,7 @@ const BurgerManagementPage = () => {
                             await deleteBurger(Number(burgerId));
                             toast.dismiss();
                             router.push("/admin/burgers");
+                            toast.success("Burger eliminada correctamente");
                         }}
                     >
                         Si, quiero eliminar
@@ -114,6 +115,7 @@ const BurgerManagementPage = () => {
             await updateBurger(Number(burgerId), formData);
             setBurgerData({ ...burgerData, ...data } as Burger);
             setIsEditing(false);
+            toast.success("Burger actualizada correctamente");
         } catch (error) {
             console.error("Failed to update burger:", error);
         }
@@ -184,7 +186,7 @@ const BurgerManagementPage = () => {
                                     <input
                                         className="p-2 border border-gray-300 rounded w-full bg-gray-200 placeholder:text-gray-500"
                                         type="number"
-                                        {...register("stock", { valueAsNumber: true, required: true, validate: value => value > 0 })}
+                                        {...register("stock", { valueAsNumber: true, validate: value => value >= 0 })}
                                     />
                                     {errors.stock && <span className="text-red">This field is required</span>}
                                 </div>
