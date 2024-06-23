@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
   output   = "./generated/client"
@@ -9,6 +12,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+//--------USER---------
 model Client {
   clientId Int     @id @default(autoincrement())
   user     User?
@@ -20,13 +24,12 @@ model User {
   userId    Int     @id @default(autoincrement())
   clientId  Int     @unique
   fullName  String
-  password  String
+  password  String //Ver hash o encrypt
   email     String  @unique
   cellphone String?
   address   String?
   role      Role    @default(USER)
   client    Client  @relation(fields: [clientId], references: [clientId])
-
 }
 
 enum Role {
@@ -42,114 +45,16 @@ model Guest {
   client    Client   @relation(fields: [clientId], references: [clientId])
 }
 
+//-------ORDER--------
 model Order {
   orderId       Int               @id @default(autoincrement())
   clientId      Int
   date          DateTime          @default(now())
-
   totalAmount   Float //debe calcularse en base a los productos que contiene
   paymentMethod PaymentMethod
   status        OrderStatus       @default(PENDING)
   client        Client            @relation("ClientOrders", fields: [clientId], references: [clientId])
   products      ProductsOnOrder[]
-}
-
-model Product {
-  productId Int               @id @default(autoincrement())
-  burger    Burger?
-  orders    ProductsOnOrder[]
-  promo     Promo?
-}
-
-model Burger {
-  burgerId     Int             @id @default(autoincrement())
-  productId    Int             @unique
-  name         String
-  category     Category
-  description  String          @default("")
-  stock        Int             @default(0)
-  price        Float
-  imageUrl     String          @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
-  active       Boolean         @default(true)
-  product      Product         @relation(fields: [productId], references: [productId])
-  promos       BurgerOnPromo[]
-  extras       ExtraOnBurger[]
-  ExtraOnOrder ExtraOnOrder[]
-}
-
-model Promo {
-  promoId     Int             @id @default(autoincrement())
-  productId   Int             @unique
-  name        String
-  description String          @default("")
-  category    Category        @default(PROMO)
-  price       Float           @default(0)
-  imageUrl    String          @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
-  active      Boolean         @default(true)
-  burgers     BurgerOnPromo[]
-  product     Product         @relation(fields: [productId], references: [productId], onDelete: Cascade)
-}
-
-model Extra {
-  extraId      Int             @id @default(autoincrement())
-  name         String
-  price        Float
-  maxQuantity  Int             @default(1)
-  active       Boolean         @default(true)
-  burgers      ExtraOnBurger[]
-  ExtraOnOrder ExtraOnOrder[]
-}
-
-model BurgerOnPromo {
-  id       Int    @id @default(autoincrement())
-  promoId  Int
-  burgerId Int
-  quantity Int    @default(1)
-  newPrice Float
-  burger   Burger @relation(fields: [burgerId], references: [burgerId], onDelete: Cascade)
-  promo    Promo  @relation(fields: [promoId], references: [promoId], onDelete: Cascade)
-
-  @@unique([promoId, burgerId])
-}
-
-model ExtraOnBurger {
-  id       Int    @id @default(autoincrement())
-  extraId  Int
-  burgerId Int
-  quantity Int    @default(1)
-  burger   Burger @relation(fields: [burgerId], references: [burgerId], onDelete: Cascade)
-  extra    Extra  @relation(fields: [extraId], references: [extraId], onDelete: Cascade)
-
-  @@unique([extraId, burgerId])
-}
-
-model ProductsOnOrder {
-  id        Int     @id @default(autoincrement())
-  orderId   Int
-  productId Int
-  quantity  Int     @default(1)
-  order     Order   @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
-
-  @@unique([orderId, productId])
-}
-
-model ExtraOnOrder {
-  id       Int    @id @default(autoincrement())
-  orderId  Int
-  extraId  Int
-  burgerId Int
-  quantity Int    @default(1)
-  Burger   Burger @relation(fields: [burgerId], references: [burgerId], onDelete: Cascade)
-  Extra    Extra  @relation(fields: [extraId], references: [extraId], onDelete: Cascade)
-  Order    Order  @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
-
-  @@unique([orderId, extraId, burgerId])
-}
-
-enum Role {
-  ADMIN
-  USER
 }
 
 enum OrderStatus {
