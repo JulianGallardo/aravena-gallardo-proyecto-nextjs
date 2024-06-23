@@ -25,7 +25,7 @@ export class OrderRepository {
                         quantity: true,
                     },
                     include: {
-                        extra: {
+                        extras: {
                             select: {
                                 quantity: true,
                                 extra: {
@@ -36,7 +36,7 @@ export class OrderRepository {
                                 },
                             },
                         },
-                        
+
                         product: {
                             include: {
                                 burger: {
@@ -70,25 +70,27 @@ export class OrderRepository {
                 clientId: userId,
             },
             include: {
-            products: {
-                select: {
-                    quantity: true,
-                },
-                include: {
-                    extra: {
-                        select: {
-                            quantity: true,
-                            extra: {
-                                select: {
-                                    name: true,
-                                    price: true,
-                                },
+                products: {
+                    select: {
+                        quantity: true,
+                    },
+                    include: {
+                        extras: {
+                            select: {
+                                quantity: true,
+                                extra: {
+                                    select: {
+                                        name: true,
+                                        price: true,
+                                    }
+                                }
+
                             },
                         },
-                    },
-                    
+                        
                     product: {
                         include: {
+
                             burger: {
                                 select: {
                                     name: true,
@@ -145,11 +147,11 @@ export class OrderRepository {
                             extra: {
                                 connect: {
                                     extraId: extra.extra.extraId,
-                                    
+
                                 },
                             },
-                        
-                            quantity:Number( extra.quantity),
+
+                            quantity: Number(extra.quantity),
                         })) ?? [],
                     }
                 })),
