@@ -16,15 +16,12 @@ export async function POST(req: NextRequest) {
     const payment = await new Payment(client).get({id: body.data.id});
     console.log(JSON.stringify(payment));
 
-    if (payment !=null && payment.status !== "approved") {
+    if (payment !=null && payment.status === "approved") {
       orderService.updateOrderStatus(Number(payment.external_reference),OrderStatus.CONFIRMED );
       return Response.json({success: true});
     }
-
-    if (payment !=null && payment.status === "rejected") {
+    else{
       orderService.updateOrderStatus(Number(payment.external_reference),OrderStatus.REJECTED );
       return Response.json({success: false});
     }
-    
-    return Response.json({success: false});
 }
