@@ -11,6 +11,24 @@ export interface PromoExtendida extends Promo { //find all promos, devuelve los 
 
 export type OrdenExtendida = Prisma.OrderGetPayload<{
   include: {
+    ExtraOnOrder: {
+      select: {
+        quantity: true,
+        burger:{
+          select:{
+            name: true,
+            price: true
+          }
+        }
+        burgerId: true,
+        extra: {
+          select: {
+            name: true,
+            price: true
+          }
+        }
+      }
+    }
     products: {
       select: {
         quantity: true,

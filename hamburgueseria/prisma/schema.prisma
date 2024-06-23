@@ -7,30 +7,29 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 //--------USER---------
 model Client {
-  clientId    Int     @id @default(autoincrement())
-  user        User?
-  guest       Guest?
-  orders      Order[]   @relation("ClientOrders")
+  clientId Int     @id @default(autoincrement())
+  user     User?
+  guest    Guest?
+  orders   Order[] @relation("ClientOrders")
 }
 
 model User {
-  userId       Int       @id @default(autoincrement())
-  clientId     Int       @unique
-  fullName     String    
-  password     String    //Ver hash o encrypt
-  email        String    @unique
-  cellphone    String?   
-  address      String?   
-  role         Role      @default(USER)
-  client       Client    @relation(fields: [clientId], references: [clientId])
-  
+  userId    Int     @id @default(autoincrement())
+  clientId  Int     @unique
+  fullName  String
+  password  String //Ver hash o encrypt
+  email     String  @unique
+  cellphone String?
+  address   String?
+  role      Role    @default(USER)
+  client    Client  @relation(fields: [clientId], references: [clientId])
 }
 
 enum Role {
@@ -38,25 +37,25 @@ enum Role {
   USER
 }
 
-
 model Guest {
-  guestId      Int       @id @default(autoincrement())
-  clientId     Int       @unique
-  name         String
-  visitDate    DateTime  @default(now())
-  client       Client    @relation(fields: [clientId], references: [clientId])
+  guestId   Int      @id @default(autoincrement())
+  clientId  Int      @unique
+  name      String
+  visitDate DateTime @default(now())
+  client    Client   @relation(fields: [clientId], references: [clientId])
 }
 
 //-------ORDER--------
 model Order {
-  orderId       Int      @id @default(autoincrement())
+  orderId       Int               @id @default(autoincrement())
   clientId      Int
-  date          DateTime @default(now())
-  totalAmount   Float    //debe calcularse en base a los productos que contiene
+  date          DateTime          @default(now())
+  totalAmount   Float //debe calcularse en base a los productos que contiene
   paymentMethod PaymentMethod
-  status        OrderStatus   @default(PENDING)
-  client        Client   @relation("ClientOrders", fields: [clientId], references: [clientId])
+  status        OrderStatus       @default(PENDING)
+  client        Client            @relation("ClientOrders", fields: [clientId], references: [clientId])
   products      ProductsOnOrder[]
+  ExtraOnOrder  ExtraOnOrder[]
 }
 
 enum OrderStatus {
@@ -74,38 +73,39 @@ enum PaymentMethod {
 
 //-------PRODUCT-------
 model Product {
-  productId    Int       @id @default(autoincrement())
-  orders       ProductsOnOrder[]
-  burger       Burger?   
-  promo        Promo?
+  productId Int               @id @default(autoincrement())
+  orders    ProductsOnOrder[]
+  burger    Burger?
+  promo     Promo?
 }
 
-model Burger{
-  burgerId    Int       @id @default(autoincrement())
-  productId   Int       @unique
-  name        String
-  category    Category 
-  active     Boolean   @default(true)
-  description String    @default("")
-  imageUrl    String    @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
-  extras      ExtraOnBurger[]
-  stock       Int       @default(0)
-  price       Float
-  promos      BurgerOnPromo[]
-  product     Product   @relation(fields: [productId], references: [productId])
+model Burger {
+  burgerId     Int             @id @default(autoincrement())
+  productId    Int             @unique
+  name         String
+  category     Category
+  active       Boolean         @default(true)
+  description  String          @default("")
+  imageUrl     String          @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
+  extras       ExtraOnBurger[]
+  stock        Int             @default(0)
+  price        Float
+  promos       BurgerOnPromo[]
+  product      Product         @relation(fields: [productId], references: [productId])
+  ExtraOnOrder ExtraOnOrder[]
 }
 
-model Promo{
-  promoId     Int       @id @default(autoincrement())
-  productId   Int       @unique
-  imageUrl    String    @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
+model Promo {
+  promoId     Int             @id @default(autoincrement())
+  productId   Int             @unique
+  imageUrl    String          @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
   name        String
-  description String    @default("")
-  active     Boolean   @default(true)
-  category    Category  @default(PROMO)
-  product     Product   @relation(fields: [productId], references: [productId], onDelete: Cascade)
+  description String          @default("")
+  active      Boolean         @default(true)
+  category    Category        @default(PROMO)
+  product     Product         @relation(fields: [productId], references: [productId], onDelete: Cascade)
   burgers     BurgerOnPromo[]
-  price       Float     @default(0) //debe calcularse en base a los productos que contiene
+  price       Float           @default(0) //debe calcularse en base a los productos que contiene
 }
 
 enum Category {
@@ -116,41 +116,58 @@ enum Category {
 }
 
 model Extra {
-  extraId     Int       @id @default(autoincrement())
+  extraId     Int             @id @default(autoincrement())
   name        String
-  active    Boolean   @default(true)
-  price       Float     
-  maxQuantity Int       @default(1)
+  active      Boolean         @default(true)
+  price       Float
+  maxQuantity Int             @default(1)
   burgers     ExtraOnBurger[]
+  orders      ExtraOnOrder[]
 }
 
 model BurgerOnPromo {
-  id          Int       @id @default(autoincrement())
-  promoId     Int
-  burgerId    Int
-  quantity    Int       @default(1)
-  newPrice    Float     
-  promo       Promo     @relation(fields: [promoId], references: [promoId], onDelete: Cascade)
-  burger      Burger    @relation(fields: [burgerId], references: [burgerId],onDelete: Cascade)
+  id       Int    @id @default(autoincrement())
+  promoId  Int
+  burgerId Int
+  quantity Int    @default(1)
+  newPrice Float
+  promo    Promo  @relation(fields: [promoId], references: [promoId], onDelete: Cascade)
+  burger   Burger @relation(fields: [burgerId], references: [burgerId], onDelete: Cascade)
+
   @@unique([promoId, burgerId]) // Garantiza que no haya duplicados de la misma combinación
 }
 
 model ExtraOnBurger {
-  id          Int       @id @default(autoincrement())
-  extraId     Int
-  burgerId    Int
-  quantity    Int       @default(1)
-  extra       Extra     @relation(fields: [extraId], references: [extraId], onDelete: Cascade)
-  burger      Burger    @relation(fields: [burgerId], references: [burgerId], onDelete: Cascade)
+  id       Int    @id @default(autoincrement())
+  extraId  Int
+  burgerId Int
+  quantity Int    @default(1)
+  extra    Extra  @relation(fields: [extraId], references: [extraId], onDelete: Cascade)
+  burger   Burger @relation(fields: [burgerId], references: [burgerId], onDelete: Cascade)
+
   @@unique([extraId, burgerId]) // Garantiza que no haya duplicados de la misma combinación
 }
 
+model ExtraOnOrder {
+  id       Int    @id @default(autoincrement())
+  orderId  Int
+  extraId  Int
+  burgerId Int
+  quantity Int    @default(1)
+  extra    Extra  @relation(fields: [extraId], references: [extraId], onDelete: Cascade)
+  order    Order  @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  burger   Burger @relation(fields: [burgerId], references: [burgerId], onDelete: Cascade)
+
+  @@unique([orderId, extraId, burgerId]) // Garantiza que no haya duplicados de la misma combinación
+}
+
 model ProductsOnOrder {
-  id          Int       @id @default(autoincrement())
-  orderId     Int
-  productId   Int
-  quantity    Int       @default(1)
-  order       Order     @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
-  product     Product   @relation(fields: [productId], references: [productId], onDelete: Cascade)
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int     @default(1)
+  order     Order   @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
+
   @@unique([orderId, productId]) // Garantiza que no haya duplicados de la misma combinación
 }

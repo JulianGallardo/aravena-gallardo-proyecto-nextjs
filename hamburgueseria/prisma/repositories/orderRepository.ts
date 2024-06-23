@@ -20,6 +20,24 @@ export class OrderRepository {
     async getAllOrders(): Promise<OrdenExtendida[]> {
         return prisma.order.findMany({
             include: {
+                ExtraOnOrder: {
+                    select: {
+                        quantity: true,
+                        burger: {
+                            select: {
+                                name: true,
+                                price: true,
+                            },
+                        },
+                        burgerId: true,
+                        extra: {
+                            select: {
+                                name: true,
+                                price: true,
+                            },
+                        },
+                    },
+                },
                 products: {
                     include: {
                         product: {
@@ -66,6 +84,24 @@ export class OrderRepository {
                 clientId: userId,
             },
             include: {
+                ExtraOnOrder: {
+                    select: {
+                        quantity: true,
+                        burger: {
+                            select: {
+                                name: true,
+                                price: true,
+                            },
+                        },
+                        burgerId: true,
+                        extra: {
+                            select: {
+                                name: true,
+                                price: true,
+                            },
+                        },
+                    },
+                },
                 products: {
                     include: {
                         product: {
@@ -123,6 +159,22 @@ export class OrderRepository {
                 clientId: 1, // Dejamos hardcodeado para que se le guarden todas al mismo cliente
                 paymentMethod: PaymentMethod.MERCADO_PAGO,
                 totalAmount: totalAmount,
+                ExtraOnOrder: {
+                    create: orderData.map((item) => ({
+                        burger: {
+                            connect: {
+                                burgerId: item.cartItemBurger?.burgerId ?? 0,
+                            },
+                        },
+                        burgerId: item.cartItemBurger?.burgerId ?? 0,
+                        extra: {
+                            connect: {
+                                extraId: item.cartItemBurger?.extras[0].extra.extraId ?? 0,
+                            },
+                        },
+                        quantity: item.cartItemBurger?.extras[0].quantity ?? 0,
+                    })),
+                },
                 products: {
                     create: orderData.map((item) => ({
                         product: {
@@ -170,6 +222,7 @@ export class OrderRepository {
                             },
                         } : undefined,
                     })),
+
                 },
             },
         });
