@@ -38,7 +38,6 @@ const PedidosCard = (orden: OrdenExtendida) => {
                         <div>
                             <p className=''>
                                 {
-                                    product.extras && 
                                     product.extras.map((extra, index) => (
                                         <span key={index} className="text-sm">{extra.quantity} x {extra.extra.name} ${extra.extra.price}</span>
                                     ))
