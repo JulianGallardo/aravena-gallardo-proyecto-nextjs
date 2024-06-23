@@ -23,8 +23,6 @@ export class OrderRepository {
                 products: {
                     select: {
                         quantity: true,
-                    },
-                    include: {
                         extras: {
                             select: {
                                 quantity: true,
@@ -36,7 +34,6 @@ export class OrderRepository {
                                 },
                             },
                         },
-
                         product: {
                             include: {
                                 burger: {
@@ -57,7 +54,8 @@ export class OrderRepository {
                                     },
                                 },
                             },
-                        }
+                        },
+
                     },
                 },
             },
@@ -73,8 +71,6 @@ export class OrderRepository {
                 products: {
                     select: {
                         quantity: true,
-                    },
-                    include: {
                         extras: {
                             select: {
                                 quantity: true,
@@ -82,99 +78,97 @@ export class OrderRepository {
                                     select: {
                                         name: true,
                                         price: true,
-                                    }
-                                }
-
-                            },
-                        },
-                        
-                    product: {
-                        include: {
-
-                            burger: {
-                                select: {
-                                    name: true,
-                                    description: true,
-                                    category: true,
-                                    stock: true,
-                                    price: true,
-                                },
-                            },
-                            promo: {
-                                select: {
-                                    name: true,
-                                    description: true,
-                                    category: true,
-                                    price: true,
+                                    },
                                 },
                             },
                         },
-                    }
+                        product: {
+                            include: {
+                                burger: {
+                                    select: {
+                                        name: true,
+                                        description: true,
+                                        category: true,
+                                        stock: true,
+                                        price: true,
+                                    },
+                                },
+                                promo: {
+                                    select: {
+                                        name: true,
+                                        description: true,
+                                        category: true,
+                                        price: true,
+                                    },
+                                },
+                            },
+                        },
+
+                    },
                 },
             },
-        },
         });
-}
+    }
 
-    async getOrderById(orderId: number): Promise < Order | null > {
-    return prisma.order.findUnique({
-        where: {
-            orderId: orderId,
-        },
-        include: {
-            products: true,
-        },
-    });
-}
-
-    async createOrder(orderData: CartItem[], totalAmount: number): Promise < Order > {
-    return prisma.order.create({
-        data: {
-            clientId: 1, // Dejamos hardcodeado para que se le guarden todas al mismo cliente
-            paymentMethod: PaymentMethod.MERCADO_PAGO,
-            totalAmount: totalAmount,
-
-            products: {
-                create: orderData.map((item) => ({
-                    product: {
-                        connect: {
-                            productId: item.cartItemBurger?.productId ?? item.cartItemPromo?.productId ?? 0,
-                        },
-                    },
-                    quantity: Number(item.cartItemBurger?.quantity) ?? Number(item.cartItemPromo?.quantity) ?? 0,
-                    extras: {
-                        create: item.cartItemBurger?.extras?.map((extra) => ({
-                            extra: {
-                                connect: {
-                                    extraId: extra.extra.extraId,
-
-                                },
-                            },
-
-                            quantity: Number(extra.quantity),
-                        })) ?? [],
-                    }
-                })),
-
+    async getOrderById(orderId: number): Promise<Order | null> {
+        return prisma.order.findUnique({
+            where: {
+                orderId: orderId,
             },
-        },
-    });
-}
+            include: {
+                products: true,
+            },
+        });
+    }
 
-    async updateOrder(orderId: number, orderData: any): Promise < Order | null > {
-    return prisma.order.update({
-        where: {
-            orderId: orderId,
-        },
-        data: orderData,
-    });
-}
+    async createOrder(orderData: CartItem[], totalAmount: number): Promise<Order> {
+        return prisma.order.create({
+            data: {
+                clientId: 1, // Dejamos hardcodeado para que se le guarden todas al mismo cliente
+                paymentMethod: PaymentMethod.MERCADO_PAGO,
+                totalAmount: totalAmount,
 
-    async deleteOrder(orderId: number): Promise < Order | null > {
-    return prisma.order.delete({
-        where: {
-            orderId: orderId,
-        },
-    });
-}
+                products: {
+                    create: orderData.map((item) => ({
+                        product: {
+                            connect: {
+                                productId: item.cartItemBurger?.productId ?? item.cartItemPromo?.productId ?? 0,
+                            },
+                        },
+                        quantity: Number(item.cartItemBurger?.quantity) ?? Number(item.cartItemPromo?.quantity) ?? 0,
+                        extras: {
+                            create: item.cartItemBurger?.extras?.map((extra) => ({
+                                extra: {
+                                    connect: {
+                                        extraId: extra.extra.extraId,
+
+                                    },
+                                },
+
+                                quantity: Number(extra.quantity),
+                            })) ?? [],
+                        }
+                    })),
+
+                },
+            },
+        });
+    }
+
+    async updateOrder(orderId: number, orderData: any): Promise<Order | null> {
+        return prisma.order.update({
+            where: {
+                orderId: orderId,
+            },
+            data: orderData,
+        });
+    }
+
+    async deleteOrder(orderId: number): Promise<Order | null> {
+        return prisma.order.delete({
+            where: {
+                orderId: orderId,
+            },
+        });
+    }
 };
