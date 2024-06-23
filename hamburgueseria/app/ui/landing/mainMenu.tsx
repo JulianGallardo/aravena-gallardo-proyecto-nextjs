@@ -62,7 +62,7 @@ const MainMenu: React.FC = () => {
                                 <ButtonCard title="Club" photoSrc="/landingCard3.png" width={500} height={500} button={{ link: '/club', className: '', text: 'Ver más' }} />
                             </div>
                             <div className="m-x-0 w-auto h-auto">
-                                <ButtonCard title="Encarga" photoSrc="/landingCard4.png" width={580} height={500} button={{ link: '/pedido', className: '', text: 'Pedir ahora' }} />
+                                <ButtonCard title="Encarga" photoSrc="/landingCard4.png" width={580} height={500} button={{ link: '/burgers', className: '', text: 'Pedir ahora' }} />
                             </div>
                         </div>                  
                     </>

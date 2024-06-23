@@ -5,7 +5,7 @@ import { PrismaClient, Order, PaymentMethod, OrderStatus } from '@/prisma/genera
 const prisma = new PrismaClient();
 
 export class OrderRepository {
-    updateOrderStatus(orderId: number, status: OrderStatus):  Promise<Order> {
+    updateOrderStatus(orderId: number, status: OrderStatus): Promise<Order> {
 
         return prisma.order.update({
             where: {
@@ -21,7 +21,19 @@ export class OrderRepository {
         return prisma.order.findMany({
             include: {
                 products: {
-                    include: {
+                    select: {
+                        quantity: true,
+                        extras: {
+                            select: {
+                                quantity: true,
+                                extra: {
+                                    select: {
+                                        name: true,
+                                        price: true,
+                                    },
+                                },
+                            },
+                        },
                         product: {
                             include: {
                                 burger: {
@@ -31,17 +43,6 @@ export class OrderRepository {
                                         category: true,
                                         stock: true,
                                         price: true,
-                                        extras: {
-                                            select: {
-                                                quantity: true,
-                                                extra: {
-                                                    select: {
-                                                        name: true,
-                                                        price: true,
-                                                    },
-                                                },
-                                            },
-                                        },
                                     },
                                 },
                                 promo: {
@@ -53,7 +54,8 @@ export class OrderRepository {
                                     },
                                 },
                             },
-                        }
+                        },
+
                     },
                 },
             },
@@ -67,7 +69,19 @@ export class OrderRepository {
             },
             include: {
                 products: {
-                    include: {
+                    select: {
+                        quantity: true,
+                        extras: {
+                            select: {
+                                quantity: true,
+                                extra: {
+                                    select: {
+                                        name: true,
+                                        price: true,
+                                    },
+                                },
+                            },
+                        },
                         product: {
                             include: {
                                 burger: {
@@ -77,17 +91,6 @@ export class OrderRepository {
                                         category: true,
                                         stock: true,
                                         price: true,
-                                        extras: {
-                                            select: {
-                                                quantity: true,
-                                                extra: {
-                                                    select: {
-                                                        name: true,
-                                                        price: true,
-                                                    },
-                                                },
-                                            },
-                                        },
                                     },
                                 },
                                 promo: {
@@ -99,7 +102,8 @@ export class OrderRepository {
                                     },
                                 },
                             },
-                        }
+                        },
+
                     },
                 },
             },
@@ -123,6 +127,7 @@ export class OrderRepository {
                 clientId: 1, // Dejamos hardcodeado para que se le guarden todas al mismo cliente
                 paymentMethod: PaymentMethod.MERCADO_PAGO,
                 totalAmount: totalAmount,
+
                 products: {
                     create: orderData.map((item) => ({
                         product: {
@@ -130,46 +135,21 @@ export class OrderRepository {
                                 productId: item.cartItemBurger?.productId ?? item.cartItemPromo?.productId ?? 0,
                             },
                         },
-                        quantity: item.cartItemBurger?.quantity ?? item.cartItemPromo?.quantity ?? 0,
-                        burger: item.cartItemBurger ? {
-                            create: {
-                                name: item.cartItemBurger.name,
-                                description: item.cartItemBurger.description,
-                                category: item.cartItemBurger.category,
-                                stock: item.cartItemBurger.stock,
-                                price: item.cartItemBurger.price,
-                                extras: {
-                                    create: item.cartItemBurger.extras.map(extra => ({
-                                        extra: {
-                                            connect: {
-                                                extraId: extra.extra.extraId,
-                                            },
-                                        },
-                                        quantity: extra.quantity,
-                                    })),
+                        quantity: Number(item.cartItemBurger?.quantity) ?? Number(item.cartItemPromo?.quantity) ?? 0,
+                        extras: {
+                            create: item.cartItemBurger?.extras?.map((extra) => ({
+                                extra: {
+                                    connect: {
+                                        extraId: extra.extra.extraId,
+
+                                    },
                                 },
-                            },
-                        } : undefined,
-                        promo: item.cartItemPromo ? {
-                            create: {
-                                name: item.cartItemPromo.name,
-                                description: item.cartItemPromo.description,
-                                category: item.cartItemPromo.category,
-                                price: item.cartItemPromo.price,
-                                burgers: {
-                                    create: item.cartItemPromo.burgers.map(burger => ({
-                                        burger: {
-                                            connect: {
-                                                burgerId: burger.burger.burgerId,
-                                            },
-                                        },
-                                        quantity: burger.quantity,
-                                        newPrice: burger.newPrice,
-                                    })),
-                                },
-                            },
-                        } : undefined,
+
+                                quantity: Number(extra.quantity),
+                            })) ?? [],
+                        }
                     })),
+
                 },
             },
         });

@@ -1,16 +1,16 @@
-import { NextAuthConfig, Session } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
-import { PrismaClient } from '@/prisma/generated/client';
-import { NextResponse } from 'next/server';
+import { NextAuthConfig, Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import { PrismaClient } from "@/prisma/generated/client";
+import { NextResponse } from "next/server";
 
 const db = new PrismaClient();
 
 export const authConfig = {
   pages: {
-    signIn: '/auth/login',
+    signIn: "/auth/login",
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   callbacks: {
     async redirect({ url, baseUrl }) {
@@ -21,37 +21,37 @@ export const authConfig = {
     },
     async authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnProfile = nextUrl.pathname.startsWith('/perfil');
-      const isOnAdmin = nextUrl.pathname.startsWith('/admin');
-      const isOnLogin = nextUrl.pathname.startsWith('/auth/login');
-      const isOnRegister = nextUrl.pathname.startsWith('/auth/register');
-      
+      const isOnProfile = nextUrl.pathname.startsWith("/perfil");
+      const isOnAdmin = nextUrl.pathname.startsWith("/admin");
+      const isOnLogin = nextUrl.pathname.startsWith("/auth/login");
+      const isOnRegister = nextUrl.pathname.startsWith("/auth/register");
 
-      if (isLoggedIn){
-        if (isOnLogin || isOnRegister){
-          return NextResponse.redirect(process.env.NEXTAUTH_URL + '/');
+      if (isLoggedIn) {
+        if (isOnLogin || isOnRegister) {
+          return NextResponse.redirect(process.env.NEXTAUTH_URL + "/");
         }
-        if (isOnProfile){
+        if (isOnProfile) {
           return true;
         }
-        if (isOnAdmin && auth.user.role === 'ADMIN'){
+        if (isOnAdmin && auth.user.role === "ADMIN") {
           return true;
         }
-        if (isOnAdmin && auth.user.role !== 'ADMIN'){
-          return NextResponse.redirect(process.env.NEXTAUTH_URL + '/');
+        if (isOnAdmin && auth.user.role !== "ADMIN") {
+          return NextResponse.redirect(process.env.NEXTAUTH_URL + "/");
         }
-      }
-      else{
-        if (isOnProfile || isOnAdmin){
-          return NextResponse.redirect(process.env.NEXTAUTH_URL + '/auth/login');
+      } else {
+        if (isOnProfile || isOnAdmin) {
+          return NextResponse.redirect(
+            process.env.NEXTAUTH_URL + "/auth/login"
+          );
         }
-        if (isOnLogin || isOnRegister){
+        if (isOnLogin || isOnRegister) {
           return true;
         }
       }
     },
     async jwt({ token, user, session, trigger }) {
-      if (trigger === 'signIn') {
+      if (trigger === "signIn") {
         return {
           ...token,
           id: user.id,
@@ -63,30 +63,26 @@ export const authConfig = {
         };
       }
 
-      if (trigger === 'update' && session?.user) {
-        const user = await db.user.findUnique({ where: { email: session.user.email } });
+      if (trigger === "update" && session?.user) {
+        const user = await db.user.findUnique({
+          where: { email: session.user.email },
+        });
         if (!user) return token;
 
-        try{
-          
-        const newUser = await db.user.update({
-          where: { email: session.user.email },
-          data: {
-            fullName: session.user.fullName,
-            email: session.user.email,
-            role: session.user.role,
-            cellphone: session.user.cellphone,
-            address: session.user.address,
-          },
-        });
-
-
-
-        }catch(e){
-          console.log(e);
+        try {
+          const newUser = await db.user.update({
+            where: { email: session.user.email },
+            data: {
+              fullName: session.user.fullName,
+              email: session.user.email,
+              role: session.user.role,
+              cellphone: session.user.cellphone,
+              address: session.user.address,
+            },
+          });
+        } catch (e) {
           return token;
         }
-
 
         return {
           ...token,
@@ -114,7 +110,8 @@ export const authConfig = {
     },
     async session({ session, token }: { session: any; token: JWT }) {
       return {
-        ...session, user: {
+        ...session,
+        user: {
           ...session.user,
           id: token.id,
           email: token.email,
@@ -122,7 +119,7 @@ export const authConfig = {
           fullName: token.fullName,
           cellphone: token.cellphone,
           address: token.address,
-        }
+        },
       };
     },
   },

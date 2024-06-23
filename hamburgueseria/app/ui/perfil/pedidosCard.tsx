@@ -3,8 +3,25 @@ import Image from 'next/image';
 import ByteBurgersLogo from '@/public/ByteBurgersLogoVectorizado.svg';
 import { OrdenExtendida } from '@/lib/definitions';
 
+interface Extras {
+    extra: {
+        name: string;
+        price: number;
+    };
+    quantity: number;
+}
 
 const PedidosCard = (orden: OrdenExtendida) => {
+    
+    function sumarExtras(extras:Extras[] ) {
+        let suma = 0;
+        if (extras.length === 0) return 0;
+        extras.forEach(extra => {
+            suma += extra.extra.price * extra.quantity;
+        });
+        return suma;
+    }
+
     return (
         <div className="relative max-w-md mx-auto bg-darkblue text-white border border-lightgrey rounded-md p-5 shadow-lg ">
             <div className="flex flex-col gap-3 mb-2">
@@ -27,16 +44,17 @@ const PedidosCard = (orden: OrdenExtendida) => {
                             <p className="text-lg">${product.product.burger ? product.product.burger.price : product.product.promo?.price} x {product.quantity}</p>
                         </div>
                         <div>
-                            <p className=''>
+                            <p className='flex flex-col'>
                                 {
-                                    product.product.burger?.extras.map((extra, index) => (
-                                        <span key={index} className="text-sm">+ {extra.extra.name} {extra.quantity}x${extra.extra.price}</span>
+                                    product.extras.map((extra, index) => (
+                                        console.log(extra),
+                                        <span key={index} className="text-sm">{extra.quantity} x {extra.extra.name} ${extra.extra.price}</span>
                                     ))
                                 }
                             </p>
                         </div>
                         <div className="flex justify-between flex-row">
-                            <p>${product.product.burger ? (product.product.burger.price * product.quantity) : (product.product.promo) ? (product.product.promo.price * product.quantity) : 0}</p>
+                            <p>${product.product.burger ? (product.product.burger.price * product.quantity + sumarExtras(product.extras)) : (product.product.promo) ? (product.product.promo.price * product.quantity) : 0}</p>
                         </div>
                     </div>
                 ))}
