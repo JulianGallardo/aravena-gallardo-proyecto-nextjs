@@ -40,7 +40,7 @@ export class OrderService {
   }
 
 
-  async getAllOrdersByUserId(userId: number): Promise<Order[]> {
+  async getAllOrdersByUserId(userId: number): Promise<OrdenExtendida[]> {
     return orderRepository.getOrdersByUserId(userId);
   }
 }

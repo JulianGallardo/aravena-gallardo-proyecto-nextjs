@@ -8,7 +8,7 @@ export class OrderRepository {
         return prisma.order.findMany();
     }
 
-    async getOrdersByUserId(userId: number): Promise<Order[]> {
+    async getOrdersByUserId(userId: number): Promise<OrdenExtendida[]> {
         return prisma.order.findMany({
             where: {
                 clientId: userId,
@@ -18,8 +18,35 @@ export class OrderRepository {
                     include: {
                         product: {
                             include: {
-                                burger: true,
-                                promo: true,
+                                burger: {
+                                    select: {
+                                        name: true,
+                                        description: true,
+                                        category: true,
+                                        stock: true,
+                                        price: true,
+                                        extras: {
+                                            select: {
+                                                quantity: true,
+                                                extra: {
+                                                    select: {
+                                                        name: true,
+                                                        price: true,
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                promo: {
+                                    select: {
+                                        name: true,
+                                        description: true,
+                                        category: true,
+                                        price: true,
+                                    },
+                                },
+
                             },
                         }
                     },

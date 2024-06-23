@@ -2,7 +2,7 @@
 
 import { ProductService } from '@/prisma/services/productService';
 import { OrderService } from '@/prisma/services/orderService';
-import { PromoExtendida } from './definitions';
+import { OrdenExtendida, PromoExtendida } from './definitions';
 const productService = new ProductService();
 const orderService = new OrderService();
 
@@ -11,6 +11,7 @@ const ITEMS_PER_PAGE = 4;
 export async function fetchPaginationOrders(page: number,clientId:number) {
 
   const orders = await orderService.getAllOrdersByUserId(clientId);
+  console.log(JSON.stringify(orders));
   const totalItems = orders.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const start = (page - 1) * ITEMS_PER_PAGE;

@@ -1,10 +1,12 @@
 "use client"
 
 import PedidosCard from "@/app/ui/perfil/pedidosCard";
+import { OrdenExtendida } from "@/lib/definitions";
 import { fetchPaginationOrders } from "@/lib/pagination";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from "react";
 
 
 export default async function TablePedidos(
@@ -19,7 +21,7 @@ export default async function TablePedidos(
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
-  const orders = await fetchPaginationOrders(currentPage, session.user.clientId);
+  const [orders,setOrders] = useState<{paginatedOrders:OrdenExtendida[],totalPages:number}>({paginatedOrders:[],totalPages:0});
 
 
   const createPageURL = (pageNumber: number | string) => {
@@ -28,12 +30,20 @@ export default async function TablePedidos(
     return `${pathname}?${params.toString()}`;
   };
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const orders = await fetchPaginationOrders(currentPage, session.user.clientId);
+      setOrders(orders);
+    };
+    fetchOrders();
+  }, [currentPage]);
+
   return (
     <div className="flex flex-col gap-5 justify-center items-center w-full">
       <div className="flex flex-col gap-5 md:grid grid-cols-2">
         {
           orders.paginatedOrders.map((order) => (
-            <PedidosCard products={[]} key={order.orderId} {...order} />
+            <PedidosCard  key={order.orderId} {...order} />
           ))
         }
       </div>
