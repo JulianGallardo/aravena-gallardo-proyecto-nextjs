@@ -1,19 +1,26 @@
-import cloudinary from "@/cloudinary/cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const uploadedResponse = await cloudinary.uploader.upload(body.data, {
       public_id: `${body.publicId}`,
+      folder: 'byteburgers',
     });
-    
     return NextResponse.json({ url: uploadedResponse.secure_url });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Something went wrong uploading the image" },
-      { status: 500 }
-    );
+    console.error("Error uploading to Cloudinary:", error);
+    return NextResponse.json({
+      status: 500,
+      error: "Error uploading to Cloudinary",
+    });
   }
 }
 
@@ -30,7 +37,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-    const imageUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${publicId}`;
+    const imageUrl = `https://res.cloudinary.com/${cloudName}/image/upload/byteburgers/${publicId}`;
 
     return NextResponse.json({ url: imageUrl });
   } catch (error) {
