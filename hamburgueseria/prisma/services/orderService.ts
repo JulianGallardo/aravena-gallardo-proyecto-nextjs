@@ -6,8 +6,8 @@ const prisma = new PrismaClient();
 const orderRepository = new OrderRepository()
 
 export class OrderService {
-  async createOrder(data:CartItem[],totalAmount:number): Promise<Order> {
-    return orderRepository.createOrder(data,totalAmount);
+  async createOrder(data:CartItem[],totalAmount:number,clientId:number): Promise<Order> {
+    return orderRepository.createOrder(data,totalAmount,clientId);
   }
 
   async getAllOrders(): Promise<OrdenExtendida[]> {

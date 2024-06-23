@@ -23,7 +23,7 @@ const PedidosCard = (orden: OrdenExtendida) => {
     }
 
     return (
-        <div className="relative max-w-md mx-auto bg-darkblue text-white border border-lightgrey rounded-md p-5 shadow-lg ">
+        <div className="relative max-w-md mx-2 bg-darkblue text-white border border-lightgrey rounded-md p-5 shadow-lg ">
             <div className="flex flex-col gap-3 mb-2">
                 <div className=" flex items-center justify-between">
                     <div>

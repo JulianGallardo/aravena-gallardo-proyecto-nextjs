@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import TablaPedidos from "@/app/ui/perfil/tablaPedidos";
 import { fetchPaginationOrders } from "@/lib/pagination";
 import { auth } from "@/auth";
+import CardSkeleton from "../shared/cardSkeleton";
 
 export default async function PedidosPaginacion({
   searchParams,
@@ -24,10 +25,10 @@ export default async function PedidosPaginacion({
 
 
     return (
-      <div className="flex flex-col gap-5 ">
+      <div className="flex flex-col gap-5 mx-2">
         <h1 className="text-2xl font-bold text-dark ">Pedidos</h1>
         <div className="flex flex-col justify-center gap-5 items-center ">
-          <Suspense key={query + currentPage} fallback={<div>Cargando...</div>}>
+          <Suspense key={query + currentPage} fallback={<TableSkeleton/>}>
             <TablaPedidos totalPages={totalPages} session={session} />
           </Suspense>
         </div>
@@ -35,3 +36,17 @@ export default async function PedidosPaginacion({
     );
   }
 };
+
+
+function TableSkeleton() {
+  return (
+    <div className="flex flex-col gap-5 mx-2">
+      <div className="flex flex-col md:grid grid-cols-2 justify-center gap-5 items-center ">
+        <div className="skeleton w-96 h-96 bg-gray-300"></div>
+        <div className="skeleton w-96 h-96 bg-gray-300"></div>
+        <div className="skeleton w-96 h-96 bg-gray-300"></div>
+        <div className="skeleton w-96 h-96 bg-gray-300"></div>
+      </div>
+    </div>
+  );
+}

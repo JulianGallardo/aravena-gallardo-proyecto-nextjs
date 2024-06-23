@@ -121,10 +121,10 @@ export class OrderRepository {
         });
     }
 
-    async createOrder(orderData: CartItem[], totalAmount: number): Promise<Order> {
+    async createOrder(orderData: CartItem[], totalAmount: number,clientId:number): Promise<Order> {
         return prisma.order.create({
             data: {
-                clientId: 1, // Dejamos hardcodeado para que se le guarden todas al mismo cliente
+                clientId: clientId, 
                 paymentMethod: PaymentMethod.MERCADO_PAGO,
                 totalAmount: totalAmount,
 
