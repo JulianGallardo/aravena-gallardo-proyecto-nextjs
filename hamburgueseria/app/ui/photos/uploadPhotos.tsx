@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from "react";
+import Image from "next/image";
 
 const UploadPhotos: React.FC = () => {
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
@@ -70,7 +71,7 @@ const UploadPhotos: React.FC = () => {
       {imageUrl && (
         <div className="mt-6 text-center">
           <p className="mb-4">Uploaded Image:</p>
-          <img src={imageUrl} alt="Uploaded" className="w-full max-w-xs mx-auto rounded" />
+          <Image src={imageUrl} alt="Uploaded" width={200} height={200} className="w-full max-w-xs mx-auto rounded" />
         </div>
       )}
     </div>

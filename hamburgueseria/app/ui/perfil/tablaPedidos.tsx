@@ -9,7 +9,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from "react";
 
 
-export default async function TablePedidos(
+export default function TablePedidos(
   {
     totalPages,
     session
