@@ -5,6 +5,15 @@ import { OrdenExtendida } from '@/lib/definitions';
 
 
 const PedidosCard = (orden: OrdenExtendida) => {
+    function sumarExtras(product: { quantity: number; product: { burger: { extras: { quantity: number; extra: { name: string; price: number; }; }[]; name: string; category: import("@/prisma/generated/client").$Enums.Category; description: string; stock: number; price: number; } | null; promo: { name: string; category: import("@/prisma/generated/client").$Enums.Category; description: string; price: number; } | null; }; extras: ({ extra: { name: string; price: number; }; } & { id: number; productId: number; extraId: number; quantity: number; })[]; }) {
+        let suma = 0;
+        if (product.extras.length === 0) return 0;
+        product.extras.forEach(extra => {
+            suma += extra.extra.price * extra.quantity;
+        });
+        return suma;
+    }
+
     return (
         <div className="relative max-w-md mx-auto bg-darkblue text-white border border-lightgrey rounded-md p-5 shadow-lg ">
             <div className="flex flex-col gap-3 mb-2">
@@ -37,7 +46,7 @@ const PedidosCard = (orden: OrdenExtendida) => {
                             </p>
                         </div>
                         <div className="flex justify-between flex-row">
-                            <p>${product.product.burger ? (product.product.burger.price * product.quantity) : (product.product.promo) ? (product.product.promo.price * product.quantity) : 0}</p>
+                            <p>${product.product.burger ? (product.product.burger.price * product.quantity + sumarExtras(product)) : (product.product.promo) ? (product.product.promo.price * product.quantity) : 0}</p>
                         </div>
                     </div>
                 ))}
