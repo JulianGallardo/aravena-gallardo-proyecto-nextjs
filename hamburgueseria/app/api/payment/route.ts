@@ -12,16 +12,20 @@ const orderService = new OrderService();
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log("Request body:", JSON.stringify(body));
 
     const payment = await new Payment(client).get({ id: body.data.id });
-    console.log("Payment details:", JSON.stringify(payment));
 
     if (payment && payment.status === "approved") {
-      await orderService.updateOrderStatus(Number(payment.external_reference), OrderStatus.CONFIRMED);
+      await orderService.updateOrderStatus(
+        Number(payment.external_reference),
+        OrderStatus.CONFIRMED
+      );
       return NextResponse.json({ success: true });
     } else {
-      await orderService.updateOrderStatus(Number(payment.external_reference), OrderStatus.REJECTED);
+      await orderService.updateOrderStatus(
+        Number(payment.external_reference),
+        OrderStatus.REJECTED
+      );
       return NextResponse.json({ success: false });
     }
   } catch (error: any) {
