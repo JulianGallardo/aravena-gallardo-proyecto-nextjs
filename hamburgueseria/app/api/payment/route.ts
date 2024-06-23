@@ -20,5 +20,11 @@ export async function POST(req: NextRequest) {
       orderService.updateOrderStatus(Number(payment.external_reference),OrderStatus.CONFIRMED );
       return Response.json({success: true});
     }
+
+    if (payment !=null && payment.status === "rejected") {
+      orderService.updateOrderStatus(Number(payment.external_reference),OrderStatus.REJECTED );
+      return Response.json({success: false});
+    }
+    
     return Response.json({success: false});
 }

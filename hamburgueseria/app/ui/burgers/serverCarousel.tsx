@@ -2,13 +2,13 @@
 
 import { PromoExtendida } from "@/lib/definitions";
 import Carousel from "./carrouselRecomendedBurgers";
-import { fetchAllBurgers, fetchAllPromos } from "@/lib/crud";
+import { fetchAllBurgersActive, fetchAllPromosActive } from "@/lib/crud";
 import { getImageUrl } from "@/utils/cloudinaryUtils";
 
 
 export default async function ServerCarousel() {
 
-    const recommendedBurgers = await fetchAllBurgers().then((data) =>
+    const recommendedBurgers = await fetchAllBurgersActive().then((data) =>
         data.sort(() => Math.random() - 0.5).slice(0, 5)
     );
     const recommendedBurgersImage = await Promise.all(recommendedBurgers.map(async (burger) => {
@@ -16,7 +16,7 @@ export default async function ServerCarousel() {
         return { burger, cloudinaryImageUrl: url };
     }));
 
-    const recommendedPromos = await fetchAllPromos().then((data) =>
+    const recommendedPromos = await fetchAllPromosActive().then((data) =>
         data.sort(() => Math.random() - 0.5).slice(0, 5)
     );
     const recommendedPromosImage = await Promise.all(recommendedPromos.map(async (promo) => {

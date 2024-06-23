@@ -11,8 +11,10 @@ const PedidosCard = (orden: OrdenExtendida) => {
                 <div className=" flex items-center justify-between">
                     <div>
                         <p className="text-lg font-semibold">Orden: {orden.orderId}</p>
+                        <p className="text-sm">Estado: {orden.status}</p>
                         <p className="text-sm">Fecha: {`${orden.date.getDate()}/${orden.date.getMonth() + 1}/${orden.date.getFullYear()}`}</p>
                         <p className='text-sm'>IdCliente: {orden.clientId}</p>
+
                     </div>
                     <Image src={ByteBurgersLogo} alt="ByteBurgers Logo" className="w-1/4 " />
                 </div>
