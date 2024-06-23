@@ -6,7 +6,7 @@ import { useCart } from '@/app/hooks/useCart';
 import { AddToCartIcon, RemoveFromCartIcon } from '@/app/ui/shared/cartIcons';
 import { usePathname } from 'next/navigation';
 import { CartItemBurger, ExtraInCart } from '@/lib/CartTypes';
-import { fetchAllExtras } from '@/lib/crud';
+import { fetchAllExtrasActive } from '@/lib/crud';
 import { Burger, Extra } from '@/prisma/generated/client';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { getImageUrl } from '@/utils/cloudinaryUtils';
@@ -50,7 +50,7 @@ const BurgerInfoPage: React.FC = () => {
     const [deleteBtn, setDeleteBtn] = useState(false);
 
     useEffect(() => {
-        fetchAllExtras().then((data) => {
+        fetchAllExtrasActive().then((data) => {
             setExtras(data);
         }).catch((error) => {
             console.error('Error fetching extras:', error);

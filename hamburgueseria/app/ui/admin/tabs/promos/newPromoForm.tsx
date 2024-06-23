@@ -138,7 +138,7 @@ const NewPromoForm = () => {
                             />
                             <input
                                 className="p-2 border border-gray-300 rounded bg-gray-200 placeholder:text-gray-500"
-                                type="number"
+                                type="float"
                                 placeholder="Nuevo precio individual"
                                 {...register(`burgers.${index}.newPrice`, { valueAsNumber: true, required: true, validate: value => value > 0})}
                                 defaultValue={burger.newPrice}

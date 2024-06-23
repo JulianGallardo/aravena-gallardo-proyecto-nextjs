@@ -1,32 +1,74 @@
 "use server";
 
-import { CartItem } from "@/lib/types";
+import { CartItem } from "@/lib/CartTypes";
 import MercadoPagoConfig, { Preference } from "mercadopago";
 import { redirect } from "next/navigation";
+import { OrderService } from "@/prisma/services/orderService";
 
 const client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN!,
+  accessToken: process.env.MP_ACCESS_TOKEN!,
 });
 
-export async function payment(cart: CartItem[]) {
+const orderService = new OrderService();
+
+export async function payment(cart: CartItem[], totalAmount: number) {
   const title = "Hamburgueseria ByteBurger";
-  const preference = await new Preference(client).create({
-    body: {
-      items: cart.map((item) => ({
-        id: "burger",
-        title: title,
-        quantity: item.cartItemBurger?.quantity ?? 0,
-        currency_id: "ARS",
-        unit_price: item.cartItemBurger?.price ?? 0,
-      })),
-      notification_url: "https://localhost:3000/api/payment",
-      redirect_urls: {
-        success: "http://localhost:3000/api/payment",
-        failure: "https://byteburger.vercel.app/failure",
-        pending: "https://byteburger.vercel.app/pending",
+
+  //const order = await orderService.createOrder(cart, totalAmount);
+
+  const order = {
+    orderId: 1,
+    totalAmount: totalAmount
+  }
+  if (process.env.NODE_ENV === "development") {
+    const preference = await new Preference(client).create({
+      body: {
+        items: [
+          {
+            title,
+            description: "La mejor hamburguesa de la ciudad",
+            unit_price: totalAmount,
+            quantity: 1,
+            id: order.orderId.toString(),
+
+          },
+        ],
+        external_reference: order.orderId.toString(),
+        back_urls: {
+          success: "http://localhost:3000 ",
+          failure: "http://localhost:3000/cart",
+        },
+        auto_return: "approved",
       },
-    },
-  });
-  console.log(preference);
-  redirect(preference.sandbox_init_point!);
-}
+
+    });
+    console.log(preference);
+    redirect(preference.sandbox_init_point!);
+  }
+  else {
+    const preference = await new Preference(client).create({
+      body: {
+        items: [
+          {
+            title,
+            description: "La mejor hamburguesa de la ciudad",
+            unit_price: totalAmount,
+            quantity: 1,
+            id: order.orderId.toString(),
+
+          },
+        ],
+        external_reference: order.orderId.toString(),
+        back_urls: {
+          success: "https://byteburgers.vercel.app",
+          failure: "https://byteburgers.vercel.app/cart",
+        },
+        auto_return: "approved",
+      },
+
+    });
+
+    console.log(preference);
+    redirect(preference.sandbox_init_point!);
+  }
+  }

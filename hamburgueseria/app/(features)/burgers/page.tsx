@@ -1,9 +1,7 @@
 import React, { Suspense } from 'react';
 import { BurgerList } from '@/app/ui';
-import { Category } from '@/prisma/generated/client';
 import CardSkeleton from '@/app/ui/shared/cardSkeleton';
 
-const categories = Object.values(Category) as Category[];
 
 const Page: React.FC = () => {
     return (

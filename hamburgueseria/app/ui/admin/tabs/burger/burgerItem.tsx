@@ -47,6 +47,11 @@ const BurgerItem = ({ burger }: BurgerItemProps) => {
                                     <h4 className="text-md font-semibold mb-2">Stock</h4>
                                     <p className="text-sm mb-2">{burger.stock}</p>
                                 </div>
+                                <div className="">
+                                    <h4 className="text-md font-semibold mb-2">Activo</h4>
+                                    <p className="text-sm mb-2">{burger.active ? "Si" : "No"}</p>
+                                </div>
+                                
                             </div>
                             <div className="">
                                 <h4 className="text-md font-semibold mb-2">Image</h4>
