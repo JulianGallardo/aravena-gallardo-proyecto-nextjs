@@ -8,7 +8,12 @@ const config = {
                 pathname: '**',
             },
         ],
-    },
+    }, 
+    experimental: {
+        serverActions: {
+          bodySizeLimit: '50mb',
+        },
+      },
 }
 
 export default config
