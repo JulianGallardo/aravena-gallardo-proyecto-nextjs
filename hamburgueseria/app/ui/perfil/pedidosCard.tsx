@@ -3,12 +3,19 @@ import Image from 'next/image';
 import ByteBurgersLogo from '@/public/ByteBurgersLogoVectorizado.svg';
 import { OrdenExtendida } from '@/lib/definitions';
 
+interface Extras {
+    extra: {
+        name: string;
+        price: number;
+    };
+    quantity: number;
+}
 
 const PedidosCard = (orden: OrdenExtendida) => {
-    function sumarExtras(product: { quantity: number; product: { burger: { extras: { quantity: number; extra: { name: string; price: number; }; }[]; name: string; category: import("@/prisma/generated/client").$Enums.Category; description: string; stock: number; price: number; } | null; promo: { name: string; category: import("@/prisma/generated/client").$Enums.Category; description: string; price: number; } | null; }; extras: ({ extra: { name: string; price: number; }; } & { id: number; productId: number; extraId: number; quantity: number; })[]; }) {
+    function sumarExtras(extras:Extras[] ) {
         let suma = 0;
-        if (product.extras.length === 0) return 0;
-        product.extras.forEach(extra => {
+        if (extras.length === 0) return 0;
+        extras.forEach(extra => {
             suma += extra.extra.price * extra.quantity;
         });
         return suma;
@@ -36,7 +43,7 @@ const PedidosCard = (orden: OrdenExtendida) => {
                             <p className="text-lg">${product.product.burger ? product.product.burger.price : product.product.promo?.price} x {product.quantity}</p>
                         </div>
                         <div>
-                            <p className=''>
+                            <p className='flex flex-col'>
                                 {
                                     product.extras.map((extra, index) => (
                                         <span key={index} className="text-sm">{extra.quantity} x {extra.extra.name} ${extra.extra.price}</span>
@@ -45,7 +52,7 @@ const PedidosCard = (orden: OrdenExtendida) => {
                             </p>
                         </div>
                         <div className="flex justify-between flex-row">
-                            <p>${product.product.burger ? (product.product.burger.price * product.quantity + sumarExtras(product)) : (product.product.promo) ? (product.product.promo.price * product.quantity) : 0}</p>
+                            <p>${product.product.burger ? (product.product.burger.price * product.quantity + sumarExtras(product.extras)) : (product.product.promo) ? (product.product.promo.price * product.quantity) : 0}</p>
                         </div>
                     </div>
                 ))}
