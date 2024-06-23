@@ -36,7 +36,7 @@ export default function TablePedidos(
       setOrders(orders);
     };
     fetchOrders();
-  }, [currentPage]);
+  }, [currentPage, searchParams]);
 
   return (
     <div className="flex flex-col gap-5 justify-center items-center w-full">
