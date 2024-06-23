@@ -28,6 +28,9 @@ export default async function BurgerPagination({
                         <Link href="/admin/extras" className="btn rounded-md bg-yellow-400 text-white font-bold">
                             Extras
                         </Link>
+                        <Link href="/admin/ordenes" className="btn rounded-md bg-yellow-400 text-white font-bold">
+                            Ordenes
+                        </Link>
                     </div>
                 </div>
             </div>

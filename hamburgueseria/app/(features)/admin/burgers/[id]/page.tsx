@@ -7,7 +7,7 @@ import { Burger, Category } from "@/prisma/generated/client";
 import { fetchBurgerById, updateBurger, deleteBurger } from "@/lib/crud";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import { getImageUrl } from "@/utils/cloudinaryUtils";
@@ -21,8 +21,6 @@ type FormValues = {
     imageUrl: string;
 };
 
-
-
 const BurgerManagementPage = () => {
     const pathname = usePathname();
     const pathnameArray = pathname.split('/');
@@ -31,8 +29,7 @@ const BurgerManagementPage = () => {
     const [burgerData, setBurgerData] = useState<Burger | null>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [cloudinaryImg, setCloudinaryImg] = useState<string>("");
-
-    
+    const [error, setError] = useState<string | null>(null);
 
     const router = useRouter();
 
@@ -41,7 +38,10 @@ const BurgerManagementPage = () => {
     useEffect(() => {
         fetchBurgerById(Number(burgerId))
             .then((data) => {
-                if (!data) throw new Error("Burger not found");
+                if (!data) {
+                    setError("Burger no encontrada");
+                    return;
+                }
                 setBurgerData(data as Burger);
                 setValue("name", data.name);
                 setValue("description", data.description);
@@ -54,6 +54,7 @@ const BurgerManagementPage = () => {
                 });
             })
             .catch((error) => {
+                setError("Error fetching burger");
                 console.error(error);
             });
     }, [burgerId, setValue]);
@@ -65,7 +66,6 @@ const BurgerManagementPage = () => {
     const handleCancel = () => {
         setIsEditing(false);
     };
-
 
     const handleDeleteWithToast = () => {
         toast(
@@ -90,7 +90,6 @@ const BurgerManagementPage = () => {
                         Cancelar
                     </button>
                 </div>
-
             </div>,
             {
                 autoClose: false,
@@ -122,7 +121,13 @@ const BurgerManagementPage = () => {
 
     return (
         <div className="flex flex-col gap-5 justify-center items-center w-full py-10 h-full mt-24">
-            {burgerData && cloudinaryImg!="" ? (
+            {error ? (
+                <div className="flex flex-col gap-5 text-black text-center">{error}
+                    <Link href="/admin/burgers" className='btn bg-yellow-400 text-white'>
+                        Volver a Burgers
+                    </Link>
+                </div>
+            ) : burgerData && cloudinaryImg ? (
                 <div className="flex flex-col gap-5 justify-center items-center w-full py-10">
                     <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
                         <div className="relative h-60 w-full rounded-md">
@@ -170,7 +175,7 @@ const BurgerManagementPage = () => {
                                     <input
                                         className="p-2 border border-gray-300 rounded w-full bg-gray-200 placeholder:text-gray-500"
                                         type="float"
-                                        {...register("price", { valueAsNumber: true, required: true , validate: value => value > 0})}
+                                        {...register("price", { valueAsNumber: true, required: true, validate: value => value > 0 })}
                                     />
                                     {errors.price && <span className="text-red">This field is required</span>}
                                 </div>
@@ -179,7 +184,7 @@ const BurgerManagementPage = () => {
                                     <input
                                         className="p-2 border border-gray-300 rounded w-full bg-gray-200 placeholder:text-gray-500"
                                         type="number"
-                                        {...register("stock", { valueAsNumber: true, required: true, validate: value => value > 0})}
+                                        {...register("stock", { valueAsNumber: true, required: true, validate: value => value > 0 })}
                                     />
                                     {errors.stock && <span className="text-red">This field is required</span>}
                                 </div>
@@ -213,7 +218,7 @@ const BurgerManagementPage = () => {
                             </div>
                         )}
                     </div>
-                    <Link href="/admin/burgers" className='btn bg-yellow-400  text-white'>
+                    <Link href="/admin/burgers" className='btn bg-yellow-400 text-white'>
                         Back to Burgers
                     </Link>
                 </div>

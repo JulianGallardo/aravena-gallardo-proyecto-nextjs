@@ -28,6 +28,9 @@ export default async function PromosPagination({
                         <Link href="/admin/extras" className="btn rounded-md bg-yellow-400 text-white">
                             Extras
                         </Link>
+                        <Link href="/admin/ordenes" className="btn rounded-md bg-yellow-400 text-white font-bold">
+                            Ordenes
+                        </Link>
                     </div>
                 </div>
             </div>

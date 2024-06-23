@@ -28,6 +28,9 @@ export default async function ExtrasPagination({
                         <Link href="/admin/burgers" className="btn rounded-md bg-yellow-400 text-white">
                             Burgers
                         </Link>
+                        <Link href="/admin/ordenes" className="btn rounded-md bg-yellow-400 text-white font-bold">
+                            Ordenes
+                        </Link>
                     </div>
                 </div>
             </div>
