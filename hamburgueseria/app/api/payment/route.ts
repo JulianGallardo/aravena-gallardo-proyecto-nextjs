@@ -1,6 +1,6 @@
 import { OrderService } from "@/prisma/services/orderService";
 import { MercadoPagoConfig, Payment } from "mercadopago";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { OrderStatus } from "@/prisma/generated/client";
 
 const client = new MercadoPagoConfig({
@@ -10,18 +10,24 @@ const client = new MercadoPagoConfig({
 const orderService = new OrderService();
 
 export async function POST(req: NextRequest) {
-  const body = await req
-    .json()
-    
-    const payment = await new Payment(client).get({id: body.data.id});
-    console.log(JSON.stringify(payment));
+  try {
+    const body = await req.json();
+    console.log("Request body:", JSON.stringify(body));
 
-    if (payment !=null && payment.status === "approved") {
-      orderService.updateOrderStatus(Number(payment.external_reference),OrderStatus.CONFIRMED );
-      return Response.json({success: true});
+    const payment = await new Payment(client).get({ id: body.data.id });
+    console.log("Payment details:", JSON.stringify(payment));
+
+    if (payment && payment.status === "approved") {
+      console.log("Payment approved, updating order status...");
+      await orderService.updateOrderStatus(Number(payment.external_reference), OrderStatus.CONFIRMED);
+      return NextResponse.json({ success: true });
+    } else {
+      console.log("Payment rejected, updating order status...");
+      await orderService.updateOrderStatus(Number(payment.external_reference), OrderStatus.REJECTED);
+      return NextResponse.json({ success: false });
     }
-    else{
-      orderService.updateOrderStatus(Number(payment.external_reference),OrderStatus.REJECTED );
-      return Response.json({success: false});
-    }
+  } catch (error: any) {
+    console.error("Error processing payment:", error);
+    return Response.json({ success: false, error: error.message });
+  }
 }
