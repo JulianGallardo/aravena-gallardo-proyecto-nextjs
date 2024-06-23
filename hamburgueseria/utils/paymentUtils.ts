@@ -13,7 +13,6 @@ const orderService = new OrderService();
 
 export async function payment(cart: CartItem[], totalAmount: number) {
   const title = "Hamburgueseria ByteBurger";
-
   //const order = await orderService.createOrder(cart, totalAmount);
 
   const order = {
