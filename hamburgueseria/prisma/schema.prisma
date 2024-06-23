@@ -62,6 +62,7 @@ model Order {
 enum OrderStatus {
   PENDING
   CONFIRMED
+  REJECTED
 }
 
 enum PaymentMethod {

@@ -13,12 +13,8 @@ const orderService = new OrderService();
 
 export async function payment(cart: CartItem[], totalAmount: number) {
   const title = "Hamburgueseria ByteBurger";
-  //const order = await orderService.createOrder(cart, totalAmount);
+  const order = await orderService.createOrder(cart, totalAmount);
 
-  const order = {
-    orderId: 1,
-    totalAmount: totalAmount
-  }
   if (process.env.NODE_ENV === "development") {
     const preference = await new Preference(client).create({
       body: {
@@ -41,7 +37,6 @@ export async function payment(cart: CartItem[], totalAmount: number) {
       },
 
     });
-    console.log(preference);
     redirect(preference.init_point!);
   }
   else {
@@ -59,7 +54,7 @@ export async function payment(cart: CartItem[], totalAmount: number) {
         ],
         external_reference: order.orderId.toString(),
         back_urls: {
-          success: "https://byteburgers.vercel.app",
+          success: "https://byteburgers.vercel.app/cart/success",
           failure: "https://byteburgers.vercel.app/cart",
         },
         auto_return: "approved",
@@ -67,7 +62,6 @@ export async function payment(cart: CartItem[], totalAmount: number) {
 
     });
 
-    console.log(preference);
     redirect(preference.init_point!);
   }
   }
