@@ -63,7 +63,7 @@ const NewExtraForm = () => {
                 id="price"
                 type="float"
                 placeholder="Price"
-                {...register('price', { required: true, min: 0,valueAsNumber: true,valueType: 'number'})}
+                {...register('price', { required: true, min: 0,valueAsNumber: true})}
             />
             {errors.price && <span className="text-red-500">Falta completar este campo</span>}
 
