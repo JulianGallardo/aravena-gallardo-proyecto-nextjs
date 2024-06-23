@@ -1,27 +1,27 @@
-import { ProductService } from "@/prisma/services/productService";
+import { ClientService } from "@/prisma/services/clientService";
 import { NextRequest, NextResponse } from "next/server";
 
-const productService = new ProductService();
+const clientService = new ClientService();
 
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const burgerId = searchParams.get("burgerId");
-    if (burgerId) {
+    const clientId = searchParams.get("clientId");
+    if (clientId) {
       {
-        const extras = await productService.getExtraByBurgerId(
-          Number(burgerId)
+        const clients = await clientService.getClientById(
+          Number(clientId)
         );
         return NextResponse.json({
           status: 200,
-          body: extras,
+          body: clients,
         });
       }
     } else {
-      const extras = await productService.getAllExtras();
+      const clients = await clientService.getAllClients();
       return NextResponse.json({
         status: 200,
-        body: extras,
+        body: clients,
       });
     }
   } catch (error: any) {
