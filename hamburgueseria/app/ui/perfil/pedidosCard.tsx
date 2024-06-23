@@ -46,6 +46,7 @@ const PedidosCard = (orden: OrdenExtendida) => {
                             <p className='flex flex-col'>
                                 {
                                     product.extras.map((extra, index) => (
+                                        console.log(extra),
                                         <span key={index} className="text-sm">{extra.quantity} x {extra.extra.name} ${extra.extra.price}</span>
                                     ))
                                 }
