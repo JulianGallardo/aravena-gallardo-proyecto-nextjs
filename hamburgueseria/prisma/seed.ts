@@ -143,16 +143,16 @@ const promos = [
 const bcryptPassword = bcrypt.hashSync('admin', 10);
 
 const extras = [
-  { name: 'Extra Cheese', price: 1.00, maxQuantity: 3 },
-  { name: 'Bacon', price: 1.50, maxQuantity: 2 },
-  { name: 'Jalapeños', price: 0.75, maxQuantity: 3 },
-  { name: 'Onion Rings', price: 1.25, maxQuantity: 2 },
-  { name: 'Avocado', price: 2.00, maxQuantity: 1 },
-  { name: 'Mushrooms', price: 1.00, maxQuantity: 2 },
-  { name: 'Grilled Onions', price: 0.75, maxQuantity: 3 },
-  { name: 'Pickles', price: 0.50, maxQuantity: 3 },
-  { name: 'BBQ Sauce', price: 0.50, maxQuantity: 3 },
-  { name: 'Special Sauce', price: 0.75, maxQuantity: 3 }
+  { name: 'Extra Cheddar', price: 1000.00, maxQuantity: 3 },
+  { name: 'Bacon', price: 1500.00, maxQuantity: 2 },
+  { name: 'Jalapeños', price: 1000, maxQuantity: 3 },
+  { name: 'Aros de Cebolla', price: 1000.00, maxQuantity: 2 },
+  { name: 'Avocado', price: 1500.00, maxQuantity: 1 },
+  { name: 'Mushrooms', price: 800.00, maxQuantity: 2 },
+  { name: 'Cebolla Caramelizada', price: 1000, maxQuantity: 3 },
+  { name: 'Pickles', price: 1500.00, maxQuantity: 3 },
+  { name: 'Salsa BBQ', price: 500.00, maxQuantity: 3 },
+  { name: 'Salsa Byte', price: 500.00, maxQuantity: 3 }
 ];
 
 const seed = async () => {

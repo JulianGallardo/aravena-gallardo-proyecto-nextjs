@@ -103,7 +103,7 @@ model Promo{
   description String    @default("")
   active     Boolean   @default(true)
   category    Category  @default(PROMO)
-  product     Product   @relation(fields: [productId], references: [productId])
+  product     Product   @relation(fields: [productId], references: [productId], onDelete: Cascade)
   burgers     BurgerOnPromo[]
   price       Float     @default(0) //debe calcularse en base a los productos que contiene
 }
@@ -140,8 +140,8 @@ model ExtraOnBurger {
   extraId     Int
   burgerId    Int
   quantity    Int       @default(1)
-  extra       Extra     @relation(fields: [extraId], references: [extraId])
-  burger      Burger    @relation(fields: [burgerId], references: [burgerId])
+  extra       Extra     @relation(fields: [extraId], references: [extraId], onDelete: Cascade)
+  burger      Burger    @relation(fields: [burgerId], references: [burgerId], onDelete: Cascade)
   @@unique([extraId, burgerId]) // Garantiza que no haya duplicados de la misma combinación
 }
 
@@ -150,7 +150,7 @@ model ProductsOnOrder {
   orderId     Int
   productId   Int
   quantity    Int       @default(1)
-  order       Order     @relation(fields: [orderId], references: [orderId])
-  product     Product   @relation(fields: [productId], references: [productId])
+  order       Order     @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  product     Product   @relation(fields: [productId], references: [productId], onDelete: Cascade)
   @@unique([orderId, productId]) // Garantiza que no haya duplicados de la misma combinación
 }
