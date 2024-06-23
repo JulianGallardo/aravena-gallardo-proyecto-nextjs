@@ -36,7 +36,7 @@ export class ProductService {
   }
 
 
-  async updateBurger(burgerId: number, data: BurgerDataForm): Promise<Burger> {
+  async updateBurger(burgerId: number, data: Prisma.BurgerUpdateInput): Promise<Burger> {
     return productRepository.updateBurger(burgerId, data);
   }
 

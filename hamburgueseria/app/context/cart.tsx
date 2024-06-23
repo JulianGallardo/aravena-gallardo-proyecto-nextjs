@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { CartItem, CartItemBurger, CartItemPromo, ExtraInCart } from "@/lib/types";
+import { CartItem, CartItemBurger, CartItemPromo, ExtraInCart } from "@/lib/CartTypes";
 
 interface CartContextType {
     cart: CartItem[];

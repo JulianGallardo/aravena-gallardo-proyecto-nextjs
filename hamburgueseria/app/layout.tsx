@@ -3,8 +3,12 @@ import { inter } from "@/app/ui/fonts";
 import React from "react";
 import "@/app/ui/global.css";
 import SessionWrapper from "@/app/ui/shared/sessionWrapper";
+import "react-toastify/dist/ReactToastify.css";
 import { Header } from "@/app/ui";
 import { Footer } from "@/app/ui";
+import { Bounce, ToastContainer } from "react-toastify";
+import GoToAdmin from "./ui/admin/GoToAdmin";
+
 
 const title = "ByteBurgers";
 
@@ -28,6 +32,12 @@ export default async function RootLayout({
             {children}
           </main>
           <Footer />
+          <GoToAdmin/>
+          <ToastContainer 
+            position="top-center"
+            autoClose={1000}
+            transition={Bounce}
+          />
         </SessionWrapper>
       </body>
     </html>

@@ -1,5 +1,6 @@
 import { PrismaClient, PaymentMethod, Order } from '@/prisma/generated/client';
 import { OrderRepository } from '@/prisma/repositories/orderRepository';
+import { OrdenExtendida } from '@/lib/definitions';
 const prisma = new PrismaClient();
 const orderRepository = new OrderRepository()
 
@@ -30,11 +31,16 @@ export class OrderService {
     return orderRepository.createOrder({ clientId, products, paymentMethod, totalAmount });
   }
 
-  async getAllOrders(): Promise<Order[]> {
+  async getAllOrders(): Promise<OrdenExtendida[]> {
     return orderRepository.getAllOrders();
   }
 
   async getOrderById(orderId: number): Promise<Order | null> {
     return orderRepository.getOrderById(orderId);
+  }
+
+
+  async getAllOrdersByUserId(userId: number): Promise<OrdenExtendida[]> {
+    return orderRepository.getOrdersByUserId(userId);
   }
 }

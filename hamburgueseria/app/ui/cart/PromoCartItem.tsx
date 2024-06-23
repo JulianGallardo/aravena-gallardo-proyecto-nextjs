@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CartItemPromo } from "@/lib/types";
+import { CartItemPromo } from "@/lib/CartTypes";
 import { useCart } from "@/app/hooks/useCart";
 import { AddToCartIcon, RemoveFromCartIcon } from "../shared/cartIcons";
 import Image from "next/image";
@@ -41,7 +41,7 @@ const PromoCartItems: React.FC<PromoCartItemsProps> = ({ item }) => {
 
 
     return (
-        <div className="flex flex-col md:flex-row items-center rounded-lg shadow-lg mb-4 p-4 dark:bg-gray-900 dark:text-white">
+        <div className="flex flex-col md:flex-row items-center rounded-lg shadow-lg mb-4 p-4 ">
             {!isMobile && cloudinaryImageUrl != "" && (
                 <div className="flex items-center justify-center w-full md:w-1/3 p-2">
                     <Image

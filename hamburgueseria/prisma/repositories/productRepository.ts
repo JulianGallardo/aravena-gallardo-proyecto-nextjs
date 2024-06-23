@@ -84,7 +84,7 @@ export class ProductRepository {
     });
   }
 
-  async updateBurger(burgerId: number, data: BurgerDataForm): Promise<Burger> {
+  async updateBurger(burgerId: number, data: Prisma.BurgerUpdateInput): Promise<Burger> {
     return prisma.burger.update({
       where: { burgerId },
       data: {

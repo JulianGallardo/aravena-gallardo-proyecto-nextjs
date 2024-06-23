@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '@/app/hooks/useCart';
 import { AddToCartIcon, RemoveFromCartIcon } from '@/app/ui/shared/cartIcons';
 import { usePathname } from 'next/navigation';
-import { CartItemBurger, ExtraInCart } from '@/lib/types';
+import { CartItemBurger, ExtraInCart } from '@/lib/CartTypes';
 import { fetchAllExtras } from '@/lib/crud';
 import { Burger, Extra } from '@/prisma/generated/client';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -13,6 +13,9 @@ import { getImageUrl } from '@/utils/cloudinaryUtils';
 import Link from 'next/link';
 import { fetchBurgerById } from '@/lib/crud';
 import { PromoExtendida } from '@/lib/definitions';
+import { toast } from 'react-toastify';
+
+
 
 interface SelectedExtra {
     extra: string;
@@ -161,6 +164,8 @@ const BurgerInfoPage: React.FC = () => {
         };
 
         addToCartBurger(newBurger);
+        toast.success('Hamburguesa añadida al carrito');
+
     };
 
     const handleDelete = (data: FormValues) => {
@@ -196,6 +201,7 @@ const BurgerInfoPage: React.FC = () => {
         };
 
         removeFromCartBurger(newBurger);
+        toast.success('Hamburguesa eliminada del carrito');
     };
 
     return (

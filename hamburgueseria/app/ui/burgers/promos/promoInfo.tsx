@@ -6,10 +6,11 @@ import { useCart } from '@/app/hooks/useCart';
 import { AddToCartIcon, RemoveFromCartIcon } from '@/app/ui/shared/cartIcons';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { CartItemPromo } from '@/lib/types';
+import { CartItemPromo } from '@/lib/CartTypes';
 import { PromoExtendida } from '@/lib/definitions';
 import { getImageUrl } from '@/utils/cloudinaryUtils';
 import { fetchPromoById } from '@/lib/crud';
+import { toast } from 'react-toastify';
 
 function PromoComponent() {
 
@@ -56,6 +57,22 @@ function PromoComponent() {
             });
         }
     }, [promoData]);
+
+
+    const handleAddToCart = (promoData: CartItemPromo) => {
+        if (promoData) {
+            addToCartPromo(promoData);
+            toast.success('Promo añadida al carrito');
+        }
+
+    };
+
+    const handleRemoveFromCart = (promoData: CartItemPromo) => {
+        if (promoData) {
+            removeFromCartPromo(promoData);
+            toast.success('Promo eliminada del carrito');
+        }
+    }
 
     return (
         <div className="flex flex-col h-full mt-28 items-center transition duration-500 w-full text-dark md:px-10">
@@ -114,10 +131,10 @@ function PromoComponent() {
                             ))}
                         </ul>
                         <div className="flex gap-5">
-                            <button type="submit" className="btn btn-circle bg-green-500 hover:bg-green-700 text-white" onClick={() => addToCartPromo(promoData)}>
+                            <button type="submit" className="btn btn-circle bg-green-500 hover:bg-green-700 text-white" onClick={() => handleAddToCart(promoData)}>
                                 <AddToCartIcon />
                             </button>
-                            <button type='submit' className="btn btn-circle bg-red-500 hover:bg-red-700 text-white" onClick={() => removeFromCartPromo(promoData)}>
+                            <button type='submit' className="btn btn-circle bg-red-500 hover:bg-red-700 text-white" onClick={() => handleRemoveFromCart(promoData)}>
                                 <RemoveFromCartIcon />
                             </button>
                         </div>

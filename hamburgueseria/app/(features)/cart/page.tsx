@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import { useCart } from "@/app/hooks/useCart";
-import { CartItem } from "@/lib/types";
+import { CartItem } from "@/lib/CartTypes";
 import CartItemComponent from "@/app/ui/cart/CartItem";
 import Link from "next/link";
 import { payment } from "@/utils/paymentUtils";

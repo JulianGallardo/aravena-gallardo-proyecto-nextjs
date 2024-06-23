@@ -1,10 +1,10 @@
 import React, { Suspense } from "react";
-import { fetchPaginatedPromos } from "@/lib/pagination";
+import { fetchPaginationAdminOrdersById } from "@/lib/pagination";
 import Link from "next/link";
-import PromoTable from "@/app/ui/admin/tabs/promos/promoTable";
+import OrdenesAdminTable from "@/app/ui/admin/tabs/ordenes/ordenesAdminTable";
 import SearchByName from "@/app/ui/admin/search";
 
-export default async function PromosPagination({
+export default async function OrdenesPaginacion({
     searchParams,
 }: {
     searchParams?: {
@@ -14,7 +14,7 @@ export default async function PromosPagination({
 }) {
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const { paginatedOrders, totalPages } = await fetchPaginatedPromos(currentPage);
+    const { paginatedOrders, totalPages } = await fetchPaginationAdminOrdersById(query, currentPage);
 
     return (
         <div className="flex flex-col gap-5 my-24 mx-10 h-full">
@@ -28,24 +28,21 @@ export default async function PromosPagination({
                         <Link href="/admin/extras" className="btn rounded-md bg-yellow-400 text-white">
                             Extras
                         </Link>
-                        <Link href="/admin/ordenes" className="btn rounded-md bg-yellow-400 text-white font-bold">
-                            Ordenes
+                        <Link href="/admin/promos" className="btn rounded-md bg-yellow-400 text-white">
+                            Promos
                         </Link>
                     </div>
                 </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between items-center gap-5 mb-5">
-                <h2 className="text-2xl font-bold mb-4">Promos</h2>
+                <h2 className="text-2xl font-bold mb-4">Ordenes</h2>
                 <div className="flex items-center gap-4">
-                    <SearchByName placeholder="Buscar promoción" />
+                    <SearchByName placeholder="Buscar orden por id" />
                 </div>
-                <Link href="/admin/promos/new">
-                    <button className="btn bg-green-400 text-white p-2 rounded-lg">Agregar nueva</button>
-                </Link>
             </div>
             <div className="flex flex-col justify-center gap-5 items-center ">
                 <Suspense key={query + currentPage} fallback={<div>Cargando...</div>}>
-                    <PromoTable totalPages={totalPages} />
+                    <OrdenesAdminTable totalPages={totalPages} />
                 </Suspense>
             </div>
         </div>

@@ -23,7 +23,7 @@ const PromoItem = ({ promo }: PromoItemProps) => {
 
 
     return (
-        cloudinaryImg === "" ? <div>Loading...</div> :
+        cloudinaryImg === "" ? <div className="skeleton h-96 w-96 bg-gray-300"></div>:
             <Link href={`/admin/promos/${promo.promoId}`}>
                 <li key={promo.promoId} className="transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-black flex flex-col gap-5 h-full bg-white shadow-md rounded-lg p-4 text-black shadow-black hover:bg-lightgrey ">
                     <h3 className="text-xl font-semibold mb-2 ">{promo.name}</h3>

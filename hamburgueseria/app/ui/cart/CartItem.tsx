@@ -1,4 +1,4 @@
-import { CartItem } from "@/lib/types";
+import { CartItem } from "@/lib/CartTypes";
 import BurgerCartItems from "./BurgerCartItems";
 import PromoCartItems from "./PromoCartItem";
 

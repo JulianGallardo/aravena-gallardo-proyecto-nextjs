@@ -1,120 +1,17 @@
 "use server";
 
 import { ProductService } from '@/prisma/services/productService';
-import { PromoExtendida } from './definitions';
+import { OrderService } from '@/prisma/services/orderService';
+import {  PromoExtendida } from './definitions';
 const productService = new ProductService();
-const ordenes = [
-  {
-    id: "1",
-    nombre: "Hamburguesa de pollo",
-    date: new Date(),
-    precio: 5,
-    cantidad: 2,
-  },
-  {
-    id: "2",
-    nombre: "Hamburguesa de res",
-    date: new Date(),
-    precio: 6,
-    cantidad: 1,
-  },
-  {
-    id: "3",
-    nombre: "Hamburguesa de pescado",
-    date: new Date(),
-    precio: 7,
-    cantidad: 3,
-  },
-  {
-    id: "4",
-    nombre: "Hamburguesa vegetariana",
-    date: new Date(),
-    precio: 4,
-    cantidad: 2,
-  },
-  {
-    id: "5",
-    nombre: "Hamburguesa de pollo",
-    date: new Date(),
-    precio: 5,
-    cantidad: 2,
-  },
-  {
-    id: "6",
-    nombre: "Hamburguesa de res",
-    date: new Date(),
-    precio: 6,
-    cantidad: 1,
-  },
-  {
-    id: "7",
-    nombre: "Hamburguesa de pescado",
-    date: new Date(),
-    precio: 7,
-    cantidad: 3,
-  },
-  {
-    id: "8",
-    nombre: "Hamburguesa vegetariana",
-    date: new Date(),
-    precio: 4,
-    cantidad: 2,
-  },
-  {
-    id: "9",
-    nombre: "Hamburguesa de pollo",
-    date: new Date(),
-    precio: 5,
-    cantidad: 2,
-  },
-  {
-    id: "10",
-    nombre: "Hamburguesa de res",
-    date: new Date(),
-    precio: 6,
-    cantidad: 1,
-  },
-  {
-    id: "11",
-    nombre: "Hamburguesa de pescado",
-    date: new Date(),
-    precio: 7,
-    cantidad: 3,
-  },
-  {
-    id: "12",
-    nombre: "Hamburguesa vegetariana",
-    date: new Date(),
-    precio: 4,
-    cantidad: 2,
-  },
-  {
-    id: "13",
-    nombre: "Hamburguesa de pollo",
-    date: new Date(),
-    precio: 5,
-    cantidad: 2,
-  },
-  {
-    id: "14",
-    nombre: "Hamburguesa de res",
-    date: new Date(),
-    precio: 6,
-    cantidad: 1,
-  },
-  {
-    id: "15",
-    nombre: "Hamburguesa de pescado",
-    date: new Date(),
-    precio: 7,
-    cantidad: 3,
-  }
-];
+const orderService = new OrderService();
 
 
 const ITEMS_PER_PAGE = 4;
-export async function fetchPaginationOrders(page: number) {
-  const orders = ordenes;
+export async function fetchPaginationOrders(page: number,clientId:number) {
+
+  const orders = await orderService.getAllOrdersByUserId(clientId);
+  console.log(JSON.stringify(orders));
   const totalItems = orders.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const start = (page - 1) * ITEMS_PER_PAGE;
@@ -123,9 +20,10 @@ export async function fetchPaginationOrders(page: number) {
   return { paginatedOrders, totalPages };
 }
 
-export async function fetchFilteredOrderById(query: string, currentPage: number) {
+export async function fetchFilteredOrderById(query: string, currentPage: number,clientId:number) {
   if (query) {
-    const filteredOrders = ordenes.filter((order) => order.id === query);
+    const ordenes = await orderService.getAllOrdersByUserId(clientId);
+    const filteredOrders = ordenes.filter((order) => order.orderId === Number(query));
     const totalItems = filteredOrders.length;
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -133,7 +31,7 @@ export async function fetchFilteredOrderById(query: string, currentPage: number)
     const paginatedOrders = filteredOrders.slice(start, end);
     return { paginatedOrders, totalPages };
   } else {
-    return await fetchPaginationOrders(currentPage);
+    return await fetchPaginationOrders(currentPage,clientId);
   }
 }
 
@@ -269,3 +167,38 @@ export async function fetchPaginationExtrasByName(query: String, page: number, i
 }
 
 
+
+
+
+export async function fetchPaginationAdminOrders(page: number) {
+
+  const orders = await orderService.getAllOrders();
+  console.log(orders);
+  const totalItems = orders.length;
+  console.log(totalItems);
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  console.log(totalPages);
+  const start = (page - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const paginatedOrders = orders.slice(start, end);
+  return { paginatedOrders, totalPages };
+}
+
+export async function fetchPaginationAdminOrdersById(query: string, currentPage: number) {
+  if (query) {
+    const ordenes = await orderService.getAllOrders();
+    const filteredOrders = ordenes.filter((order) => numberIncludes(order.orderId, query));
+    const totalItems = filteredOrders.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    const paginatedOrders = filteredOrders.slice(start, end);
+    return { paginatedOrders, totalPages };
+  } else {
+    return await fetchPaginationAdminOrders(currentPage);
+  }
+}
+
+function numberIncludes(number: number, query: string) {
+  return number.toString().includes(query);
+}
