@@ -5,7 +5,7 @@ import { PrismaClient, Order, PaymentMethod, OrderStatus } from '@/prisma/genera
 const prisma = new PrismaClient();
 
 export class OrderRepository {
-    updateOrderStatus(orderId: number, status: OrderStatus):  Promise<Order> {
+    updateOrderStatus(orderId: number, status: OrderStatus): Promise<Order> {
 
         return prisma.order.update({
             where: {
@@ -20,26 +20,23 @@ export class OrderRepository {
     async getAllOrders(): Promise<OrdenExtendida[]> {
         return prisma.order.findMany({
             include: {
-                ExtraOnOrder: {
+                products: {
                     select: {
                         quantity: true,
-                        burger: {
-                            select: {
-                                name: true,
-                                price: true,
-                            },
-                        },
-                        burgerId: true,
+                    },
+                    include: {
                         extra: {
                             select: {
-                                name: true,
-                                price: true,
+                                quantity: true,
+                                extra: {
+                                    select: {
+                                        name: true,
+                                        price: true,
+                                    },
+                                },
                             },
                         },
-                    },
-                },
-                products: {
-                    include: {
+                        
                         product: {
                             include: {
                                 burger: {
@@ -49,17 +46,6 @@ export class OrderRepository {
                                         category: true,
                                         stock: true,
                                         price: true,
-                                        extras: {
-                                            select: {
-                                                quantity: true,
-                                                extra: {
-                                                    select: {
-                                                        name: true,
-                                                        price: true,
-                                                    },
-                                                },
-                                            },
-                                        },
                                     },
                                 },
                                 promo: {
@@ -84,126 +70,107 @@ export class OrderRepository {
                 clientId: userId,
             },
             include: {
-                ExtraOnOrder: {
-                    select: {
-                        quantity: true,
-                        burger: {
-                            select: {
-                                name: true,
-                                price: true,
-                            },
-                        },
-                        burgerId: true,
-                        extra: {
-                            select: {
-                                name: true,
-                                price: true,
+            products: {
+                select: {
+                    quantity: true,
+                },
+                include: {
+                    extra: {
+                        select: {
+                            quantity: true,
+                            extra: {
+                                select: {
+                                    name: true,
+                                    price: true,
+                                },
                             },
                         },
                     },
-                },
-                products: {
-                    include: {
-                        product: {
-                            include: {
-                                burger: {
-                                    select: {
-                                        name: true,
-                                        description: true,
-                                        category: true,
-                                        stock: true,
-                                        price: true,
-                                        extras: {
-                                            select: {
-                                                quantity: true,
-                                                extra: {
-                                                    select: {
-                                                        name: true,
-                                                        price: true,
-                                                    },
-                                                },
-                                            },
-                                        },
-                                    },
-                                },
-                                promo: {
-                                    select: {
-                                        name: true,
-                                        description: true,
-                                        category: true,
-                                        price: true,
-                                    },
+                    
+                    product: {
+                        include: {
+                            burger: {
+                                select: {
+                                    name: true,
+                                    description: true,
+                                    category: true,
+                                    stock: true,
+                                    price: true,
                                 },
                             },
-                        }
+                            promo: {
+                                select: {
+                                    name: true,
+                                    description: true,
+                                    category: true,
+                                    price: true,
+                                },
+                            },
+                        },
+                    }
+                },
+            },
+        },
+        });
+}
+
+    async getOrderById(orderId: number): Promise < Order | null > {
+    return prisma.order.findUnique({
+        where: {
+            orderId: orderId,
+        },
+        include: {
+            products: true,
+        },
+    });
+}
+
+    async createOrder(orderData: CartItem[], totalAmount: number): Promise < Order > {
+    return prisma.order.create({
+        data: {
+            clientId: 1, // Dejamos hardcodeado para que se le guarden todas al mismo cliente
+            paymentMethod: PaymentMethod.MERCADO_PAGO,
+            totalAmount: totalAmount,
+
+            products: {
+                create: orderData.map((item) => ({
+                    product: {
+                        connect: {
+                            productId: item.cartItemBurger?.productId ?? item.cartItemPromo?.productId ?? 0,
+                        },
                     },
-                },
-            },
-        });
-    }
-
-    async getOrderById(orderId: number): Promise<Order | null> {
-        return prisma.order.findUnique({
-            where: {
-                orderId: orderId,
-            },
-            include: {
-                products: true,
-            },
-        });
-    }
-
-    async createOrder(orderData: CartItem[], totalAmount: number): Promise<Order> {
-        return prisma.order.create({
-            data: {
-                clientId: 1, // Dejamos hardcodeado para que se le guarden todas al mismo cliente
-                paymentMethod: PaymentMethod.MERCADO_PAGO,
-                totalAmount: totalAmount,
-                ExtraOnOrder: {
-                    create: orderData.map((item) => ({
-                        burger: {
-                            connect: {
-                                burgerId: item.cartItemBurger?.burgerId ?? 0,
+                    quantity: item.cartItemBurger?.quantity ?? item.cartItemPromo?.quantity ?? 0,
+                    extra: {
+                        create: item.cartItemBurger?.extras?.map((extra) => ({
+                            extra: {
+                                connect: {
+                                    extraId: extra.extra.extraId,
+                                },
                             },
-                        },
-                        extra: {
-                            connect: {
-                                extraId: item.cartItemBurger?.extras[0].extra.extraId ?? 0,
-                            },
-                        },
-                        quantity: Number(item.cartItemBurger?.extras[0].quantity) ?? 0,
-                    })),
-                },
-                products: {
-                    create: orderData.map((item) => ({
-                        product: {
-                            connect: {
-                                productId: item.cartItemBurger?.productId ?? item.cartItemPromo?.productId ?? 0,
-                            },
-                        },
-                        quantity: item.cartItemBurger?.quantity ?? item.cartItemPromo?.quantity ?? 0,
-                        
-                    })),
+                            quantity: extra.quantity,
+                        })) ?? [],
+                    }
+                })),
 
-                },
             },
-        });
-    }
+        },
+    });
+}
 
-    async updateOrder(orderId: number, orderData: any): Promise<Order | null> {
-        return prisma.order.update({
-            where: {
-                orderId: orderId,
-            },
-            data: orderData,
-        });
-    }
+    async updateOrder(orderId: number, orderData: any): Promise < Order | null > {
+    return prisma.order.update({
+        where: {
+            orderId: orderId,
+        },
+        data: orderData,
+    });
+}
 
-    async deleteOrder(orderId: number): Promise<Order | null> {
-        return prisma.order.delete({
-            where: {
-                orderId: orderId,
-            },
-        });
-    }
+    async deleteOrder(orderId: number): Promise < Order | null > {
+    return prisma.order.delete({
+        where: {
+            orderId: orderId,
+        },
+    });
+}
 };

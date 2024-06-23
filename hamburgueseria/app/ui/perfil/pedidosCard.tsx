@@ -28,16 +28,10 @@ const PedidosCard = (orden: OrdenExtendida) => {
                         </div>
                         <div>
                             <p className=''>
-
-                                {   product.product.burger &&
-                                    orden.ExtraOnOrder.map((extra, index) => (
-                                        extra.burger.name === product.product.burger?.name && extra.quantity > 0 ?
-                                            <p key={index} className="text-sm">
-                                                {extra.extra.name} - {extra.quantity} x ${extra.extra.price}
-                                            </p>
-                                            : null
+                                {
+                                    product.extra.map((extra, index) => (
+                                        <span key={index} className="text-sm">+ {extra.extra.name} ${extra.extra.price} x {extra.quantity} </span>
                                     ))
-                                    
                                 }
                             </p>
                         </div>

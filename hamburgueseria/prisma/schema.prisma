@@ -55,7 +55,6 @@ model Order {
   status        OrderStatus       @default(PENDING)
   client        Client            @relation("ClientOrders", fields: [clientId], references: [clientId])
   products      ProductsOnOrder[]
-  ExtraOnOrder  ExtraOnOrder[]
 }
 
 enum OrderStatus {
@@ -92,7 +91,6 @@ model Burger {
   price        Float
   promos       BurgerOnPromo[]
   product      Product         @relation(fields: [productId], references: [productId])
-  ExtraOnOrder ExtraOnOrder[]
 }
 
 model Promo {
@@ -152,13 +150,12 @@ model ExtraOnOrder {
   id       Int    @id @default(autoincrement())
   orderId  Int
   extraId  Int
-  burgerId Int
   quantity Int    @default(1)
   extra    Extra  @relation(fields: [extraId], references: [extraId], onDelete: Cascade)
-  order    Order  @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
-  burger   Burger @relation(fields: [burgerId], references: [burgerId], onDelete: Cascade)
+  product  ProductsOnOrder? @relation(fields: [orderId, extraId], references: [orderId, productId], onDelete: Cascade)
 
-  @@unique([orderId, extraId, burgerId]) // Garantiza que no haya duplicados de la misma combinación
+
+  @@unique([orderId, extraId]) // Garantiza que no haya duplicados de la misma combinación
 }
 
 model ProductsOnOrder {
@@ -166,6 +163,7 @@ model ProductsOnOrder {
   orderId   Int
   productId Int
   quantity  Int     @default(1)
+  extra    ExtraOnOrder[]
   order     Order   @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
 

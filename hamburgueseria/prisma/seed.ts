@@ -166,6 +166,7 @@ const seed = async () => {
   await prisma.client.deleteMany();
   await prisma.productsOnOrder.deleteMany();
   await prisma.burgerOnPromo.deleteMany();
+  await prisma.extraOnOrder.deleteMany();
 
   // Create Clients, Users, and Guests
   await prisma.client.create({

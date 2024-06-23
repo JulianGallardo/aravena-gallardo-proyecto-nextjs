@@ -11,26 +11,19 @@ export interface PromoExtendida extends Promo { //find all promos, devuelve los 
 
 export type OrdenExtendida = Prisma.OrderGetPayload<{
   include: {
-    ExtraOnOrder: {
-      select: {
-        quantity: true,
-        burger:{
-          select:{
-            name: true,
-            price: true
-          }
-        }
-        burgerId: true,
-        extra: {
-          select: {
-            name: true,
-            price: true
-          }
-        }
-      }
-    }
     products: {
       select: {
+        extra: {
+          select: {
+            quantity: true,
+            extra: {
+              select: {
+                name: true,
+                price: true
+              }
+            }
+          }
+        },
         quantity: true,
         product: {
           select: {
@@ -42,13 +35,13 @@ export type OrdenExtendida = Prisma.OrderGetPayload<{
                 stock: true,
                 price: true,
                 extras: {
-                  select:{
+                  select: {
                     quantity: true,
                     extra: {
                       select: {
                         name: true,
                         price: true,
-                        
+
                       }
                     }
                   }
@@ -68,7 +61,7 @@ export type OrdenExtendida = Prisma.OrderGetPayload<{
       }
     };
   };
-}>
+}>;
 
 
 
