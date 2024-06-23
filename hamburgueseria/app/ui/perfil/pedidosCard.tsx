@@ -28,10 +28,14 @@ const PedidosCard = (orden: OrdenExtendida) => {
                         </div>
                         <div>
                             <p className=''>
-                                Aca irian los extras:
-                                {
+
+                                {   product.product.burger &&
                                     orden.ExtraOnOrder.map((extra, index) => (
-                                        product.product.burger ? ( product.product.burger.extras.find((e) => e.extra.name === extra.extra.name) ? `${extra.extra.name}  ${extra.quantity}x${extra.extra.price}` : '') : ''
+                                        extra.burger.name === product.product.burger?.name && extra.quantity > 0 ?
+                                            <p key={index} className="text-sm">
+                                                {extra.extra.name} - {extra.quantity} x ${extra.extra.price}
+                                            </p>
+                                            : null
                                     ))
                                     
                                 }
