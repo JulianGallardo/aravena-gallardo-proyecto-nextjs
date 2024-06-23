@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   const body = await req
     .json()
     
-    console.log(body)
+    console.log("bodyyy"+body)
 
     const payment = await new Payment(client).get({id: body.data.id});
     console.log(payment);
@@ -19,6 +19,6 @@ export async function POST(req: NextRequest) {
         amount: payment.transaction_amount,
         message: payment.description,
     }
-    
+
     return Response.json({success: true});
 }

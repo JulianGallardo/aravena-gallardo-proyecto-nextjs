@@ -8,24 +8,6 @@ import { payment } from "@/utils/paymentUtils";
 
 const Page: React.FC = () => {
     const { cart, items, total, clearCart } = useCart();
-    
-    const handleCheckout = async () => {
-        console.log('Checkout');
-        const response = await fetch('/api/payments', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ cart }),
-        });
-        
-        if (!response.ok) {
-            throw new Error('Error confirmando la orden');
-        }
-
-        const data = await response.json();
-        console.log('Orden confirmada:', data);
-    };
 
     return (
         <div className="flex flex-col  mt-20 md:mx-24 h-fit gap-5 p-4 text-dark">
