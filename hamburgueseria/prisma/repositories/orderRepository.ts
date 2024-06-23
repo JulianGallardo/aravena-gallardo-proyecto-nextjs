@@ -120,15 +120,57 @@ export class OrderRepository {
     async createOrder(orderData: CartItem[], totalAmount: number): Promise<Order> {
         return prisma.order.create({
             data: {
-                clientId: 1, // Debes reemplazarlo con el ID real del cliente
+                clientId: 1, // Dejamos hardcodeado para que se le guarden todas al mismo cliente
                 paymentMethod: PaymentMethod.MERCADO_PAGO,
+                totalAmount: totalAmount,
                 products: {
                     create: orderData.map((item) => ({
-                        productId: item.cartItemBurger?.productId ?? item.cartItemPromo?.productId ?? 0,
+                        product: {
+                            connect: {
+                                productId: item.cartItemBurger?.productId ?? item.cartItemPromo?.productId ?? 0,
+                            },
+                        },
                         quantity: item.cartItemBurger?.quantity ?? item.cartItemPromo?.quantity ?? 0,
+                        burger: item.cartItemBurger ? {
+                            create: {
+                                name: item.cartItemBurger.name,
+                                description: item.cartItemBurger.description,
+                                category: item.cartItemBurger.category,
+                                stock: item.cartItemBurger.stock,
+                                price: item.cartItemBurger.price,
+                                extras: {
+                                    create: item.cartItemBurger.extras.map(extra => ({
+                                        extra: {
+                                            connect: {
+                                                extraId: extra.extra.extraId,
+                                            },
+                                        },
+                                        quantity: extra.quantity,
+                                    })),
+                                },
+                            },
+                        } : undefined,
+                        promo: item.cartItemPromo ? {
+                            create: {
+                                name: item.cartItemPromo.name,
+                                description: item.cartItemPromo.description,
+                                category: item.cartItemPromo.category,
+                                price: item.cartItemPromo.price,
+                                burgers: {
+                                    create: item.cartItemPromo.burgers.map(burger => ({
+                                        burger: {
+                                            connect: {
+                                                burgerId: burger.burger.burgerId,
+                                            },
+                                        },
+                                        quantity: burger.quantity,
+                                        newPrice: burger.newPrice,
+                                    })),
+                                },
+                            },
+                        } : undefined,
                     })),
                 },
-                totalAmount: totalAmount,
             },
         });
     }

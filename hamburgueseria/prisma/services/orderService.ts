@@ -7,10 +7,6 @@ const orderRepository = new OrderRepository()
 
 export class OrderService {
   async createOrder(data:CartItem[],totalAmount:number): Promise<Order> {
-
-
-
-    
     return orderRepository.createOrder(data,totalAmount);
   }
 

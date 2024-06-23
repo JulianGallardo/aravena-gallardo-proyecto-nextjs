@@ -18,11 +18,9 @@ export async function POST(req: NextRequest) {
     console.log("Payment details:", JSON.stringify(payment));
 
     if (payment && payment.status === "approved") {
-      console.log("Payment approved, updating order status...");
       await orderService.updateOrderStatus(Number(payment.external_reference), OrderStatus.CONFIRMED);
       return NextResponse.json({ success: true });
     } else {
-      console.log("Payment rejected, updating order status...");
       await orderService.updateOrderStatus(Number(payment.external_reference), OrderStatus.REJECTED);
       return NextResponse.json({ success: false });
     }
