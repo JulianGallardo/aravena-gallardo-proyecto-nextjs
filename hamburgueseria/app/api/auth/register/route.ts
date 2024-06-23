@@ -34,7 +34,7 @@ export async function POST(req:Request) {
                 create:{
 
                 }
-            } // Add the missing client property here
+            }
         }
     });
 
