@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 const productService = new ProductService();
 
 export async function GET(req: NextRequest) {
-  try {
     const searchParams = req.nextUrl.searchParams;
     const extraId = searchParams.get("extraId");
     if (extraId) {
@@ -12,6 +11,13 @@ export async function GET(req: NextRequest) {
         const extras = await productService.getExtraById(
           Number(extraId)
         );
+        if (!extras) {
+          return NextResponse.json({
+            status: 404,
+            body: { message: "Extra not found" },
+          });
+        }
+
         return NextResponse.json({
           status: 200,
           body: extras,
@@ -19,15 +25,18 @@ export async function GET(req: NextRequest) {
       }
     } else {
       const extras = await productService.getAllExtras();
+      
+      if (!extras) {
+        return NextResponse.json({
+          status: 404,
+          body: { message: "No extras found" },
+        });
+      }
+      
       return NextResponse.json({
         status: 200,
         body: extras,
       });
+
     }
-  } catch (error: any) {
-    return NextResponse.json({
-      status: 500,
-      body: error.message,
-    });
-  }
 }
