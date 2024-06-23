@@ -1,8 +1,9 @@
 import React, { Suspense } from "react";
 import TablaPedidos from "@/app/ui/perfil/tablaPedidos";
-import { fetchPaginationOrders } from "@/lib/pagination";
+import { fetchFilteredOrderById } from "@/lib/pagination";
 import { auth } from "@/auth";
-import CardSkeleton from "../shared/cardSkeleton";
+import OrderSearchByStatus from "../admin/tabs/ordenes/searchByOrderStatus";
+import SearchByName from "../admin/search";
 
 export default async function PedidosPaginacion({
   searchParams,
@@ -21,14 +22,20 @@ export default async function PedidosPaginacion({
   else {
 
 
-    const { paginatedOrders, totalPages } = await fetchPaginationOrders(currentPage, session.user.clientId);
+    const { paginatedOrders, totalPages } = await fetchFilteredOrderById(query,currentPage, session.user.clientId);
 
 
     return (
       <div className="flex flex-col gap-5 mx-2">
-        <h1 className="text-2xl font-bold text-dark ">Pedidos</h1>
+        <div className="flex flex-col md:flex-row justify-center md:justify-around gap-5 items-center ">
+          <h1 className="text-2xl font-bold text-dark ">Pedidos</h1>
+          <OrderSearchByStatus placeholder="Buscar por estado" />
+          <SearchByName placeholder="Buscar por id" />
+
+        </div>
+
         <div className="flex flex-col justify-center gap-5 items-center ">
-          <Suspense key={query + currentPage} fallback={<TableSkeleton/>}>
+          <Suspense key={query + currentPage} fallback={<TableSkeleton />}>
             <TablaPedidos totalPages={totalPages} session={session} />
           </Suspense>
         </div>

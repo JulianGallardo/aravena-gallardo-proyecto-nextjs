@@ -16,7 +16,6 @@ export default async function OrdenesPaginacion({
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
     const { paginatedOrders, totalPages } = await fetchPaginationAdminOrdersById(query, currentPage);
-    console.log("paginatedOrders", paginatedOrders);
 
     return (
         <div className="flex flex-col gap-5 my-24 mx-10 h-full">

@@ -2,7 +2,7 @@
 
 import PedidosCard from "@/app/ui/perfil/pedidosCard";
 import { OrdenExtendida } from "@/lib/definitions";
-import { fetchPaginationOrders } from "@/lib/pagination";
+import { fetchFilteredOrderById } from "@/lib/pagination";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -32,7 +32,7 @@ export default async function TablePedidos(
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const orders = await fetchPaginationOrders(currentPage, session.user.clientId);
+      const orders = await fetchFilteredOrderById(searchParams.toString(),currentPage, session.user.clientId);
       setOrders(orders);
     };
     fetchOrders();
@@ -49,7 +49,7 @@ export default async function TablePedidos(
       </div>
       <div className="flex flex-row gap-3 justify-center items-center">
         {
-          Array.from({ length: totalPages }).map((_, index) => (
+          Array.from({ length: orders.totalPages }).map((_, index) => (
             <Link key={index} href={createPageURL(index + 1)} scroll={false} className="btn bg-darkblue w-1/5 text-white hover:bg-lightgrey hover:text-dark">
               {index + 1}
             </Link>

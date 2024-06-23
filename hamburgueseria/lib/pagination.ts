@@ -22,11 +22,29 @@ export async function fetchFilteredOrderById(
   currentPage: number,
   clientId: number
 ) {
-  if (query) {
+  if (query && query !== "") {
+
+    const splittedQuery = query.split("&").map((item) => item.split("="));
+    let queryOrderStatus = "";
+    let queryOrderId = "";
+
+    for (let i = 0; i < splittedQuery.length; i++) {
+      if (splittedQuery[i][0] === "status") {
+        queryOrderStatus = splittedQuery[i][1];
+      }
+      if (splittedQuery[i][0] === "query") {
+        queryOrderId = splittedQuery[i][1];
+      }
+    }
+
     const ordenes = await orderService.getAllOrdersByUserId(clientId);
-    const filteredOrders = ordenes.filter(
-      (order) => order.orderId === Number(query)
+    const filteredOrders = ordenes.filter((order) =>
+      (numberIncludes(order.orderId, queryOrderId)) && (
+        queryOrderStatus !== "" ? order.status === queryOrderStatus : true
+
+      )
     );
+
     const totalItems = filteredOrders.length;
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -34,7 +52,7 @@ export async function fetchFilteredOrderById(
     const paginatedOrders = filteredOrders.slice(start, end);
     return { paginatedOrders, totalPages };
   } else {
-    return await fetchPaginationOrders(currentPage, clientId);
+    return await fetchPaginationOrders(currentPage,clientId);
   }
 }
 
