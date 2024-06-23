@@ -14,7 +14,7 @@ interface FetchExtra {
 }
 
 
-export default async function ExtrasTable(
+export default function ExtrasTable(
   {
     totalPages
   }: {
@@ -30,17 +30,26 @@ export default async function ExtrasTable(
 
 
   useEffect(() => {
-    const fetchExtras = () => {
-      fetchPaginationExtrasByName(query, currentPage,itemsPerPage).then((data) => { setExtras(data) }).catch((error) => { console.error(error) });
+    const fetchExtras = async () => {
+      try {
+        const data = await fetchPaginationExtrasByName(query, currentPage, itemsPerPage);
+        setExtras(data);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     fetchExtras();
 
   }, [currentPage, query]);
 
-  const refresh = () => {
-    fetchPaginationExtrasByName(query, currentPage,itemsPerPage).then((data) => { setExtras(data) }).catch((error) => { console.error(error) });
-   
+  const refresh = async () => {
+    try {
+      const data = await fetchPaginationExtrasByName(query, currentPage, itemsPerPage);
+      setExtras(data);
+    } catch (error) {
+      console.error(error);
+    }   
   }
 
   const createPageURL = (pageNumber: number | string) => {
