@@ -8,6 +8,14 @@ export async function GET(req: NextRequest) {
   if (productId) {
     {
       const burger = await productService.getBurgerById(Number(productId));
+      if (!burger) {
+        return NextResponse.json({
+          status: 404,
+          body: {
+            message: "Burger not found",
+          },
+        });
+      }
       return NextResponse.json({
         status: 200,
         body: burger,
@@ -15,6 +23,14 @@ export async function GET(req: NextRequest) {
     }
   } else {
     const burgers = await productService.getAllBurgers();
+    if (!burgers) {
+      return NextResponse.json({
+        status: 404,
+        body: {
+          message: "Burgers not found",
+        },
+      });
+    }
     return NextResponse.json({
       status: 200,
       body: burgers,
