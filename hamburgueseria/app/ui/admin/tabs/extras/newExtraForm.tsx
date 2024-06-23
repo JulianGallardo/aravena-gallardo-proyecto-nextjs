@@ -4,9 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { createExtra } from '@/lib/crud';
 import { useRouter } from 'next/navigation';
-import { Prisma } from '@/prisma/generated/client';
+
+interface FormValues {
+    name: string;
+    maxQuantity: number;
+    price: number;
+}
+
 const NewExtraForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<Prisma.ExtraCreateInput>();
+    const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
     const router = useRouter();
 
     

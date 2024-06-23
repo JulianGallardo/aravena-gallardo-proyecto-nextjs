@@ -1,6 +1,6 @@
 "use server";
 
-import { Burger, Category } from '@/prisma/generated/client';
+import {  Category } from '@/prisma/generated/client';
 import { Prisma } from '@/prisma/generated/client';
 import { ProductService } from '@/prisma/services/productService';
 import { BurgerDataForm, PromoDataForm } from './definitions';
