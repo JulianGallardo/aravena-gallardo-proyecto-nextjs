@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Header } from "@/app/ui";
 import { Footer } from "@/app/ui";
 import { Bounce, ToastContainer } from "react-toastify";
+import GoToAdmin from "./ui/admin/GoToAdmin";
 
 
 const title = "ByteBurgers";
@@ -31,6 +32,7 @@ export default async function RootLayout({
             {children}
           </main>
           <Footer />
+          <GoToAdmin/>
           <ToastContainer 
             position="top-center"
             autoClose={1000}
