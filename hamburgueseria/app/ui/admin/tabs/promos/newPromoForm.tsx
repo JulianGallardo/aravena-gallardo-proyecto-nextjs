@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Category, Burger } from '@/prisma/generated/client';
 import { createPromo, fetchAllBurgers } from '@/lib/crud';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 type FormValues = {
     name: string;
@@ -47,6 +48,7 @@ const NewPromoForm = () => {
         const promo = await createPromo(formData);
         if (promo) {
             router.push('/admin/promos'); // Redireccionar a la lista de promociones después de crear la nueva promo
+            toast.success('Promoción creada con éxito');
         }
     };
 

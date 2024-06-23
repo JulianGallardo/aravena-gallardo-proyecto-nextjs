@@ -4,6 +4,7 @@ import { Category, Burger } from '@/prisma/generated/client';
 import { updatePromo, fetchAllBurgers } from '@/lib/crud';
 import { useRouter } from 'next/navigation';
 import { PromoExtendida } from '@/lib/definitions';
+import { toast } from 'react-toastify';
 
 type FormValues = {
     name: string;
@@ -70,6 +71,7 @@ const UpdatePromoForm = ({ promo, handleUpdate }: PromoForm) => {
 
         if (updatedPromo) {
             handleUpdate();
+            toast.success('Promoción actualizada con éxito');
         }
     };
 

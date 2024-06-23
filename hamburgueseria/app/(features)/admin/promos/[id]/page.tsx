@@ -56,6 +56,7 @@ const PromoManagmentPage = () => {
                             await deletePromo(promo?.promoId as number);
                             toast.dismiss();
                             router.push("/admin/promos");
+                            toast.success("Promo eliminada con éxito");
                         }}
                     >
                         Sí, quiero eliminar
