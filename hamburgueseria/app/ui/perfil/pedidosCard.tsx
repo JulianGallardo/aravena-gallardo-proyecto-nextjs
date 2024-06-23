@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import ByteBurgersLogo from '@/public/ByteBurgersLogoVectorizado.svg';
 import { OrdenExtendida } from '@/lib/definitions';
@@ -12,12 +12,7 @@ interface Extras {
 }
 
 const PedidosCard = (orden: OrdenExtendida) => {
-
-    useEffect(() => {
-        console.log("Orden en Producción:", JSON.stringify(orden, null, 2));
-    }, [orden]);
-
-
+    
     function sumarExtras(extras:Extras[] ) {
         let suma = 0;
         if (extras.length === 0) return 0;
