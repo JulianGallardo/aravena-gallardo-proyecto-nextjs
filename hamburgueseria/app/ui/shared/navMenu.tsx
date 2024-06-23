@@ -32,13 +32,14 @@ const NavMenu = () => {
         }
     }, []);
 
+    const windowChange = typeof window !== 'undefined' && window.location.pathname;
     useEffect(() => {
         if (typeof window !== 'undefined' && window.location.pathname === '/') {
             setIsTransparent(true);
         } else {
             setIsTransparent(false);
         }
-    }, [typeof window !== 'undefined' && window.location.pathname]);
+    }, [windowChange]);
         
 
     useEffect(() => {
