@@ -60,6 +60,7 @@ export const authConfig = {
           fullName: user.fullName,
           cellphone: user.cellphone,
           address: user.address,
+          clientId: user.clientId,
         };
       }
 
@@ -78,6 +79,8 @@ export const authConfig = {
               role: session.user.role,
               cellphone: session.user.cellphone,
               address: session.user.address,
+              clientId: session.user.clientId,
+
             },
           });
         } catch (e) {
@@ -92,6 +95,7 @@ export const authConfig = {
           fullName: session.user.fullName,
           cellphone: session.user.cellphone,
           address: session.user.address,
+          clientId: session.user.clientId,
         };
       }
 
@@ -104,6 +108,7 @@ export const authConfig = {
           fullName: session.user.fullName,
           cellphone: session.user.cellphone,
           address: session.user.address,
+          clientId: session.user.clientId,
         };
       }
       return token;
@@ -119,6 +124,7 @@ export const authConfig = {
           fullName: token.fullName,
           cellphone: token.cellphone,
           address: token.address,
+          clientId: token.clientId,
         },
       };
     },

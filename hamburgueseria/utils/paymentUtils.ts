@@ -4,25 +4,22 @@ import { CartItem } from "@/lib/CartTypes";
 import MercadoPagoConfig, { Preference } from "mercadopago";
 import { redirect } from "next/navigation";
 import { OrderService } from "@/prisma/services/orderService";
-import { auth } from "@/auth";
+import { Session } from "next-auth";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN!,
 });
 
 const orderService = new OrderService();
-const session =  auth().then((session) => {
-  return session;
-});
 
-export async function payment(cart: CartItem[], totalAmount: number) {
+
+export async function payment(cart: CartItem[], totalAmount: number,session:Session | null) {
   const title = "Hamburgueseria ByteBurger";
   var clientId = 1; //Id del admin, si no esta logeado se registra con su id
-
-  session.then((session) => {
-    if (session)
-    clientId = session?.user.clientId!;
-  });
+  if(session){
+    clientId = session.user.clientId;
+  }
+  
 
   const order = await orderService.createOrder(cart, totalAmount,clientId);
 
