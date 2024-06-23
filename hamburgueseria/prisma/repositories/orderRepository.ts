@@ -1,9 +1,22 @@
+import { CartItem } from '@/lib/CartTypes';
 import { OrdenExtendida } from '@/lib/definitions';
-import { PrismaClient, Order } from '@/prisma/generated/client';
+import { PrismaClient, Order, PaymentMethod, OrderStatus } from '@/prisma/generated/client';
 
 const prisma = new PrismaClient();
 
 export class OrderRepository {
+    updateOrderStatus(orderId: number, status: OrderStatus):  Promise<Order> {
+
+        return prisma.order.update({
+            where: {
+                orderId: orderId,
+            },
+            data: {
+                status: status,
+            },
+        });
+    }
+
     async getAllOrders(): Promise<OrdenExtendida[]> {
         return prisma.order.findMany({
             include: {
@@ -39,7 +52,6 @@ export class OrderRepository {
                                         price: true,
                                     },
                                 },
-
                             },
                         }
                     },
@@ -86,7 +98,6 @@ export class OrderRepository {
                                         price: true,
                                     },
                                 },
-
                             },
                         }
                     },
@@ -106,9 +117,19 @@ export class OrderRepository {
         });
     }
 
-    async createOrder(orderData: any): Promise<Order> {
+    async createOrder(orderData: CartItem[], totalAmount: number): Promise<Order> {
         return prisma.order.create({
-            data: orderData,
+            data: {
+                clientId: 1, // Debes reemplazarlo con el ID real del cliente
+                paymentMethod: PaymentMethod.MERCADO_PAGO,
+                products: {
+                    create: orderData.map((item) => ({
+                        productId: item.cartItemBurger?.productId ?? item.cartItemPromo?.productId ?? 0,
+                        quantity: item.cartItemBurger?.quantity ?? item.cartItemPromo?.quantity ?? 0,
+                    })),
+                },
+                totalAmount: totalAmount,
+            },
         });
     }
 

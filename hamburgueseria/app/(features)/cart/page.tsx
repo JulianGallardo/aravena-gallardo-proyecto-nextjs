@@ -41,7 +41,7 @@ const Page: React.FC = () => {
                                     <span className="text-lg">Items: {items}</span>
                                 </div>
 
-                                <button onClick={() => payment(cart)} className="btn bg-yellow-500 text-darkblue w-fit ">
+                                <button onClick={() => payment(cart,total)} className="btn bg-yellow-500 text-darkblue w-fit ">
                                     <p className="text-white">Checkout</p>
                                 </button>
 

@@ -51,6 +51,14 @@ export class ProductRepository {
     return prisma.burger.findMany();
   }
 
+  async findAllBurgersActive(): Promise<Burger[]> {
+    return prisma.burger.findMany({
+      where: {
+        active: true,
+      }
+    });
+  }
+
   async findAllPromos(): Promise<PromoExtendida[]> {
     return prisma.promo.findMany({
       include: {
@@ -64,6 +72,24 @@ export class ProductRepository {
       },
     });
   }
+
+  async getAllPromosActive(): Promise<PromoExtendida[]> {
+    return prisma.promo.findMany({
+      where: {
+        active: true,
+      },
+      include: {
+        burgers: {
+          select: {
+            burger: true,
+            quantity: true,
+            newPrice: true,
+          }
+        }
+      },
+    });
+  }
+  
 
   async findBurgerById(burgerId: number): Promise<Burger | null> {
     return prisma.burger.findUnique({ where: { burgerId } });
@@ -93,6 +119,7 @@ export class ProductRepository {
         description: data.description,
         stock: data.stock,
         price: data.price,
+        active: data.active,
       },
     });
   }
@@ -102,6 +129,7 @@ export class ProductRepository {
       where: { promoId },
       data: {
         ...data,
+        active: data.active,
         burgers: {
           deleteMany: {}, // Delete existing burgers
           create: burgers.map(b => ({

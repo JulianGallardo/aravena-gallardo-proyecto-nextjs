@@ -23,8 +23,16 @@ export class ProductService {
     return productRepository.findAllBurgers();
   }
 
+  async getAllBurgersActive(): Promise<Burger[]> {
+    return productRepository.findAllBurgersActive();
+  }
+
   async getAllPromos(): Promise<PromoExtendida[]> {
     return productRepository.findAllPromos();
+  }
+
+  async getAllPromosActive(): Promise<PromoExtendida[]> {
+    return productRepository.getAllPromosActive();
   }
 
   async getBurgerById(burgerId: number): Promise<Burger | null> {
@@ -63,6 +71,10 @@ export class ProductService {
 
   async getAllExtras(): Promise<Extra[]> {
     return extraRepository.findAllExtras();
+  }
+
+  async getAllExtrasActive(): Promise<Extra[]> {  
+    return extraRepository.findAllExtrasActive();
   }
 
   async getExtraById(extraId: number): Promise<Extra | null> {

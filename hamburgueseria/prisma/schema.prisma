@@ -54,8 +54,14 @@ model Order {
   date          DateTime @default(now())
   totalAmount   Float    //debe calcularse en base a los productos que contiene
   paymentMethod PaymentMethod
+  status        OrderStatus   @default(PENDING)
   client        Client   @relation("ClientOrders", fields: [clientId], references: [clientId])
   products      ProductsOnOrder[]
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
 }
 
 enum PaymentMethod {
@@ -78,6 +84,7 @@ model Burger{
   productId   Int       @unique
   name        String
   category    Category 
+  active     Boolean   @default(true)
   description String    @default("")
   imageUrl    String    @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
   extras      ExtraOnBurger[]
@@ -93,6 +100,7 @@ model Promo{
   imageUrl    String    @default("https://cache-mcd-ecommerce.appmcdonalds.com/images/AR/DLV_48040_v9.png")
   name        String
   description String    @default("")
+  active     Boolean   @default(true)
   category    Category  @default(PROMO)
   product     Product   @relation(fields: [productId], references: [productId])
   burgers     BurgerOnPromo[]
@@ -109,6 +117,7 @@ enum Category {
 model Extra {
   extraId     Int       @id @default(autoincrement())
   name        String
+  active    Boolean   @default(true)
   price       Float     
   maxQuantity Int       @default(1)
   burgers     ExtraOnBurger[]

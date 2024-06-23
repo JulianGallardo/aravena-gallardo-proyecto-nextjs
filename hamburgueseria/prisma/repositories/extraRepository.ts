@@ -15,6 +15,14 @@ export class ExtraRepository {
     return prisma.extra.findUnique({ where: { extraId } });
   }
 
+  async findAllExtrasActive(): Promise<Extra[]> {
+    return prisma.extra.findMany({
+      where: {
+        active: true,
+      },
+    });
+  }
+
   async getExtrasByBurgerId(burgerId: number): Promise<Extra[]> {
     const burger = await prisma.burger.findUnique({
       where: { burgerId },

@@ -32,7 +32,7 @@ async function Card({ title, description, photoSrc, price, burgerId,category }:C
                     <p className="text-gray-500  text-base  line-clamp-3 md:line-clamp-5 md:text-lg">{description}</p>
                 </div>
                 <div className="px-6 py-4">
-                    <p className="text-black  text-xl font-semibold">${price}</p>
+                    <p className="text-yellow-500  text-xl font-semibold">${price}</p>
                 </div>
             </div>
         </Link>

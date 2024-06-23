@@ -24,9 +24,18 @@ export async function fetchAllBurgers() {
   return await productService.getAllBurgers();
 }
 
+export async function fetchAllBurgersActive() {
+  return await productService.getAllBurgersActive();
+}
+
 export async function fetchAllPromos() {
   return await productService.getAllPromos();
 }
+
+export async function fetchAllPromosActive() {
+  return await productService.getAllPromosActive();
+}
+
 
 export async function createBurger(form: FormData) {
   const burger: BurgerDataForm = {
@@ -55,7 +64,7 @@ export async function updateBurger(id: number, data: FormData) {
 
 
 export async function deleteBurger(id: number) {
-  await productService.deleteBurger(id);
+  await productService.updateBurger(id, { active: false });
   revalidatePath('/admin/burgers');
   redirect('/admin/burgers');
 }
@@ -99,7 +108,8 @@ export async function updatePromo(id: number, data: FormData) {
 
 
 export async function deletePromo(id: number) {
-  await productService.deletePromo(id);
+  const promo = await productService.getPromoById(id);
+  await productService.updatePromo(id, { active: false }, promo ? promo.burgers.map(b => ({ burgerId: b.burger.burgerId, quantity: b.quantity, newPrice: b.newPrice })) : []);
   revalidatePath('/admin/promos');
   redirect('/admin/promos');
 }
@@ -109,6 +119,10 @@ export async function fetchAllExtras() {
   return await productService.getAllExtras();
 } 
 
+export async function fetchAllExtrasActive() {
+  return await productService.getAllExtrasActive();
+}
+
 export async function updateExtra(id:number,data:Prisma.ExtraUpdateInput) {
   const extra= await productService.updateExtra(id,data);
   revalidatePath('/admin/extras');
@@ -116,7 +130,7 @@ export async function updateExtra(id:number,data:Prisma.ExtraUpdateInput) {
 }
 
 export async function deleteExtra(id:number) {
-  await productService.deleteExtra(id);
+  await productService.updateExtra(id,{active:false});
   revalidatePath('/admin/extras');
 }
 

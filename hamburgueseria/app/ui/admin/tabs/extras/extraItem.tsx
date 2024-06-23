@@ -91,7 +91,7 @@ const ExtraItem = ({ extra, refresh }: PromoItemProps) => {
             {!isEditing ? (
                 <div>
                     <h3 className="text-xl font-semibold mb-2">{extra.name}</h3>
-                    <div className="flex flex-col md:grid grid-cols-2 gap-2">
+                    <div className="flex flex-col md:grid grid-cols-3 gap-2">
                         <div>
                             <h4 className="text-lg font-semibold mb-2">Maxima cantidad asignable</h4>
                             <p className="mb-2">{extra.maxQuantity}</p>
@@ -99,6 +99,10 @@ const ExtraItem = ({ extra, refresh }: PromoItemProps) => {
                         <div>
                             <h4 className="text-lg font-semibold mb-2">Precio</h4>
                             <p className="mb-2">$ {extra.price}</p>
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-semibold mb-2">Activo</h4>
+                            <p className="mb-2">{extra.active ? 'Si' : 'No'}</p>
                         </div>
                     </div>
                     <div className="flex flex-row gap-5 w-full">
