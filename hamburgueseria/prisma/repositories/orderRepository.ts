@@ -139,7 +139,7 @@ export class OrderRepository {
                             productId: item.cartItemBurger?.productId ?? item.cartItemPromo?.productId ?? 0,
                         },
                     },
-                    quantity: item.cartItemBurger?.quantity ?? item.cartItemPromo?.quantity ?? 0,
+                    quantity: Number(item.cartItemBurger?.quantity) ?? Number(item.cartItemPromo?.quantity) ?? 0,
                     extra: {
                         create: item.cartItemBurger?.extras?.map((extra) => ({
                             extra: {
@@ -147,7 +147,7 @@ export class OrderRepository {
                                     extraId: extra.extra.extraId,
                                 },
                             },
-                            quantity: extra.quantity,
+                            quantity:Number( extra.quantity),
                         })) ?? [],
                     }
                 })),
