@@ -1,6 +1,18 @@
+'use client'
+
 import Link from "next/link"
+import { useCart } from "@/app/hooks/useCart";
+import { useEffect } from "react";
 
 const Page : React.FC = () => {
+    const { clearCart } = useCart();
+
+    useEffect(() => {
+        clearCart();
+    }, []);
+
+
+
     return (
         <div className="flex flex-col items-center justify-center h-screen gap-5 text-dark">
             <h1 className="text-2xl font-bold mb-4 ">¡Gracias por tu compra!</h1>

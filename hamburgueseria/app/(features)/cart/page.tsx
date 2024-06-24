@@ -13,9 +13,10 @@ const Page: React.FC = () => {
     const [clientId,setClientId] = useState<number>(1);
 
     useEffect(() => {
-        if(session){
+        if(session?.user.clientId){
             setClientId(session.user.clientId);
         }
+        console.log(clientId);
     }, [session])
 
 

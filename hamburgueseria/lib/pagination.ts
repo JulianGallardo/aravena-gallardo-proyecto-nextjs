@@ -57,7 +57,7 @@ export async function fetchFilteredOrderById(
 }
 
 export async function fetchPaginationBurgers(page: number) {
-  const burgers = await productService.getAllBurgers();
+  const burgers = await productService.getAllBurgersActive();
   if (!burgers) {
     return { paginatedOrders: [], totalPages: 0 };
   }
@@ -74,7 +74,7 @@ export async function fetchPaginationBurgersByName(
   page: number
 ) {
   const splittedQuery = query.split("&").map((item) => item.split("="));
-  const burgers = await productService.getAllBurgers();
+  const burgers = await productService.getAllBurgersActive();
   if (!burgers) {
     return { paginatedOrders: [], totalPages: 0 };
   }
@@ -110,7 +110,7 @@ export async function fetchPaginationBurgersByName(
 }
 
 export async function fetchPaginatedPromos(page: number) {
-  const promos = await productService.getAllPromos();
+  const promos = await productService.getAllPromosActive();
   if (!promos) {
     return { paginatedOrders: [], totalPages: 0 };
   }
@@ -127,7 +127,7 @@ export async function fetchPaginatedPromosByName(
   page: number
 ): Promise<{ paginatedOrders: PromoExtendida[]; totalPages: number }> {
   const splittedQuery = query.split("&").map((item) => item.split("="));
-  const promos: PromoExtendida[] = await productService.getAllPromos();
+  const promos: PromoExtendida[] = await productService.getAllPromosActive();
 
   if (!promos) {
     return { paginatedOrders: [], totalPages: 0 };
@@ -164,7 +164,7 @@ export async function fetchPaginatedPromosByName(
 }
 
 export async function fetchPaginationExtras(page: number) {
-  const extras = await productService.getAllExtras();
+  const extras = await productService.getAllExtrasActive();
   if (!extras) {
     return { paginatedOrders: [], totalPages: 0 };
   }
@@ -182,7 +182,7 @@ export async function fetchPaginationExtrasByName(
   items_per_page: number
 ) {
   const splittedQuery = query.split("&").map((item) => item.split("="));
-  const extras = await productService.getAllExtras();
+  const extras = await productService.getAllExtrasActive();
   if (!extras) {
     return { paginatedOrders: [], totalPages: 0 };
   }

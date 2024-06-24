@@ -54,7 +54,7 @@ export class ProductRepository {
   async findAllBurgersActive(): Promise<Burger[]> {
     return prisma.burger.findMany({
       where: {
-        active: true,
+        active : true,
       }
     });
   }
