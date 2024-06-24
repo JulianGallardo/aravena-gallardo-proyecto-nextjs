@@ -60,7 +60,7 @@ const Datos = () => {
                                     <label className="mb-3 mt-5 block text-xs font-medium">Nombre:</label>
                                     <input
                                         id="fullName"
-                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
+                                        className="peer block w-full rounded-md border bg-lightgrey border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
                                         type="text"
                                         value={formData.fullName}
                                         onChange={handleChange}
@@ -70,7 +70,7 @@ const Datos = () => {
                                     <label className="mb-3 mt-5 block text-xs font-medium">Email:</label>
                                     <input
                                         id="email"
-                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
+                                        className="peer block w-full rounded-md border bg-lightgrey border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
                                         type="email"
                                         value={formData.email}
                                         onChange={handleChange}
@@ -80,7 +80,7 @@ const Datos = () => {
                                     <label className="mb-3 mt-5 block text-xs font-medium">Telefono:</label>
                                     <input
                                         id="cellphone"
-                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
+                                        className="peer block w-full rounded-md border bg-lightgrey border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
                                         type="text"
                                         value={formData.cellphone}
                                         onChange={handleChange}
@@ -90,7 +90,7 @@ const Datos = () => {
                                     <label className="mb-3 mt-5 block text-xs font-medium">Direccion:</label>
                                     <input
                                         id="address"
-                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
+                                        className="peer block w-full rounded-md border bg-lightgrey border-gray-200 py-[9px] pl-2 pr-10 text-sm outline-2 placeholder:text-gray-500"
                                         type="text"
                                         value={formData.address}
                                         onChange={handleChange}
