@@ -6,7 +6,7 @@ export const getImageUrl = async (name: string): Promise<string> => {
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
     if (!cloudName) {
       reject(new Error("CLOUDINARY_CLOUD_NAME is not defined"));
-      return;
+      return; 
     }
 
     const imageUrl = `https://res.cloudinary.com/${cloudName}/image/upload/byteburgers/${publicId}`;
