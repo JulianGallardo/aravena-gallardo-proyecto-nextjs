@@ -164,7 +164,7 @@ export async function fetchPaginatedPromosByName(
 }
 
 export async function fetchPaginationExtras(page: number) {
-  const extras = await productService.getAllExtras();
+  const extras = await productService.getAllExtrasActive();
   if (!extras) {
     return { paginatedOrders: [], totalPages: 0 };
   }
@@ -182,7 +182,7 @@ export async function fetchPaginationExtrasByName(
   items_per_page: number
 ) {
   const splittedQuery = query.split("&").map((item) => item.split("="));
-  const extras = await productService.getAllExtras();
+  const extras = await productService.getAllExtrasActive();
   if (!extras) {
     return { paginatedOrders: [], totalPages: 0 };
   }

@@ -100,10 +100,6 @@ const ExtraItem = ({ extra, refresh }: PromoItemProps) => {
                             <h4 className="text-lg font-semibold mb-2">Precio</h4>
                             <p className="mb-2">$ {extra.price}</p>
                         </div>
-                        <div>
-                            <h4 className="text-lg font-semibold mb-2">Activo</h4>
-                            <p className="mb-2">{extra.active ? 'Si' : 'No'}</p>
-                        </div>
                     </div>
                     <div className="flex flex-row gap-5 w-full">
                         <button className="btn bg-green-400 text-white p-2 px-4 rounded-lg" onClick={() => setIsEditing(true)}>Edit</button>
