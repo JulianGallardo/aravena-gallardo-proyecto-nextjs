@@ -16,6 +16,7 @@ const Page: React.FC = () => {
         if(session?.user.clientId){
             setClientId(session.user.clientId);
         }
+        console.log(clientId);
     }, [session])
 
 
